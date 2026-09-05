@@ -7,7 +7,7 @@
 > optimized excerpts of it, not the other way around.
 
 Every project under this harness — this Harness Journal repository
-included — has exactly one `Foundation.md`, tool-agnostic by design.
+included — has exactly one `FOUNDATION.md`, tool-agnostic by design.
 Nothing in this file should ever assume a specific AI tool is reading
 it; the moment it does, that content has drifted out of the Foundation
 and belongs in a generated, tool-specific file instead.
@@ -16,7 +16,7 @@ and belongs in a generated, tool-specific file instead.
 
 Harness Journal is the general, reusable layer of a pattern meant to
 apply to *every* project, not just itself: each project keeps its own
-`Foundation.md` (dense, complete, tool-agnostic) as its single source of
+`FOUNDATION.md` (dense, complete, tool-agnostic) as its single source of
 truth, and generates whatever tool-specific instruction files it
 actually needs (`CLAUDE.md` for Claude Code, `AGENTS.md` for OpenCode
 and similar tools, more as new tools show up) from that one source —
@@ -30,15 +30,15 @@ This repository itself is not software with a runtime. It is the
 agents and skills — that any target project (Shadow Glass first) can
 sit underneath. A general-purpose agent working inside this harness
 (a "programmer," an "observer") reads a target project's own
-`Foundation.md` directly, by absolute path, to understand that project —
+`FOUNDATION.md` directly, by absolute path, to understand that project —
 no bespoke per-project adapter file needs to be hand-written and kept in
-sync; every project having its own `Foundation.md` already *is* the
+sync; every project having its own `FOUNDATION.md` already *is* the
 adapter.
 
 The analogy worth keeping in mind whenever this pattern feels
 over-engineered: a compiler has one front-end (the part that understands
 the source language, written once) and many pluggable back-ends (one per
-target architecture). This `Foundation.md`, in any project, plays the
+target architecture). This `FOUNDATION.md`, in any project, plays the
 front-end's role — general, written once, describing what's actually
 true about that project. Each generated `CLAUDE.md`/`AGENTS.md` plays a
 back-end's role — the same truth, compiled for one specific reader.
@@ -80,7 +80,7 @@ same spirit, directly or indirectly, without needing to spell out
 
 ## Structure
 
-- `Foundation.md` (this file) — the one source of truth, tool-agnostic,
+- `FOUNDATION.md` (this file) — the one source of truth, tool-agnostic,
   as dense and complete as it needs to be. Never generated; always
   hand-written and hand-edited directly.
 - `CLAUDE.md`, `AGENTS.md`, and any future tool-specific file — generated
@@ -105,7 +105,7 @@ same spirit, directly or indirectly, without needing to spell out
   (name borrowed from *Neuromancer*, where a "construct" is a stored
   recording of a person's skills and knowledge, loaded up when needed —
   conceptually close to what this skill does with a project's
-  `Foundation.md`) reads a project's `Foundation.md`, detects which
+  `FOUNDATION.md`) reads a project's `FOUNDATION.md`, detects which
   AI tool(s) are actually in use there, and generates or updates that
   project's `CLAUDE.md`/`AGENTS.md`/etc. from it. Exact design still
   being worked out as of this writing — see the harness's own
@@ -170,7 +170,7 @@ mood) across every project under this harness: `feat`, `fix`,
 Founded 2026-09-05. Working name "Harness Journal" pending a final,
 Freire/Santos-Dumont-inspired name. Shadow Glass is the first project
 intended to sit under this harness — it does not have its own
-`Foundation.md` yet, and the `construct` skill described above has not
+`FOUNDATION.md` yet, and the `construct` skill described above has not
 been built yet, so nothing in the "Structure" section past this file is
 confirmed working in practice. The `CLAUDE.md`/`AGENTS.md` written
 before this file existed are being treated as a first draft, superseded
