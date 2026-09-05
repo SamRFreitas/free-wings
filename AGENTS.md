@@ -1,169 +1,167 @@
 # Harness Journal
 
-> A research/learning diary about harness engineering, AI-assisted
-> development, and free access to technology — written while building
-> real, separate projects (Shadow Glass first) under it.
+> This file was generated from `FOUNDATION.md` by the `construct`
+> skill. Please edit `FOUNDATION.md` instead of editing this file
+> directly — any change made only to this file will be lost the next
+> time `construct` runs, because `construct` always regenerates this
+> file completely from `FOUNDATION.md`.
 
 **Note for whichever AI tool is reading this file**: this file exists so
-that tools other than Claude Code (which reads `CLAUDE.md`) can follow
-the exact same instructions. It is kept in sync with `CLAUDE.md` on
-purpose — the two files should always say the same thing, just written
-here with less assumed context, since a less capable model may be the
-one reading it. If you notice this file and `CLAUDE.md` have drifted
-apart, that is a bug — point it out rather than picking one over the
-other.
+that tools other than Claude Code (which reads `CLAUDE.md` instead) can
+follow the same instructions. This file and `CLAUDE.md` are generated
+from the same source (`FOUNDATION.md`), so they should never actually
+say different things — if you notice them disagreeing, that means the
+`construct` skill has a bug, not that one of the two files is more
+correct than the other.
 
-## What this is
+## What this project is
 
-Harness Journal is not itself a piece of software with a runtime that
-gets deployed anywhere — it is the **high-level, general layer** in a
-two-level system made of exactly two kinds of thing:
+Harness Journal is the general, reusable layer of a pattern meant to be
+used by more than one project. The pattern works like this: every
+project — including this Harness Journal repository itself — keeps
+exactly one file named `FOUNDATION.md`. That file is dense, complete,
+and does not assume any specific AI tool is reading it. From that one
+file, a skill called `construct` automatically generates whichever
+tool-specific instruction files that project actually needs — for
+example, `CLAUDE.md` for Claude Code, or `AGENTS.md` (this very file)
+for OpenCode and similar tools, with more files possible later as new
+tools come into use. This avoids a real problem that happened before
+this pattern existed: Shadow Glass (a separate, earlier project) had to
+have its `CLAUDE.md` and `AGENTS.md` edited by hand, separately, every
+single time something changed, and the two files slowly drifted apart
+from each other as a result.
 
-1. **This repository (Harness Journal)** — contains only general,
-   project-agnostic material: the teaching philosophy described below,
-   the diary/field-notes formats, naming conventions, and reusable
-   agents/skills that any target project could plug into. This
-   repository must never contain code, decisions, or content specific to
-   one single target project (like Shadow Glass) — that content belongs
-   in that project's own separate repository instead.
-2. **Each target project's own separate repository** (Shadow Glass is
-   the first one) — keeps its own identity, its own `CLAUDE.md`, its own
-   commit history, completely independent of this repository. Each such
-   project additionally gets one small "helper" agent file that lives
-   *inside that project's own repository* (not inside this Harness
-   Journal repository) — that helper agent's job is to import this
-   Harness Journal's general principles (by reading this repository's
-   `CLAUDE.md` from an absolute file path) and apply them specifically
-   to that one target project.
-
-An analogy that explains why this split exists: a compiler has one
-stable front-end (the part that understands the programming language
-itself, written once) and many different pluggable back-ends (one per
-target CPU architecture, such as x86 or ARM). This Harness Journal
-repository plays the role of the front-end — general, written once. Each
-target project's own helper agent plays the role of one back-end —
-specific to that one project. Adding a brand-new project under this
-harness later should mean writing one new small adapter agent file
-inside *that new project's own repository* — it should never require
-rewriting anything inside this Harness Journal repository itself.
+A helpful analogy: a compiler has one front-end (the part that
+understands the source language, written once) and many different
+pluggable back-ends (one per target CPU architecture). In this pattern,
+a project's `FOUNDATION.md` plays the role of the front-end — written
+once, describing what is actually true about that project. Each
+generated file (`CLAUDE.md`, `AGENTS.md`, etc.) plays the role of one
+back-end — the same underlying truth, compiled specifically for one
+particular reader.
 
 ## Philosophy — why this project exists, not just what it mechanically does
 
-Two real historical people's ideas shaped the spirit of this project.
-Both are worth remembering explicitly, not just folded silently into a
-project name and forgotten:
+Two real historical people's ideas shaped the spirit of this project:
 
 - **Paulo Freire**, a Brazilian educator, described a difference between
-  two models of education: "banking" education (where a teacher deposits
-  knowledge into a passive student, who simply receives it) versus
-  "dialogic" education (where teacher and student build understanding
-  together, through genuine back-and-forth conversation). This Harness
-  Journal project, and every project underneath it, deliberately follows
-  the dialogic model when working with an AI assistant: the AI must
-  explain a concept and its trade-offs *before* asking the human to
-  decide anything about it, rather than silently deciding on the human's
-  behalf and only informing them afterward. See the "Pedagogical
-  approach" section below for the exact rule this becomes in practice.
-- **Alberto Santos Dumont**, a Brazilian aviation pioneer, is known for
-  demonstrating his early aircraft flights in public view (rather than
-  working in secrecy), and for deliberately not patenting many of his
-  inventions, on the belief that technical progress should be shared
-  openly and benefit everyone rather than being restricted to whoever
-  owns the patent. This is why every project under this harness defaults
-  to a public code repository, a visible written record of technical
-  decisions (see "ADRs" below), and a diary that records what was
-  actually learned along the way — including the mistakes and dead ends,
-  not only the polished final result.
+  two models of education: "banking" education, where a teacher simply
+  deposits knowledge into a passive student, versus "dialogic"
+  education, where the teacher and the student build understanding
+  together through genuine back-and-forth conversation. Every project
+  under this harness follows the dialogic model when an AI assistant is
+  involved: the assistant must explain a concept and its trade-offs
+  *before* asking the person to decide anything about it, instead of
+  deciding quietly and only reporting the decision afterward. See the
+  "Pedagogical approach" section below for the precise rule this becomes
+  in practice.
+- **Alberto Santos Dumont**, a Brazilian aviation pioneer, publicly
+  demonstrated his early aircraft flights rather than working in
+  secrecy, and deliberately chose not to patent many of his inventions,
+  because he believed technical progress should benefit everyone rather
+  than being restricted to whoever holds the patent. Every project under
+  this harness defaults to the same posture: a public code repository, a
+  visible written record of technical decisions (see "ADRs" below), and
+  a diary recording what was genuinely learned along the way, including
+  mistakes and dead ends, not only the finished, polished result.
 
-This project's own final proper name (a name inspired by Freire and/or
-Santos Dumont) has not been chosen yet as of this file's writing — the
-working name "Harness Journal" is used in the meantime. Once a final
-name is chosen, the intention is for that name to carry this same
-philosophical spirit — directly or indirectly — even without spelling
-out "Freire" or "Santos Dumont" by name every single time it's used.
+As of this writing, this project's own final proper name has not yet
+been chosen — the working name "Harness Journal" is used in the
+meantime, and whichever final name is eventually chosen is intended to
+carry this same spirit, whether or not it mentions "Freire" or
+"Santos Dumont" by name.
 
 ## Structure of this repository
 
+- `FOUNDATION.md` — the single source of truth for this project. Always
+  hand-written and hand-edited directly by a person; this file is never
+  itself automatically generated by anything.
+- `CLAUDE.md`, `AGENTS.md` (this file), and any future tool-specific
+  file — all of these are automatically generated from `FOUNDATION.md`
+  by the `construct` skill described below. Each generated file is
+  written differently depending on which specific reader it targets: for
+  instance, this `AGENTS.md` file is written to be more explicit and
+  more spelled-out than `CLAUDE.md`, since the model reading it may be
+  meaningfully less capable — but both files describe the exact same
+  underlying truth from `FOUNDATION.md`, just compressed differently.
 - `docs/decisions/` — Architecture Decision Records (ADRs), but only for
-  decisions **about the harness itself** — for example, how the
-  cross-repository helper-agent mechanism should work. Decisions about
-  any one specific target project (such as Shadow Glass) must instead be
-  recorded in that target project's own `docs/decisions/` folder, not
-  here.
-- `docs/LEARNING_LOG.md` — the diary itself. One entry per work session,
-  written in chronological order (oldest first or newest first,
-  whichever convention gets established — check the file itself for the
-  actual current order). Written in the same spirit as a target
-  project's own learning log, but focused on the meta level of harness
-  engineering and the learning process itself, not just one project's
-  narrow technical details.
-- `.claude/agents/` — general-purpose subagents. Each one is named after
-  a real job role that exists on an actual project team, and is written
-  so that it can be reused by any target project, not tied to Shadow
-  Glass or any other single project specifically. As of this file's
-  writing, the planned agents are: a **programmer** (writes code and
-  explains the reasoning behind decisions and the implementation
-  together, not one before the other), and an **observer** (watches a
-  target project's evolution over time and documents it, producing raw
-  material that later becomes diary entries or other public writing).
-  More roles are planned for later: a researcher, a writer, a teacher, a
-  designer.
-- `.claude/skills/` — repeatable, on-demand procedures, each one
-  invoked directly by name (for example, typing `/construct` in a
-  Claude Code session). The first planned skill, named `construct`
-  (a deliberate reference to the novel *Neuromancer*, where a
-  "construct" is a stored recording of a person's skills and knowledge,
-  loaded up when needed to assist with a task — conceptually similar to
-  what this skill does with a target project's own `CLAUDE.md`), reads a
-  target project's `CLAUDE.md` and `AGENTS.md` files and automatically
-  generates that target project's own helper agent file from them.
+  decisions about the harness itself, not about any one specific target
+  project (such as Shadow Glass) — decisions about a specific target
+  project belong in that project's own `docs/decisions/` folder instead.
+- `docs/LEARNING_LOG.md` — the diary itself: one entry per work session,
+  written about harness engineering and the learning process at a
+  general level, not about one specific project's narrow technical
+  details.
+- `.claude/agents/` — general-purpose subagents, each named after a real
+  job role that exists on an actual project team, written so that any
+  target project can reuse them, not just one specific project. As of
+  this writing, the planned agents are a **programmer** (writes code and
+  explains the reasoning behind decisions together with the
+  implementation, rather than one before the other) and an **observer**
+  (watches how a target project evolves over time and documents that
+  evolution, producing material that later becomes diary entries or
+  other public writing). More roles are planned for later: a researcher,
+  a writer, a teacher, a designer.
+- `.claude/skills/` — repeatable, on-demand procedures, each one invoked
+  directly by typing its name as a command (for example, `/construct`).
+  The `construct` skill (its name is a deliberate reference to the novel
+  *Neuromancer*, in which a "construct" is a stored recording of a
+  person's skills and knowledge, loaded up whenever it's needed to help
+  with a task) reads a project's `FOUNDATION.md` and automatically
+  generates or updates that project's `CLAUDE.md`, `AGENTS.md`, and any
+  other needed tool-specific file from it. A second skill, whose job
+  will be to help set up the correct folder structure for a brand-new
+  AI tool this harness doesn't support yet, is still being designed as
+  of this writing and does not exist yet.
 
-## Terminology — defined precisely on purpose, because this was a real point of confusion once already
+## Terminology — defined precisely, because this was a real point of confusion once already
 
 - **Skill**: a repeatable, on-demand procedure. It is invoked directly
-  by the person using it (for example, by typing a slash command such
-  as `/construct`). It does not carry any reasoning or memory of its own
-  between separate invocations — it performs one mechanical job each
-  time it's invoked, and then it's done.
-- **Agent** (also called a "subagent" in Claude Code's own
-  terminology): a delegated worker that has its own reasoning process
-  and its own context, better suited to open-ended or interpretive work
-  than to purely mechanical, repeatable procedures.
+  by the person using it, for example by typing a slash command such as
+  `/construct`. A skill does not carry any reasoning or memory of its
+  own between separate times it is invoked — each time, it performs one
+  mechanical job and then it is finished. (This does not mean a skill
+  involves no thinking at all while it runs — the `construct` skill, for
+  example, genuinely rewrites and reorganizes text using real judgment
+  each time it runs. It just does not keep an ongoing separate context
+  the way an agent does.)
+- **Agent** (also called a "subagent" in Claude Code's own terminology):
+  a delegated worker that has its own reasoning process and its own
+  context, better suited to open-ended or interpretive work than to
+  purely mechanical, repeatable procedures.
 - **Field Notes**: this project's name for a specific kind of visual,
-  standalone HTML page — a self-contained `.html` file, meant to be
-  opened directly in any web browser from the local filesystem. These
-  pages are deliberately **never** published using Claude Code's own
+  standalone HTML page — a self-contained `.html` file meant to be
+  opened directly in a web browser from the local filesystem. These
+  pages are deliberately never published using Claude Code's own
   built-in `Artifact` tool (a specific feature for publishing pages to
-  claude.ai) — that tool is explicitly not used for this purpose in this
+  claude.ai) — that tool is not used for this purpose anywhere in this
   harness or in any project underneath it.
 - **Snapshot**: a dated, visual record of a project's directory
   structure at one specific point in time or milestone — showing the
-  *shape* of a codebase (which files and folders exist and what each is
-  for), not the actual content or code inside those files.
+  shape of a codebase (which files and folders exist and what each one
+  is for), not the actual content or code written inside those files.
 - Avoid using the word **"artifact"** anywhere in this harness's own
-  vocabulary for the concepts above. That word specifically collides
-  with Claude Code's own `Artifact` tool (the claude.ai publishing
-  feature mentioned above, which this harness's projects deliberately do
-  not use for Field Notes or Snapshots) — using the same word for two
-  different things would create real ambiguity every time it came up in
-  conversation or documentation.
+  vocabulary for either of the two concepts described above. That word
+  specifically collides with Claude Code's own `Artifact` tool mentioned
+  above, and using the same word for two different things would create
+  real ambiguity every time it came up.
 
 ## Pedagogical approach — the exact rule, spelled out
 
 Every project under this harness, including this Harness Journal
-repository itself, follows this same rule when an AI assistant is
-working with the person on it: before asking the person to make a
-technical decision, the AI assistant must first explain the relevant
-concept and its trade-offs in plain terms — what the choice is, what
-each option changes, and why it matters — so the person has an actual
-basis on which to decide, rather than being asked to choose blindly.
-When a particular decision is both low-risk and easily reversible later,
-the AI assistant may instead just make a reasonable choice on its own
-and clearly state its reasoning for that choice, while leaving room for
-the person to veto or change that choice afterward, rather than blocking
-progress on an answer the person has no way to evaluate confidently yet.
+repository itself, follows this rule whenever an AI assistant works with
+a person on it: before asking the person to make a technical decision,
+the assistant must first explain the relevant concept and its
+trade-offs in plain terms — what the choice actually is, what each
+option changes, and why it matters — so that the person has a real basis
+on which to decide, instead of being asked to choose blindly. When a
+particular decision is both low-risk and easily reversible later, the
+assistant may instead simply make a reasonable choice on its own and
+clearly state the reasoning behind that choice, while still leaving room
+for the person to veto or change it afterward, rather than blocking
+progress on a question the person has no confident way to answer yet.
 This is a direct, practical application of Paulo Freire's dialogic
-education principle (described above under "Philosophy"), applied to
+education principle, described above under "Philosophy," applied to
 working with an AI assistant instead of applied to a traditional
 classroom.
 
@@ -172,35 +170,30 @@ classroom.
 This harness, and the diary written under it, are meant to work
 naturally in both Portuguese and English — not as word-for-word
 translations of one another, but each one carrying the same real meaning
-in a way that sounds natural in that specific language. This especially
-applies to naming choices: a good name for this project (or for any
-piece within it) should sound right and mean something real in both
-languages, not merely translate acceptably from one into the other.
+in a way that sounds natural in that specific language. This applies
+especially to naming choices: a good name for this project, or for any
+piece within it, should sound right and mean something real in both
+languages, not merely survive being translated from one into the other.
 
 ## Commit message convention
 
 Every project under this harness, including this Harness Journal
 repository itself, uses the **Conventional Commits** format for git
 commit messages: `type(scope): description`, written in lowercase, in
-the imperative mood (for example: "add X" rather than "added X" or
-"adds X"). The allowed types are: `feat` (new functionality), `fix` (bug
-fix), `refactor` (a change with no behavior change), `docs`
-(documentation only), `style` (formatting only, no logic change), `test`
-(adding or changing tests), `chore` (maintenance work, such as updating
-a dependency), `perf` (a performance improvement), and `ci` (continuous
-integration configuration).
+the imperative mood (for example, "add X" rather than "added X"). The
+allowed types are: `feat` (new functionality), `fix` (a bug fix),
+`refactor` (a change with no behavior change), `docs` (documentation
+only), `style` (formatting only), `test` (adding or changing tests),
+`chore` (maintenance work), `perf` (a performance improvement), and `ci`
+(continuous integration configuration).
 
 ## Current status of this project
 
-This Harness Journal repository was just founded on 2026-09-05, and is
-still using "Harness Journal" as a working name while its final,
-Freire/Santos-Dumont-inspired proper name is decided in a separate,
-dedicated conversation. Shadow Glass (a separate, pre-existing project —
-a low-latency remote-access system, Mac to Windows) is the first, and so
-far the only, project intended to sit underneath this harness, once that
-project's own helper agent file has been written inside Shadow Glass's
-own repository, and once the underlying cross-repository context-sharing
-mechanism (importing another repository's `CLAUDE.md` via an absolute
-file path, using the `@/absolute/path/to/CLAUDE.md` import syntax) has
-actually been confirmed to work correctly in practice — as of this
-file's writing, that mechanism has not yet been tested end to end.
+This Harness Journal repository was founded on 2026-09-05, and is still
+using "Harness Journal" as a working name while its final,
+Freire/Santos-Dumont-inspired proper name is decided separately. Shadow
+Glass (a separate, pre-existing project — a low-latency remote-access
+system, from Mac to Windows) is the first, and so far the only, project
+intended to sit underneath this harness — as of this writing, Shadow
+Glass does not yet have its own `FOUNDATION.md` file, and no helper
+agent connecting the two projects has been written yet.
