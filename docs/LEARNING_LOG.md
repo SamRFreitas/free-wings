@@ -1,5 +1,34 @@
 # Logbook — Free Wings
 
+## 2026-09-06 — Skills weren't broken by session timing — they were the wrong shape
+
+First real test of `construct`/`write-diary`/`write-article` as actual
+invoked skills (not manually simulated, like every earlier "test" this
+session): all three came back `Unknown skill`. The session had already
+been restarted once specifically to pick up new skills, which made
+"needs another restart" a reasonable-sounding next guess — and that
+guess got written down (in this project's own snapshot page) as if it
+were a confirmed finding, before actually being checked.
+
+The real cause, found by comparing against an already-working skill
+(`grilling`): Claude Code's real convention is a **folder** per skill,
+`~/.claude/skills/<name>/SKILL.md` — not a flat `~/.claude/skills/
+<name>.md` file. Every skill this project made was the wrong shape from
+the very first one. Restructured all three into
+`<name>/SKILL.md`, re-pointed the global symlinks at the folders instead
+of the files — all three loaded correctly on the very next invocation,
+same session, no restart involved at all.
+
+Also corrected the false claim itself, in the snapshot page it was
+written into, rather than leaving it standing once disproven.
+
+Then actually ran all three for real: `construct` scaffolded a brand-new
+directory's `docs/decisions/`, `docs/specs/`, `docs/observations/`, and
+`docs/LEARNING_LOG.md` from `hangar/` correctly, and correctly stopped
+before fabricating any `FOUNDATION.md` content. `write-diary` and
+`write-article` both produced real, grounded output against Shadow
+Glass, reverted/deleted immediately after, no test commits anywhere.
+
 ## 2026-09-06 — `CLAUDE.md`/`AGENTS.md` gitignored, not committed
 
 Caught by the person, not found through any process: committing files

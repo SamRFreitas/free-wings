@@ -98,9 +98,12 @@
       Every agent and skill above also has a symlink in
       <code>~/.claude/agents/</code> or <code>~/.claude/skills/</code> —
       one editable source (this repo), globally invokable from any
-      project directory. Agents were confirmed to hot-load mid-session;
-      skills, as of this snapshot, need a session restart to register —
-      a real asymmetry found while testing today, not assumed.
+      project directory. Correction, found through testing, not assumed:
+      skills first appeared unrecognized — not because of session
+      timing (that was wrongly suspected at first), but because they
+      were plain <code>&lt;name&gt;.md</code> files instead of the real
+      convention, <code>&lt;name&gt;/SKILL.md</code>. Fixed; all three
+      loaded correctly the same session, no restart needed.
     </p>
   </section>
 
