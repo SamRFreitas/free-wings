@@ -1,20 +1,22 @@
 # The Foundation
 
+**Project: Free Wings** (*Asas Livres*)
+
 > The source. Not read automatically by any AI tool — compiled into
 > whatever each tool actually needs (`CLAUDE.md`, `AGENTS.md`, and
 > whatever else shows up later) by the `construct` skill. This file is
 > the one place the *reasoning* lives in full; the generated files are
 > optimized excerpts of it, not the other way around.
 
-Every project under this harness — this Harness Journal repository
-included — has exactly one `FOUNDATION.md`, tool-agnostic by design.
+Every project under this harness — this Free Wings repository included
+— has exactly one `FOUNDATION.md`, tool-agnostic by design.
 Nothing in this file should ever assume a specific AI tool is reading
 it; the moment it does, that content has drifted out of the Foundation
 and belongs in a generated, tool-specific file instead.
 
 ## What this project is
 
-Harness Journal is the general, reusable layer of a pattern meant to
+**Free Wings** (*Asas Livres*) is the general, reusable layer of a pattern meant to
 apply to *every* project, not just itself: each project keeps its own
 `FOUNDATION.md` (dense, complete, tool-agnostic) as its single source of
 truth, and generates whatever tool-specific instruction files it
@@ -72,11 +74,12 @@ diary recording what was actually learned — including the dead ends and
 the wrong turns, not only the polished result. Publishing the process,
 not just the outcome, is the point.
 
-This project's own final proper name is still undecided as of this
-writing — the working name "Harness Journal" is used in the meantime,
-with the intention that whatever name is eventually chosen carries this
-same spirit, directly or indirectly, without needing to spell out
-"Freire" or "Santos Dumont" every time it's invoked.
+This project's name, **Free Wings** (*Asas Livres*), carries both
+without needing to spell out either name every time it's invoked: "wings"
+is Dumont's flight, unmistakably; "free" is Freire's liberation —
+the same freedom "banking" education withholds and dialogic education
+gives back. Neither half needed the other person's name attached to be
+legible; together, they hold both.
 
 ## Structure
 
@@ -167,8 +170,8 @@ mood) across every project under this harness: `feat`, `fix`,
 
 ## Current status
 
-Founded 2026-09-05. Working name "Harness Journal" pending a final,
-Freire/Santos-Dumont-inspired name. Shadow Glass is the first project
+Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
+Shadow Glass is the first project
 intended to sit under this harness — it does not have its own
 `FOUNDATION.md` yet, and the `construct` skill described above has not
 been built yet, so nothing in the "Structure" section past this file is
