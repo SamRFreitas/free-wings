@@ -1,6 +1,6 @@
 ---
 name: construct
-description: Generate or update a project's CLAUDE.md and AGENTS.md from its FOUNDATION.md — the tool-agnostic source of truth. Use when a project's FOUNDATION.md was just written or changed, or when CLAUDE.md/AGENTS.md need to be brought back in sync with it.
+description: Generate or update a project's CLAUDE.md and AGENTS.md from its FOUNDATION.md — the tool-agnostic source of truth. Also scaffolds a brand-new project's folder structure (docs/decisions, docs/specs, docs/observations, docs/LEARNING_LOG.md) from the hangar/ blueprint and guides the dialogue that produces its first real FOUNDATION.md. Use when a project's FOUNDATION.md was just written or changed, when CLAUDE.md/AGENTS.md need to be brought back in sync with it, or when a new project is adopting this harness for the first time.
 ---
 
 # construct
@@ -26,15 +26,27 @@ skill does the same thing with a project's own accumulated knowledge
 ## Procedure
 
 1. **Find `FOUNDATION.md`.** Default to the current working directory;
-   if the user gave a path as an argument, use that instead. If no
-   `FOUNDATION.md` exists there, stop — do not try to generate one from
-   nothing. A `FOUNDATION.md` is meant to be written through real
-   dialogue between the person and the AI (the same dialogic principle
-   `FOUNDATION.md` itself describes under "Pedagogical approach") —
-   auto-generating one from guesses would violate the exact principle
-   this harness is built on. Instead, offer to help write one through
-   conversation, the way Shadow Glass's and this harness's own
-   `FOUNDATION.md`/`CLAUDE.md` were written.
+   if the user gave a path as an argument, use that instead.
+
+   **If no `FOUNDATION.md` exists there** (a brand new project adopting
+   this harness for the first time): this is a scaffolding run, not a
+   regeneration. Do the mechanical part automatically, never the
+   content part:
+   - Read
+     `/Users/samrfreitas/Lab/free-wings/hangar/FOUNDATION.md` and
+     `/Users/samrfreitas/Lab/free-wings/hangar/docs/LEARNING_LOG.md` —
+     these are blueprints, not files to hand to the person to copy.
+   - Automatically create, in the target project: `docs/decisions/`,
+     `docs/specs/`, `docs/observations/` (empty, matching `hangar/`'s
+     own folders), and `docs/LEARNING_LOG.md` (from the `hangar/`
+     skeleton, with the project's real name filled in).
+   - Then start the real dialogue, using `hangar/FOUNDATION.md`'s
+     section prompts as your question guide — do not fill in a single
+     section by guessing. Once the conversation actually produces real
+     content, write the target project's own `FOUNDATION.md` from it.
+   - Nothing here is copy-pasted by the person — the skill creates
+     every file directly; `hangar/` is only ever read, never handed over
+     as something to duplicate by hand.
 
 2. **Read `FOUNDATION.md` fully.** This is the only source of truth for
    what goes into the generated files — never invent content that isn't
@@ -79,7 +91,6 @@ skill does the same thing with a project's own accumulated knowledge
   of asking directly — file-sniffing is guessable-wrong in a way a
   direct question isn't, and this harness prefers asking over guessing
   wherever the cost of asking is low.
-- This skill only handles `FOUNDATION.md` → `CLAUDE.md`/`AGENTS.md`
-  generation. It does not (yet) set up a project to be a "child" of this
-  harness in any deeper sense (no cross-project linking is performed
-  here) — that remains a separate, not-yet-designed piece.
+- Scaffolding a brand-new project (the `hangar/`-based path above) has
+  not been tested end to end yet — it was added by extending this
+  skill's design, not validated against a real new project so far.

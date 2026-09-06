@@ -43,8 +43,12 @@ attached to be legible; together they carry both.
 - `.claude/agents/` — general, role-named subagents (programmer,
   observer planned first; researcher, writer, teacher, designer later).
 - `.claude/skills/` — `construct` (Foundation → tool files, named after
-  *Neuromancer*'s stored-knowledge constructs); a tool-onboarding
-  scaffolding skill (working name `simstim`) is in design.
+  *Neuromancer*'s stored-knowledge constructs; also scaffolds a
+  brand-new project from `hangar/` when no Foundation exists yet).
+- `hangar/` — the blueprint `construct` reads when scaffolding a new
+  project (skeleton FOUNDATION.md + empty docs/ folders). Read-only
+  reference, never copied by hand — named for where a plane is prepared
+  before it flies.
 
 ## Specs, and how `grilling` feeds them
 

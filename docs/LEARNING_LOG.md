@@ -1,5 +1,40 @@
 # Logbook — Free Wings
 
+## 2026-09-06 — `hangar/`: scaffolding a new project without any copy-paste
+
+Real design correction, caught by the person before any code was
+written blind: the first version of "what a new project needs to adopt
+this harness" was going to be a folder the person manually copied files
+out of — called `template/` at first. Two things wrong with that, both
+caught in conversation, not found later:
+
+1. **The name.** "Template" said nothing about what the folder actually
+   was. Tried "runway" next (an aircraft needs one before it flies) —
+   misread as "runaway" (something out of control), which is close to
+   the opposite of the intended meaning; a real reminder that a name
+   only works if it reads right, not just if the reasoning behind it is
+   sound. Landed on **`hangar`** instead — where a plane is prepared
+   before it flies — same aviation register as the rest of this
+   project's naming, and it read correctly on the first try.
+2. **The mechanism.** Manual copy-paste directly contradicts this
+   harness's own reason for existing — the entire point of `construct`
+   was to stop hand-maintaining things that a skill could keep in sync
+   automatically. `hangar/` is a **blueprint construct reads**, not a
+   folder a person copies. `construct` was extended: finding no
+   `FOUNDATION.md` in a target project no longer just stops and offers
+   conversation — it now also scaffolds `docs/decisions/`,
+   `docs/specs/`, `docs/observations/`, and a `docs/LEARNING_LOG.md`
+   skeleton automatically, using `hangar/`'s own copies as its
+   reference, before starting the dialogue that still — correctly,
+   deliberately — cannot be automated: a project's actual
+   `FOUNDATION.md` content has to come from the person, not be guessed.
+
+Not yet tested end to end (no real new project has gone through this
+scaffolding path yet) — `README.md`, `FOUNDATION.md`, the generated
+`CLAUDE.md`/`AGENTS.md`, and `construct.md` itself were all updated to
+describe the new mechanism; the mechanism's actual first live use is
+still pending.
+
 ## 2026-09-05/06 — Founding: from "Harness Journal" to Free Wings
 
 Born out of a Shadow Glass session (2026-09-04), during the NVENC-vs-

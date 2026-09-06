@@ -51,16 +51,19 @@ whatever comes after it. Every project under this harness:
 
 ## Using this harness for a new project
 
-1. In the target project's own repository, write a `FOUNDATION.md` by
-   hand — through real conversation with an AI assistant, the same way
-   this repository's own `FOUNDATION.md` was written. This can't be
-   auto-generated from nothing; it has to reflect what the project
-   actually is.
-2. Run the `construct` skill against that project to generate its
-   `CLAUDE.md`/`AGENTS.md` from the `FOUNDATION.md` just written.
-3. Create `docs/decisions/`, `docs/specs/`, and `docs/LEARNING_LOG.md`
-   in that project if they don't already exist.
-4. The general agents this harness provides —
+1. Run the `construct` skill against the new project's own directory.
+   If it finds no `FOUNDATION.md` there yet, it automatically creates
+   `docs/decisions/`, `docs/specs/`, `docs/observations/`, and a
+   `docs/LEARNING_LOG.md` skeleton (from [`hangar/`](hangar/), this
+   harness's blueprint — nothing there is meant to be copied by hand),
+   then starts the real dialogue that produces that project's first
+   `FOUNDATION.md`. That dialogue can't be automated — it has to reflect
+   what the project actually is, the same way this repository's own
+   `FOUNDATION.md` was written — but every mechanical part of setting
+   the project up is handled for you.
+2. `construct` then generates `CLAUDE.md`/`AGENTS.md` from that
+   `FOUNDATION.md`, same as it does for any existing project.
+3. The general agents this harness provides —
    [`programmer`](.claude/agents/programmer.md),
    [`observer`](.claude/agents/observer.md), and
    [`writer`](.claude/agents/writer.md) — and its skills —

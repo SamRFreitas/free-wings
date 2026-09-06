@@ -106,13 +106,21 @@ legible; together, they hold both.
   a researcher, a writer, a teacher, a designer are planned for later.
 - `.claude/skills/` — repeatable, on-demand procedures. `construct`
   (name borrowed from *Neuromancer*, where a "construct" is a stored
-  recording of a person's skills and knowledge, loaded up when needed —
-  conceptually close to what this skill does with a project's
-  `FOUNDATION.md`) reads a project's `FOUNDATION.md`, detects which
-  AI tool(s) are actually in use there, and generates or updates that
-  project's `CLAUDE.md`/`AGENTS.md`/etc. from it. Exact design still
-  being worked out as of this writing — see the harness's own
-  `docs/LEARNING_LOG.md` for the reasoning trail.
+  recording of a person's skills and knowledge, loaded up when needed)
+  reads a project's `FOUNDATION.md` and generates/updates that project's
+  `CLAUDE.md`/`AGENTS.md`/etc. from it. For a brand-new project with no
+  `FOUNDATION.md` yet, `construct` instead scaffolds it automatically
+  from the `hangar/` blueprint (folders created directly, never handed
+  to the person to copy by hand) and guides the dialogue that produces
+  its first real `FOUNDATION.md` — the dialogue itself still can't be
+  automated (see "Pedagogical approach"), only the mechanical scaffolding
+  can be.
+- `hangar/` — the blueprint `construct` reads from when scaffolding a
+  brand-new project: a skeleton `FOUNDATION.md` (section prompts, not
+  filled-in content) and empty `docs/decisions/`, `docs/specs/`,
+  `docs/observations/`, `docs/LEARNING_LOG.md`. Named for where an
+  aircraft is prepared before it flies — nothing in here flies on its
+  own; it exists to be read by `construct`, never copied by hand.
 
 ## Specs, and how `grilling` feeds them
 

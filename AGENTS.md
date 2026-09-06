@@ -113,10 +113,24 @@ people's spirit at once.
   person's skills and knowledge, loaded up whenever it's needed to help
   with a task) reads a project's `FOUNDATION.md` and automatically
   generates or updates that project's `CLAUDE.md`, `AGENTS.md`, and any
-  other needed tool-specific file from it. A second skill, whose job
-  will be to help set up the correct folder structure for a brand-new
-  AI tool this harness doesn't support yet, is still being designed as
-  of this writing and does not exist yet.
+  other needed tool-specific file from it. When a brand-new project has
+  no `FOUNDATION.md` yet, `construct` instead reads the `hangar/`
+  blueprint (described below) to scaffold that project's folder
+  structure automatically, and then guides — rather than automates —
+  the real dialogue that produces its first genuine `FOUNDATION.md`.
+  A separate, still-undesigned skill would handle onboarding a
+  completely new AI tool this harness doesn't yet know the folder
+  conventions for (different problem from scaffolding a new project —
+  this one is about a new *tool*, not a new *project*).
+- `hangar/` — the blueprint that `construct` reads from when scaffolding
+  a brand-new project: a skeleton `FOUNDATION.md` (containing prompts
+  for each section, not filled-in content) plus empty
+  `docs/decisions/`, `docs/specs/`, `docs/observations/`, and a skeleton
+  `docs/LEARNING_LOG.md`. Named for the place where an aircraft is
+  prepared before it actually flies. Nothing inside `hangar/` is ever
+  meant to be copied by hand by a person — it exists only to be read by
+  the `construct` skill, which creates every real file in the new
+  project directly.
 
 ## Specs, and how the `grilling` skill feeds them
 
