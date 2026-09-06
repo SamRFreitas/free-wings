@@ -106,8 +106,12 @@ whatever comes after it. Every project under this harness:
    entry point: decides which of the other agents a task belongs to, or
    says plainly when it fits none of them) — and its skills —
    [`construct`](.claude/skills/construct/SKILL.md),
-   [`write-diary`](.claude/skills/write-diary/SKILL.md), and
-   [`write-article`](.claude/skills/write-article/SKILL.md) — are
+   [`write-diary`](.claude/skills/write-diary/SKILL.md),
+   [`write-article`](.claude/skills/write-article/SKILL.md), and
+   [`loop-status`](.claude/skills/loop-status/SKILL.md) (a short, honest
+   readout of where a loop actually is — trigger, current agent/skills
+   used, step count, context, next step — on request any time, or
+   proactively at real checkpoints only) — are
    symlinked into `~/.claude/agents/` and `~/.claude/skills/`
    respectively, so they're available from any project directory, not
    just this one — none of them are wired to Shadow Glass, or to any
@@ -147,7 +151,7 @@ spirit more closely — use this however you want, no strings attached.
 ## Status
 
 Founded 2026-09-05, named Free Wings on 2026-09-06. Six agents and
-three skills are built and tested live (see "Using this harness for a
+four skills are built and tested live (see "Using this harness for a
 new project" above). Shadow Glass is the first project sitting under
 this harness — the second is whichever project you point `construct` at
 next. See [`docs/LEARNING_LOG.md`](docs/LEARNING_LOG.md) for the full

@@ -171,6 +171,9 @@ legible; together, they hold both.
   its first real `FOUNDATION.md` — the dialogue itself still can't be
   automated (see "Pedagogical approach"), only the mechanical scaffolding
   can be.
+  `write-diary` and `write-article` (both reuse the `writer` agent's own
+  file rather than duplicating its themes) and `loop-status` (see "Loop
+  Status" above) are the other skills this harness provides so far.
 - `hangar/` — the blueprint `construct` reads from when scaffolding a
   brand-new project: a skeleton `FOUNDATION.md` (section prompts, not
   filled-in content) and empty `docs/decisions/`, `docs/specs/`,
@@ -251,6 +254,32 @@ roughly one per genuine fork" ADR standard (see "Specs, and how
 `grilling` feeds them" above). A smaller change doesn't need one; the
 `LEARNING_LOG.md` entry already covers it. Full detail in
 `the-architect.md`'s own "Foundation Sync" section.
+
+## Loop Status — a visible readout of where a loop actually is
+
+Applies to any AI tool working under this harness, in any session — not
+one specific agent's job. Whenever work is genuinely mid-loop (a
+Foundation Sync cascade running, a spec-driven implementation broken
+into several pieces, any multi-step process with real state), the
+person should be able to get a short, honest readout of: what triggered
+this (**trigger**), who/what is acting right now and which agents/skills
+were already used (**topology** in progress), which step this is — an
+exact "k of n" for a real fixed cascade, an honest qualitative sense for
+open-ended dialogic work, never a fabricated number — plain-language
+context for what this part is actually about, and what happens next
+(the **stop rule** still pending). These map directly onto loop
+engineering's own four structural pieces (see "Loop engineering" and
+`docs/reading-list.md`) — this is that same anatomy, made visible on
+request, not a separate invention.
+
+This is available on demand, always — asking "where are we," "status,"
+or invoking the `loop-status` skill directly gets this readout in any
+session. It's also shown proactively, but only at real checkpoints (the
+start and end of a multi-step cascade or a multi-piece implementation),
+not on every message — a status block on every turn would be exactly
+the kind of context bloat `observer`'s own grounded signals exist to
+watch for. See `.claude/skills/loop-status/SKILL.md` for the exact
+block format and the full reasoning.
 
 ## Modular & Self-Sufficient Documentation
 
@@ -339,7 +368,7 @@ mood) across every project under this harness: `feat`, `fix`,
 
 Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
 Six agents (`programmer`, `tester`, `observer`, `writer`, `researcher`,
-The Architect) and three skills (`construct`, `write-diary`,
-`write-article`) are built and tested live. Shadow Glass is the first
-project sitting under this harness, and now has its own real
+The Architect) and four skills (`construct`, `write-diary`,
+`write-article`, `loop-status`) are built and tested live. Shadow Glass
+is the first project sitting under this harness, and now has its own real
 `FOUNDATION.md`, generated `CLAUDE.md`/`AGENTS.md` from it.

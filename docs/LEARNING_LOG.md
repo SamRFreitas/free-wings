@@ -1,5 +1,33 @@
 # Logbook — Free Wings
 
+## 2026-09-06 — `loop-status`: a fourth skill, making loop engineering visible
+
+A request for a standing message pattern — whenever a session is
+mid-loop, show which agent is active, which skills were used, the full
+context of that part, and what's next, plus how many steps are done,
+current, and left. Rather than invent a format from nothing, this maps
+directly onto loop engineering's own four structural pieces (already
+grounded via `researcher`, see `docs/reading-list.md`): trigger,
+topology-in-progress (current agent + skills used), step count, and the
+pending stop rule (next step). Not a new idea layered on top of loop
+engineering — the same anatomy, made visible on request.
+
+New skill: `loop-status` (the fourth, alongside `construct`,
+`write-diary`, `write-article`). Available on demand in any phrasing
+("where are we," "status," "onde estamos," or `/loop-status` directly),
+and shown proactively only at real checkpoints — the start and end of a
+multi-step cascade or multi-piece implementation — deliberately not on
+every message, since that would itself become exactly the kind of
+context bloat `observer`'s own grounded signals exist to watch for.
+
+One honesty rule carried over directly from earlier corrections in this
+same session: the step count is only ever a real "k of n" for an actual
+fixed cascade (Foundation Sync's five steps, a numbered spec). For
+open-ended dialogic work with no real total to count against, the block
+says so qualitatively ("early," "wrapping up") rather than fabricate a
+number — the same false-precision trap this project already declined
+once, in the invented "Validator" formulas.
+
 ## 2026-09-06 — `observer` captures session identity, corrected before it shipped
 
 A request came in to have `observer` "ask which model" is running each
