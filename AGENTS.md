@@ -1,4 +1,4 @@
-# Harness Journal
+# Free Wings
 
 > This file was generated from `FOUNDATION.md` by the `construct`
 > skill. Please edit `FOUNDATION.md` instead of editing this file
@@ -16,9 +16,10 @@ correct than the other.
 
 ## What this project is
 
-Harness Journal is the general, reusable layer of a pattern meant to be
-used by more than one project. The pattern works like this: every
-project — including this Harness Journal repository itself — keeps
+**Free Wings** (*Asas Livres* in Portuguese) is the general, reusable
+layer of a pattern meant to be used by more than one project. The
+pattern works like this: every project — including this Free Wings
+repository itself — keeps
 exactly one file named `FOUNDATION.md`. That file is dense, complete,
 and does not assume any specific AI tool is reading it. From that one
 file, a skill called `construct` automatically generates whichever
@@ -65,11 +66,14 @@ Two real historical people's ideas shaped the spirit of this project:
   a diary recording what was genuinely learned along the way, including
   mistakes and dead ends, not only the finished, polished result.
 
-As of this writing, this project's own final proper name has not yet
-been chosen — the working name "Harness Journal" is used in the
-meantime, and whichever final name is eventually chosen is intended to
-carry this same spirit, whether or not it mentions "Freire" or
-"Santos Dumont" by name.
+This project's name, **Free Wings** (*Asas Livres*), carries both ideas
+without needing to name either person every time it's said out loud.
+"Wings" is Santos Dumont's flight — unmistakably his image. "Free" is
+Freire's liberation — the same freedom that "banking" education
+withholds and that dialogic education gives back to the learner. Each
+half of the name is legible on its own, without needing the other
+person's name attached to it; together, the two halves carry both
+people's spirit at once.
 
 ## Structure of this repository
 
@@ -148,7 +152,7 @@ carry this same spirit, whether or not it mentions "Freire" or
 
 ## Pedagogical approach — the exact rule, spelled out
 
-Every project under this harness, including this Harness Journal
+Every project under this harness, including this Free Wings
 repository itself, follows this rule whenever an AI assistant works with
 a person on it: before asking the person to make a technical decision,
 the assistant must first explain the relevant concept and its
@@ -177,7 +181,7 @@ languages, not merely survive being translated from one into the other.
 
 ## Commit message convention
 
-Every project under this harness, including this Harness Journal
+Every project under this harness, including this Free Wings
 repository itself, uses the **Conventional Commits** format for git
 commit messages: `type(scope): description`, written in lowercase, in
 the imperative mood (for example, "add X" rather than "added X"). The
@@ -189,9 +193,8 @@ only), `style` (formatting only), `test` (adding or changing tests),
 
 ## Current status of this project
 
-This Harness Journal repository was founded on 2026-09-05, and is still
-using "Harness Journal" as a working name while its final,
-Freire/Santos-Dumont-inspired proper name is decided separately. Shadow
+This Free Wings repository was founded on 2026-09-05, and was given the
+name Free Wings (Asas Livres) on 2026-09-06. Shadow
 Glass (a separate, pre-existing project — a low-latency remote-access
 system, from Mac to Windows) is the first, and so far the only, project
 intended to sit underneath this harness — as of this writing, Shadow

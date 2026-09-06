@@ -1,19 +1,26 @@
-# Harness Journal
+# Free Wings
 
-> Generated from `FOUNDATION.md` by the `construct` skill. Edit
-> `FOUNDATION.md`, not this file — changes here get overwritten on the
-> next `construct` run.
+> *Asas Livres.* Generated from `FOUNDATION.md` by the `construct`
+> skill. Edit `FOUNDATION.md`, not this file — changes here get
+> overwritten on the next `construct` run.
 
-Harness Journal is the general, reusable layer of a two-repository
-pattern: every project (this one included) keeps its own `FOUNDATION.md`
-— dense, complete, tool-agnostic — as its single source of truth, and
-generates whatever tool-specific files it needs (`CLAUDE.md`, `AGENTS.md`,
-more as new tools show up) from it, instead of hand-maintaining several
-files that drift apart (the exact pain Shadow Glass's own `CLAUDE.md`/
+Free Wings is the general, reusable layer of a two-repository pattern:
+every project (this one included) keeps its own `FOUNDATION.md` — dense,
+complete, tool-agnostic — as its single source of truth, and generates
+whatever tool-specific files it needs (`CLAUDE.md`, `AGENTS.md`, more as
+new tools show up) from it, instead of hand-maintaining several files
+that drift apart (the exact pain Shadow Glass's own `CLAUDE.md`/
 `AGENTS.md` pair accumulated before this pattern existed).
 
 Analogy: a compiler's front-end (this Foundation, written once) with
 pluggable back-ends (each generated file, one per target reader).
+
+## The name
+
+**Wings** is Santos Dumont's flight, unmistakably. **Free** is Freire's
+liberation — the freedom "banking" education withholds and dialogic
+education gives back. Neither half needs the other person's name
+attached to be legible; together they carry both.
 
 ## Philosophy
 
@@ -26,9 +33,6 @@ pluggable back-ends (each generated file, one per target reader).
   decision trail (ADRs), and a diary of what was actually learned,
   mistakes included.
 
-Working name "Harness Journal" pending a final name carrying this same
-spirit.
-
 ## Structure
 
 - `FOUNDATION.md` — the source; hand-written, never generated.
@@ -39,8 +43,8 @@ spirit.
 - `.claude/agents/` — general, role-named subagents (programmer,
   observer planned first; researcher, writer, teacher, designer later).
 - `.claude/skills/` — `construct` (Foundation → tool files, named after
-  *Neuromancer*'s stored-knowledge constructs); a scaffolding skill for
-  onboarding new tools is in design.
+  *Neuromancer*'s stored-knowledge constructs); a tool-onboarding
+  scaffolding skill (working name `simstim`) is in design.
 
 ## Terminology
 
@@ -62,7 +66,8 @@ answer. Freire's dialogic principle, applied literally.
 ## Bilingual by design
 
 Works naturally in Portuguese and English — same meaning, not literal
-translation. Applies especially to naming.
+translation. Applies especially to naming — as this project's own name
+demonstrates.
 
 ## Commit convention
 
@@ -70,5 +75,6 @@ Conventional Commits: `type(scope): description`, lowercase, imperative.
 
 ## Status
 
-Founded 2026-09-05. Shadow Glass is the first project meant to sit under
-this harness — its own `FOUNDATION.md` and helper agent don't exist yet.
+Founded 2026-09-05, named Free Wings (Asas Livres) on 2026-09-06. Shadow
+Glass is the first project meant to sit under this harness — its own
+`FOUNDATION.md` and helper agent don't exist yet.
