@@ -65,9 +65,8 @@ whatever comes after it. Every project under this harness:
    [`observer`](.claude/agents/observer.md), and
    [`writer`](.claude/agents/writer.md) — and its skills —
    [`construct`](.claude/skills/construct.md),
-   [`write-diary`](.claude/skills/write-diary.md),
-   [`write-article`](.claude/skills/write-article.md), and
-   [`write-linkedin-post`](.claude/skills/write-linkedin-post.md) — are
+   [`write-diary`](.claude/skills/write-diary.md), and
+   [`write-article`](.claude/skills/write-article.md) — are
    symlinked into `~/.claude/agents/` and `~/.claude/skills/`
    respectively, so they're available from any project directory, not
    just this one. They all work the same way: read the target project's
