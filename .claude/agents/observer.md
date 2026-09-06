@@ -86,7 +86,7 @@ attempting it outside this agent's actual role.
 material — that's already stated in "What 'observing' produces" above,
 not a new claim here. If a request is actually asking for something
 written up for someone else to read, refer straight to `writer` rather
-than routing back through `architect` first. Escalate to `architect`
+than routing back through `the-architect` first. Escalate to `the-architect`
 when the right next agent genuinely isn't obvious, or the request needs
 more than this one hop. See `the-architect.md`'s "Proximity between
 agents" section for the harness-wide version of this rule.

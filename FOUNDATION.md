@@ -108,42 +108,46 @@ legible; together, they hold both.
 - `.claude/agents/` — general-purpose subagents, named after real
   project roles, reusable by any target project, not tied to one:
   **programmer** (explains and shows reasoning first, then implements
-  while still teaching), **tester** (tests what `programmer` just built,
-  same explain-first order — what will be tested, why, how, shown
-  transparently while it runs; provisional name, may become a shorter
-  combined "reviewer+tester" name later), **observer** (read-only about
-  a target project, watches its evolution, writes only to its own
-  `docs/observations/`), **writer** (shapes raw material into diary
-  entries or articles, general themes kept separate from
-  explicitly-labeled project/person-specific parallels), **researcher**
-  (grounds a claim in real, checked sources before it's trusted — exists
-  directly because of a real mistake: asserting SDD's fit before
-  verifying its actual definition), and **The Architect** (file:
-  `the-architect.md`; invocation identifier stays `architect`, lowercase
-  — a subagent's `name:` field must be kebab-case, verified against
-  Claude Code's real docs, so the display name and the identifier are
-  deliberately different — the entry point: decides which agent a task
-  belongs to, or says plainly when it fits none of them, and also owns
-  Foundation Sync, see below). A teacher and a designer are still
-  planned for later. Every agent above follows one added standing rule,
-  "recognize and refer": when a request falls outside an agent's own
-  scope, say so and name which other agent fits better, instead of
-  attempting the work anyway or staying silent about the mismatch. This
-  isn't a flat list of equally-distant roles, though — the same way a
-  front-end engineer and a back-end engineer share far more tools,
-  process, and vocabulary than either shares with a designer, some pairs
-  here are genuinely closer to each other than to the rest: **observer
-  ↔ writer** (observer's output already exists specifically to become
-  writer's raw material), and a three-agent chain **researcher →
-  programmer → tester** (grounding a decision is where researcher hands
-  off to programmer, before implementing; verifying it worked is where
-  programmer hands off to tester, right after — programmer has two
-  nearest neighbors, one on each side). A referral should go straight to
-  the nearest neighbor when it can resolve the request alone, rather
-  than looping back through `architect` by default — `architect` is for
-  the genuinely unclear cases and the ones spanning more than one hop,
-  not every mismatch. See `the-architect.md`'s "Proximity between
-  agents" for the full reasoning.
+  while still teaching — divided into small pieces, one function or one
+  command at a time, splitting anything complex further, checking the
+  person's own understanding along the way and sometimes letting them
+  attempt a piece first), **tester** (tests what `programmer` just
+  built, same explain-first and divide-and-conquer style — what will be
+  tested, why, how, shown transparently while it runs; provisional name,
+  may become a shorter combined "reviewer+tester" name later),
+  **observer** (read-only about a target project, watches its evolution,
+  writes only to its own `docs/observations/`), **writer** (shapes raw
+  material into diary entries or articles, general themes kept separate
+  from explicitly-labeled project/person-specific parallels),
+  **researcher** (grounds a claim in real, checked sources before it's
+  trusted — exists directly because of a real mistake: asserting SDD's
+  fit before verifying its actual definition), and **The Architect**
+  (file and invocation identifier both `the-architect` — a subagent's
+  `name:` field must be kebab-case, verified against Claude Code's real
+  docs; "The Architect" itself isn't valid, but the hyphenated
+  `the-architect` is, so file and identifier match — the entry point:
+  decides which agent a task belongs to, or says plainly when it fits
+  none of them, and also owns Foundation Sync, see below). A teacher and
+  a designer are still planned for later. Every agent above follows one
+  added standing rule, "recognize and refer": when a request falls
+  outside an agent's own scope, say so and name which other agent fits
+  better, instead of attempting the work anyway or staying silent about
+  the mismatch. This isn't a flat list of equally-distant roles, though
+  — the same way a front-end engineer and a back-end engineer share far
+  more tools, process, and vocabulary than either shares with a
+  designer, some pairs here are genuinely closer to each other than to
+  the rest: **observer ↔ writer** (observer's output already exists
+  specifically to become writer's raw material), and a three-agent chain
+  **researcher → programmer → tester** (grounding a decision is where
+  researcher hands off to programmer, before implementing; verifying it
+  worked is where programmer hands off to tester, right after —
+  programmer has two nearest neighbors, one on each side). A referral
+  should go straight to the nearest neighbor when it can resolve the
+  request alone, rather than looping back through `the-architect` by
+  default — `the-architect` is for the genuinely unclear cases and the
+  ones spanning more than one hop, not every mismatch. See
+  `the-architect.md`'s "Proximity between agents" for the full
+  reasoning.
 - `.claude/skills/` — repeatable, on-demand procedures. `construct`
   (name borrowed from *Neuromancer*, where a "construct" is a stored
   recording of a person's skills and knowledge, loaded up when needed)
@@ -226,19 +230,27 @@ page (updated, or created new if the change deserves its own explanation
 and none exists yet). The cascade isn't done at the first file — it's
 done once every file in it has actually been checked, verified with a
 real grep for the old name/count/path rather than trusted from memory,
-and updated or explicitly confirmed as not needing a change. Full detail
-in `the-architect.md`'s own "Foundation Sync" section.
+and updated or explicitly confirmed as not needing a change. A sixth,
+judgment-based step sits alongside the fixed five: **The Architect**
+also decides whether the change is significant enough — a real
+architectural fork, not every small addition — to also deserve its own
+new entry in `docs/decisions/`, following this harness's existing "rare,
+roughly one per genuine fork" ADR standard (see "Specs, and how
+`grilling` feeds them" above). A smaller change doesn't need one; the
+`LEARNING_LOG.md` entry already covers it. Full detail in
+`the-architect.md`'s own "Foundation Sync" section.
 
 ## Modular & Self-Sufficient Documentation
 
-A standing requirement for every file this harness produces — not a
-style preference, and credited honestly to where it actually came from:
-a LaTeX tutorial file this harness's first person built for someone
-else's genuine first contact with LaTeX/Overleaf, deliberately written
-so any section could be opened and understood on its own, each one
-carrying a short inline explanation of what it is and how it connects to
-the rest, rather than assuming the reader had already read everything
-above it.
+A permanent, standing requirement for every file this harness produces
+— past and future alike, not a one-time pass applied only to what
+existed when this was written down. Credited honestly to where it
+actually came from: a LaTeX tutorial file this harness's first person
+built for someone else's genuine first contact with LaTeX/Overleaf,
+deliberately written so any section could be opened and understood on
+its own, each one carrying a short inline explanation of what it is and
+how it connects to the rest, rather than assuming the reader had already
+read everything above it.
 
 Applied here: every agent file, skill file, and generated document
 should let someone with zero prior exposure to this project understand,
@@ -246,12 +258,16 @@ from wherever they start reading, **where they are** (which file, and
 what kind of file it is — an agent? a skill? generated output?), **what
 it does**, and **how it connects to the rest of the system** (its
 nearest neighbors, what reads it, what it reads). In practice, this
-means a short orientation note near the top of agent and skill files
-(see any `.claude/agents/*.md` or `.claude/skills/*/SKILL.md` file for
-the actual pattern), and it means every agent applies the same standard
-when explaining something to a person who doesn't yet understand it:
-assume no prior context, orient before explaining, don't presume the
-concept has already been introduced.
+means a short orientation note near the top of agent and skill files,
+present *from the moment a new one is created*, not added afterward as
+a separate cleanup step (see any `.claude/agents/*.md` or
+`.claude/skills/*/SKILL.md` file for the actual pattern); it means every
+agent applies the same standard when explaining something to a person
+who doesn't yet understand it — assume no prior context, orient before
+explaining, don't presume the concept has already been introduced; and
+it means The Architect's own Foundation Sync verifier (above) checks
+that a new or changed file actually carries this orientation note before
+treating a cascade as complete.
 
 ## Terminology — defined precisely, corrected once already
 

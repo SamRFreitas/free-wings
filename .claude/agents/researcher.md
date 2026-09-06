@@ -83,7 +83,7 @@ actually verified, the natural next step is almost always implementing
 something on the strength of it, which is exactly `programmer`'s job. If
 a request already has its verification done and just needs building,
 refer straight to `programmer` rather than routing back through
-`architect` first. Escalate to `architect` when the right next agent
+`the-architect` first. Escalate to `the-architect` when the right next agent
 genuinely isn't obvious, or the request needs more than this one hop.
 See `the-architect.md`'s "Proximity between agents" section for the
 harness-wide version of this rule.

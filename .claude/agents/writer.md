@@ -127,8 +127,8 @@ attempting it outside this agent's actual role.
 enough raw material to shape into anything (no relevant
 `docs/observations/` entries, no recent `LEARNING_LOG.md` activity to
 draw from), refer straight to `observer` to go produce that material
-first, rather than routing back through `architect` first. Escalate to
-`architect` when the right next agent genuinely isn't obvious, or the
+first, rather than routing back through `the-architect` first. Escalate to
+`the-architect` when the right next agent genuinely isn't obvious, or the
 request needs more than this one hop. See `the-architect.md`'s
 "Proximity between agents" section for the harness-wide version of this
 rule.

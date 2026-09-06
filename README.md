@@ -78,10 +78,13 @@ whatever comes after it. Every project under this harness:
    `FOUNDATION.md`, same as it does for any existing project.
 3. The general agents this harness provides —
    [`programmer`](.claude/agents/programmer.md) (explains and shows
-   reasoning first, then implements while still teaching),
+   reasoning first, then implements while still teaching, in small
+   divided steps — one function or command at a time, checking the
+   person's own understanding along the way),
    [`tester`](.claude/agents/tester.md) (tests what `programmer` just
-   built, same explain-first order — a provisional name, may become a
-   shorter combined "reviewer+tester" name later),
+   built, same explain-first and divide-and-conquer style — a
+   provisional name, may become a shorter combined "reviewer+tester"
+   name later),
    [`observer`](.claude/agents/observer.md) (watches a project's
    evolution, read-only about it, writes only to its own
    `docs/observations/`),
@@ -90,13 +93,13 @@ whatever comes after it. Every project under this harness:
    [`researcher`](.claude/agents/researcher.md) (checks a claim against
    real, current sources before it's trusted, instead of asserting it
    from memory), and
-   [**The Architect**](.claude/agents/the-architect.md) (file
-   `the-architect.md`, invocation identifier `architect` — kebab-case is
-   required for a subagent's `name:` field, checked directly against
-   Claude Code's own docs rather than assumed, so display name and
-   identifier are deliberately different; the entry point: decides which
-   of the other agents a task belongs to, or says plainly when it fits
-   none of them) — and its skills —
+   [**The Architect**](.claude/agents/the-architect.md) (file and
+   invocation identifier both `the-architect` — kebab-case is required
+   for a subagent's `name:` field, checked directly against Claude
+   Code's own docs; "The Architect" itself isn't valid, but the
+   hyphenated `the-architect` is, so file and identifier match; the
+   entry point: decides which of the other agents a task belongs to, or
+   says plainly when it fits none of them) — and its skills —
    [`construct`](.claude/skills/construct/SKILL.md),
    [`write-diary`](.claude/skills/write-diary/SKILL.md), and
    [`write-article`](.claude/skills/write-article/SKILL.md) — are
@@ -108,9 +111,9 @@ whatever comes after it. Every project under this harness:
    conventions, never guess at rules that aren't written down anywhere.
    If a request falls outside one agent's own scope, it says so and
    names which other agent fits better ("recognize and refer") instead
-   of attempting the work anyway — `architect` is the agent whose whole
-   job is making that call up front, and its own design follows loop
-   engineering's structure (trigger, topology, verifier, stop rule —
+   of attempting the work anyway — `the-architect` is the agent whose
+   whole job is making that call up front, and its own design follows
+   loop engineering's structure (trigger, topology, verifier, stop rule —
    see [`docs/reading-list.md`](docs/reading-list.md) for the sources
    that grounding was actually checked against, and what's freely
    accessible versus what isn't). These referrals aren't equally likely
@@ -119,12 +122,13 @@ whatever comes after it. Every project under this harness:
    link a closest pair (each pair's own files already describe handing
    off to the other), so an agent refers straight to its nearest
    neighbor when that alone solves the request, rather than looping
-   every mismatch back through `architect` — see
-   `the-architect.md`'s "Proximity between agents." `architect` also
+   every mismatch back through `the-architect` — see
+   `the-architect.md`'s "Proximity between agents." `the-architect` also
    owns **Foundation Sync**: any dialogue that changes how this harness
    itself works triggers a fixed cascade —
    `FOUNDATION.md` → `construct` → `README.md` → a `LEARNING_LOG.md`
-   entry → `docs/learning-*.html` — checked and updated in full, not
+   entry → `docs/learning-*.html`, plus a judgment call on whether a new
+   ADR is warranted — checked and updated in full, not
    just the first file, and verified by actually grepping for stale
    references rather than trusted from memory.
 

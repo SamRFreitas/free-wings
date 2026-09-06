@@ -1,5 +1,61 @@
 # Logbook — Free Wings
 
+## 2026-09-06 — Verifying a second time, an ADR judgment call, and dividing work in two agents
+
+Follow-up to the previous entry, three real refinements:
+
+**The identifier question deserved a second real check, not an
+assumption built on the first one.** The person asked directly: could
+`the-architect`'s technical identifier include "the," not just its file
+name and display name? The earlier entry had checked Claude Code's docs
+once and concluded the identifier had to stay plain `architect` (no
+spaces or capitals allowed). Re-checking the *same* rule for this new
+question found what the first pass hadn't needed to notice: kebab-case
+allows hyphens, and `the-architect` is entirely valid. There was no
+remaining reason to keep the file name and the identifier different once
+that was seen — so the split from the previous entry was undone.
+Identifier, file name, and display name are now all `the-architect` (in
+prose: "The Architect"). Propagated everywhere the split had just been
+written down: `the-architect.md` itself, `programmer.md`, `observer.md`,
+`writer.md`, `researcher.md`, `FOUNDATION.md`, `CLAUDE.md`/`AGENTS.md`,
+`README.md`, `docs/project-snapshot-2026-09-06.html`. The lesson worth
+keeping isn't the specific fact (kebab-case allows hyphens) — it's that
+verifying a claim once doesn't cover every question that claim later
+turns out to be adjacent to; the follow-up question got its own real
+check rather than reasoning from the first answer.
+
+**The Architect now owns a judgment call about ADRs, not just the fixed
+Foundation Sync cascade.** The five-step cascade (`FOUNDATION.md` →
+`construct` → `README.md` → `LEARNING_LOG.md` → `docs/learning-*.html`)
+always runs. Whether a harness change is also significant enough — a
+real architectural fork, with real alternatives weighed, not just any
+addition — to deserve its own new entry in `docs/decisions/` is a
+separate, judgment-based decision, now explicitly The Architect's to
+make, following the existing "rare, one per genuine fork" ADR standard.
+
+**"Divide and conquer, and let the person try first" — specific to
+`programmer` and `tester` only, not a harness-wide rule.** Both now work
+in small, deliberately divided steps (one function, one command, one
+test at a time), split anything genuinely complex further, and actively
+check the person's own understanding while working — asking what they'd
+do or expect before revealing an answer, and sometimes letting them
+attempt a piece themselves first, guiding from what they actually
+produce rather than always producing the answer first.
+
+**Modular & Self-Sufficient Documentation was reinforced as permanent,
+not a one-time pass** — explicit in `FOUNDATION.md`, `CLAUDE.md`/
+`AGENTS.md` now: every new agent, skill, or piece added to this harness
+going forward is expected to carry its orientation note from the moment
+it's created, and The Architect's own Foundation Sync verifier is
+expected to check for it before treating a cascade as done.
+
+All four changes propagated through the same Foundation Sync cascade
+they describe — `FOUNDATION.md` first, then `CLAUDE.md`/`AGENTS.md`,
+`README.md`, this entry, and `docs/learning-free-wings.html` (kept
+uncommitted, as usual) — verified with a real grep for the old bare
+`architect` identifier across the repository rather than trusted from
+memory, the same verifier step this entry itself is describing.
+
 ## 2026-09-06 — `tester`, The Architect rename, Foundation Sync, and a documentation convention
 
 Four real additions in one dialogue, all traced back to concrete things
