@@ -1,5 +1,18 @@
 # Logbook — Free Wings
 
+## 2026-09-06 — `CLAUDE.md`/`AGENTS.md` gitignored, not committed
+
+Caught by the person, not found through any process: committing files
+that are 100% regenerated from a tracked source (`FOUNDATION.md`) is the
+same anti-pattern as committing a `build/` folder — and it silently
+assumed every future contributor needs every supported tool's file, not
+just the one they actually use. Fixed: both gitignored, removed from
+tracking (`git rm --cached`, kept locally), `FOUNDATION.md`/`CLAUDE.md`/
+`AGENTS.md`/`README.md` updated to describe and explain the change.
+Framed as a general option any project under this harness can take, not
+a rule forced onto Shadow Glass (which keeps them committed, its own
+already-established practice).
+
 ## 2026-09-06 — `hangar/`: scaffolding a new project without any copy-paste
 
 Real design correction, caught by the person before any code was

@@ -91,7 +91,15 @@ legible; together, they hold both.
   its specific reader (a weaker model reading `AGENTS.md`, for instance,
   gets more explicit, less-compressed instructions than a stronger one
   reading `CLAUDE.md` — the same underlying truth, different
-  compression).
+  compression). **Gitignored, not committed** — same reasoning as never
+  committing a `build/` folder: a file that's 100% regenerable from a
+  tracked source doesn't belong in version control, and committing it
+  would silently assume every future contributor needs every supported
+  tool's file, rather than generating only the one they actually use.
+  This isn't specific to this repository — any project under this
+  harness can make the same call, though an existing project (Shadow
+  Glass, at the time of this decision) may reasonably keep them
+  committed if that's already the established practice there.
 - `docs/decisions/` — ADRs about the harness itself (not about any one
   target project — those live in that project's own `docs/decisions/`).
 - `docs/LEARNING_LOG.md` — the diary: one entry per session, at the

@@ -29,6 +29,13 @@ Neither name needs to be spelled out for the spirit to come through —
 "free" and "wings" carry it on their own, in both English and
 Portuguese.
 
+## Cloning this repo
+
+`CLAUDE.md` and `AGENTS.md` aren't committed — they're 100% regenerable
+from `FOUNDATION.md` (which is), so they're gitignored rather than
+tracked. Run the `construct` skill once after cloning to generate them
+locally before your AI tool has any repo-specific instructions to read.
+
 ## What this actually is
 
 Free Wings itself has no runtime — it's a pattern, applied first to
