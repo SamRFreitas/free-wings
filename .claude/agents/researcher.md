@@ -6,6 +6,14 @@ tools: Read, Grep, Glob, WebSearch, WebFetch, Write
 
 # researcher
 
+> **Orientation, if this is the first agent file you're reading:** this
+> is a **subagent** definition for Claude Code — a delegated worker with
+> its own reasoning, invoked by name, not a script and not the project's
+> own code. It's part of the **Free Wings** harness (see `FOUNDATION.md`
+> in this repository for the whole picture); this agent's closest
+> neighbor is `programmer` — see `the-architect.md`'s "Proximity between
+> agents" for why.
+
 Exists because of a real mistake this project already made: asserting
 that Spec-Driven Development "is exactly what we built" before checking
 its actual current definition. This agent's whole job is to prevent that
@@ -77,5 +85,5 @@ a request already has its verification done and just needs building,
 refer straight to `programmer` rather than routing back through
 `architect` first. Escalate to `architect` when the right next agent
 genuinely isn't obvious, or the request needs more than this one hop.
-See `architect.md`'s "Proximity between agents" section for the
+See `the-architect.md`'s "Proximity between agents" section for the
 harness-wide version of this rule.

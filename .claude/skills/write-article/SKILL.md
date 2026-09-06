@@ -5,6 +5,14 @@ description: Write a longer-form, publishable article from a target project's ra
 
 # write-article
 
+> **Orientation, if this is the first skill file you're reading:** this
+> is a **skill** for Claude Code — a repeatable, on-demand procedure
+> invoked directly (`/write-article`), not a subagent, and not the
+> target project's own code. It's part of the **Free Wings** harness
+> (see `FOUNDATION.md` in this repository for the whole picture). This
+> skill reuses the `writer` agent's own file for its voice/themes rather
+> than duplicating them — see `.claude/agents/writer.md`.
+
 Produces a standalone article — for people outside the project to read,
 not just the person who did the work. Different from `write-diary`:
 a diary entry is a personal record of one session; an article picks one

@@ -54,7 +54,13 @@ whatever comes after it. Every project under this harness:
   for *why* a broad direction was chosen, a **spec** for *what* a piece
   of work is going to do (written before implementing it), and a
   **learning log** for *what actually happened* (written after,
-  deviations from the spec included).
+  deviations from the spec included);
+- follows **Modular & Self-Sufficient Documentation**: every agent/skill
+  file and generated document is written so someone with zero prior
+  exposure can understand it from wherever they start reading — where
+  they are, what it is, how it connects to the rest (see
+  `FOUNDATION.md`'s own section by that name for the full convention,
+  and its credited origin).
 
 ## Using this harness for a new project
 
@@ -73,6 +79,9 @@ whatever comes after it. Every project under this harness:
 3. The general agents this harness provides —
    [`programmer`](.claude/agents/programmer.md) (explains and shows
    reasoning first, then implements while still teaching),
+   [`tester`](.claude/agents/tester.md) (tests what `programmer` just
+   built, same explain-first order — a provisional name, may become a
+   shorter combined "reviewer+tester" name later),
    [`observer`](.claude/agents/observer.md) (watches a project's
    evolution, read-only about it, writes only to its own
    `docs/observations/`),
@@ -81,9 +90,13 @@ whatever comes after it. Every project under this harness:
    [`researcher`](.claude/agents/researcher.md) (checks a claim against
    real, current sources before it's trusted, instead of asserting it
    from memory), and
-   [`architect`](.claude/agents/architect.md) (the entry point: decides
-   which of the other agents a task belongs to, or says plainly when it
-   fits none of them) — and its skills —
+   [**The Architect**](.claude/agents/the-architect.md) (file
+   `the-architect.md`, invocation identifier `architect` — kebab-case is
+   required for a subagent's `name:` field, checked directly against
+   Claude Code's own docs rather than assumed, so display name and
+   identifier are deliberately different; the entry point: decides which
+   of the other agents a task belongs to, or says plainly when it fits
+   none of them) — and its skills —
    [`construct`](.claude/skills/construct/SKILL.md),
    [`write-diary`](.claude/skills/write-diary/SKILL.md), and
    [`write-article`](.claude/skills/write-article/SKILL.md) — are
@@ -101,12 +114,19 @@ whatever comes after it. Every project under this harness:
    see [`docs/reading-list.md`](docs/reading-list.md) for the sources
    that grounding was actually checked against, and what's freely
    accessible versus what isn't). These referrals aren't equally likely
-   in every direction, either — `observer`↔`writer` and
-   `programmer`↔`researcher` are closer neighbor pairs than the rest
-   (each pair's own files already describe handing off to the other), so
-   an agent refers straight to its nearest neighbor when that alone
-   solves the request, rather than looping every mismatch back through
-   `architect` — see `architect.md`'s "Proximity between agents."
+   in every direction, either — `observer`↔`writer` is a closest pair,
+   and `researcher`→`programmer`→`tester` is a three-agent chain, each
+   link a closest pair (each pair's own files already describe handing
+   off to the other), so an agent refers straight to its nearest
+   neighbor when that alone solves the request, rather than looping
+   every mismatch back through `architect` — see
+   `the-architect.md`'s "Proximity between agents." `architect` also
+   owns **Foundation Sync**: any dialogue that changes how this harness
+   itself works triggers a fixed cascade —
+   `FOUNDATION.md` → `construct` → `README.md` → a `LEARNING_LOG.md`
+   entry → `docs/learning-*.html` — checked and updated in full, not
+   just the first file, and verified by actually grepping for stale
+   references rather than trusted from memory.
 
 ## License
 
@@ -117,7 +137,7 @@ spirit more closely — use this however you want, no strings attached.
 
 ## Status
 
-Founded 2026-09-05, named Free Wings on 2026-09-06. Five agents and
+Founded 2026-09-05, named Free Wings on 2026-09-06. Six agents and
 three skills are built and tested live (see "Using this harness for a
 new project" above). Shadow Glass is the first project sitting under
 this harness — the second is whichever project you point `construct` at

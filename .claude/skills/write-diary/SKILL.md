@@ -5,6 +5,14 @@ description: Write or append a reflective diary entry to a target project's LEAR
 
 # write-diary
 
+> **Orientation, if this is the first skill file you're reading:** this
+> is a **skill** for Claude Code — a repeatable, on-demand procedure
+> invoked directly (`/write-diary`), not a subagent, and not the target
+> project's own code. It's part of the **Free Wings** harness (see
+> `FOUNDATION.md` in this repository for the whole picture). This skill
+> reuses the `writer` agent's own file for its voice/themes rather than
+> duplicating them — see `.claude/agents/writer.md`.
+
 Produces one `LEARNING_LOG.md` entry for a target project — the same
 file/convention that project already uses, not a new artifact type.
 Reuses the `writer` agent's own context rather than duplicating it.

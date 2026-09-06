@@ -35,4 +35,4 @@ posts; Pressman's textbook is commercial, not open access.
 The Architect agent's design (loop trigger → topology → verifier → stop
 rule) is built directly from the structural elements these loop
 engineering sources agree on — see `FOUNDATION.md` and
-`.claude/agents/architect.md` for where that actually landed.
+`.claude/agents/the-architect.md` for where that actually landed.

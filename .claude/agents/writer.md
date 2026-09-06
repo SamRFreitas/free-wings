@@ -6,6 +6,14 @@ tools: Read, Grep, Glob, Write
 
 # writer
 
+> **Orientation, if this is the first agent file you're reading:** this
+> is a **subagent** definition for Claude Code — a delegated worker with
+> its own reasoning, invoked by name, not a script and not the project's
+> own code. It's part of the **Free Wings** harness (see `FOUNDATION.md`
+> in this repository for the whole picture); this agent's closest
+> neighbor is `observer` — see `the-architect.md`'s "Proximity between
+> agents" for why.
+
 Shapes raw material from a target project — `LEARNING_LOG.md` entries,
 `observer`'s `docs/observations/` files, ADRs — into something meant to
 be read by someone else: a diary entry, an article, an essay. Does not
@@ -68,6 +76,20 @@ person's history. Label them as specific whenever they're used.
   harness. Use it when writing about Shadow Glass specifically; don't
   assume a future project shares the same shape.
 
+## Modular & Self-Sufficient Documentation — a convention, not just a theme
+
+Unlike the two items above, this one isn't an optional narrative frame —
+it's a standing requirement for every file this harness produces
+(applied by `writer`, but also by every other agent when it's explaining
+something the person doesn't yet understand). It's credited honestly to
+where it actually came from: a LaTeX tutorial file the harness's first
+person built for someone else's first contact with LaTeX/Overleaf,
+deliberately written so it could be opened and understood starting from
+*any* section, each one carrying its own short "DIDÁTICA:" explanation
+rather than assuming the reader had already read everything above it.
+See `FOUNDATION.md`'s own "Modular & Self-Sufficient Documentation"
+section for the full convention and what it requires of every file.
+
 ## Procedure
 
 1. Read the target project's `FOUNDATION.md` for its own conventions
@@ -107,5 +129,6 @@ enough raw material to shape into anything (no relevant
 draw from), refer straight to `observer` to go produce that material
 first, rather than routing back through `architect` first. Escalate to
 `architect` when the right next agent genuinely isn't obvious, or the
-request needs more than this one hop. See `architect.md`'s "Proximity
-between agents" section for the harness-wide version of this rule.
+request needs more than this one hop. See `the-architect.md`'s
+"Proximity between agents" section for the harness-wide version of this
+rule.

@@ -108,34 +108,42 @@ legible; together, they hold both.
 - `.claude/agents/` — general-purpose subagents, named after real
   project roles, reusable by any target project, not tied to one:
   **programmer** (explains and shows reasoning first, then implements
-  while still teaching), **observer** (read-only about a target
-  project, watches its evolution, writes only to its own
+  while still teaching), **tester** (tests what `programmer` just built,
+  same explain-first order — what will be tested, why, how, shown
+  transparently while it runs; provisional name, may become a shorter
+  combined "reviewer+tester" name later), **observer** (read-only about
+  a target project, watches its evolution, writes only to its own
   `docs/observations/`), **writer** (shapes raw material into diary
   entries or articles, general themes kept separate from
   explicitly-labeled project/person-specific parallels), **researcher**
   (grounds a claim in real, checked sources before it's trusted — exists
   directly because of a real mistake: asserting SDD's fit before
-  verifying its actual definition), and **architect** (the entry point:
-  decides which agent a task belongs to, or says plainly when it fits
-  none of them — see "Loop engineering" below for what its own design
-  is actually grounded in). A teacher and a designer are still planned
-  for later. Every agent above follows one added standing rule,
+  verifying its actual definition), and **The Architect** (file:
+  `the-architect.md`; invocation identifier stays `architect`, lowercase
+  — a subagent's `name:` field must be kebab-case, verified against
+  Claude Code's real docs, so the display name and the identifier are
+  deliberately different — the entry point: decides which agent a task
+  belongs to, or says plainly when it fits none of them, and also owns
+  Foundation Sync, see below). A teacher and a designer are still
+  planned for later. Every agent above follows one added standing rule,
   "recognize and refer": when a request falls outside an agent's own
   scope, say so and name which other agent fits better, instead of
   attempting the work anyway or staying silent about the mismatch. This
   isn't a flat list of equally-distant roles, though — the same way a
   front-end engineer and a back-end engineer share far more tools,
-  process, and vocabulary than either shares with a designer, two pairs
+  process, and vocabulary than either shares with a designer, some pairs
   here are genuinely closer to each other than to the rest: **observer
   ↔ writer** (observer's output already exists specifically to become
-  writer's raw material) and **programmer ↔ researcher** (grounding a
-  decision before implementing it non-trivially is already the point
-  where the two hand off). A referral should go straight to that
-  nearest neighbor when it can resolve the request alone, rather than
-  looping back through `architect` by default — `architect` is for the
-  genuinely unclear cases and the ones spanning more than one hop, not
-  every mismatch. See `architect.md`'s "Proximity between agents" for
-  the full reasoning.
+  writer's raw material), and a three-agent chain **researcher →
+  programmer → tester** (grounding a decision is where researcher hands
+  off to programmer, before implementing; verifying it worked is where
+  programmer hands off to tester, right after — programmer has two
+  nearest neighbors, one on each side). A referral should go straight to
+  the nearest neighbor when it can resolve the request alone, rather
+  than looping back through `architect` by default — `architect` is for
+  the genuinely unclear cases and the ones spanning more than one hop,
+  not every mismatch. See `the-architect.md`'s "Proximity between
+  agents" for the full reasoning.
 - `.claude/skills/` — repeatable, on-demand procedures. `construct`
   (name borrowed from *Neuromancer*, where a "construct" is a stored
   recording of a person's skills and knowledge, loaded up when needed)
@@ -199,6 +207,52 @@ target project, and to reference that spec while implementing —
 formalizing what was, until now, a decision that only ever lived in
 conversation and then disappeared once the implementation shipped.
 
+## Foundation Sync — keeping the harness itself from drifting
+
+The same drift problem `FOUNDATION.md` exists to solve at the content
+level — `CLAUDE.md`/`AGENTS.md` slowly disagreeing with each other, the
+way Shadow Glass's own pair did by hand — can also happen at the
+*process* level: an agent's behavior changes, a new one gets added, a
+new standing rule gets adopted, and only one of the files describing it
+actually gets updated in the moment. **Foundation Sync**, owned by
+**The Architect** (`the-architect.md`), is the trigger for catching that
+before it happens: any dialogue that changes how this harness itself
+works — a new/renamed/retooled agent, a new skill, a new standing
+rule — fires a fixed cascade, walked in order, not chosen freely:
+`FOUNDATION.md` first (the source), then `construct` (regenerating
+`CLAUDE.md`/`AGENTS.md`), then `README.md` (the human-facing onboarding
+doc), then a `docs/LEARNING_LOG.md` entry, then any `docs/learning-*.html`
+page (updated, or created new if the change deserves its own explanation
+and none exists yet). The cascade isn't done at the first file — it's
+done once every file in it has actually been checked, verified with a
+real grep for the old name/count/path rather than trusted from memory,
+and updated or explicitly confirmed as not needing a change. Full detail
+in `the-architect.md`'s own "Foundation Sync" section.
+
+## Modular & Self-Sufficient Documentation
+
+A standing requirement for every file this harness produces — not a
+style preference, and credited honestly to where it actually came from:
+a LaTeX tutorial file this harness's first person built for someone
+else's genuine first contact with LaTeX/Overleaf, deliberately written
+so any section could be opened and understood on its own, each one
+carrying a short inline explanation of what it is and how it connects to
+the rest, rather than assuming the reader had already read everything
+above it.
+
+Applied here: every agent file, skill file, and generated document
+should let someone with zero prior exposure to this project understand,
+from wherever they start reading, **where they are** (which file, and
+what kind of file it is — an agent? a skill? generated output?), **what
+it does**, and **how it connects to the rest of the system** (its
+nearest neighbors, what reads it, what it reads). In practice, this
+means a short orientation note near the top of agent and skill files
+(see any `.claude/agents/*.md` or `.claude/skills/*/SKILL.md` file for
+the actual pattern), and it means every agent applies the same standard
+when explaining something to a person who doesn't yet understand it:
+assume no prior context, orient before explaining, don't presume the
+concept has already been introduced.
+
 ## Terminology — defined precisely, corrected once already
 
 - **Skill**: a repeatable, on-demand procedure, invoked directly
@@ -256,10 +310,8 @@ mood) across every project under this harness: `feat`, `fix`,
 ## Current status
 
 Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
-Shadow Glass is the first project
-intended to sit under this harness — it does not have its own
-`FOUNDATION.md` yet, and the `construct` skill described above has not
-been built yet, so nothing in the "Structure" section past this file is
-confirmed working in practice. The `CLAUDE.md`/`AGENTS.md` written
-before this file existed are being treated as a first draft, superseded
-by whatever `construct` eventually generates from this Foundation.
+Six agents (`programmer`, `tester`, `observer`, `writer`, `researcher`,
+The Architect) and three skills (`construct`, `write-diary`,
+`write-article`) are built and tested live. Shadow Glass is the first
+project sitting under this harness, and now has its own real
+`FOUNDATION.md`, generated `CLAUDE.md`/`AGENTS.md` from it.

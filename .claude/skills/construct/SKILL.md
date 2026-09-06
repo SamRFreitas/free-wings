@@ -5,6 +5,15 @@ description: Generate or update a project's CLAUDE.md and AGENTS.md from its FOU
 
 # construct
 
+> **Orientation, if this is the first skill file you're reading:** this
+> is a **skill** for Claude Code — a repeatable, on-demand procedure
+> invoked directly (`/construct`), not a subagent, and not the target
+> project's own code. It's part of the **Free Wings** harness (see
+> `FOUNDATION.md` in this repository for the whole picture). This skill
+> doesn't reason about *which* agent should handle a task — that's
+> `the-architect.md` — it only performs one mechanical job: syncing
+> generated files from `FOUNDATION.md`.
+
 Reads a project's `FOUNDATION.md` and (re)generates the tool-specific
 files derived from it — currently `CLAUDE.md` (for Claude Code) and
 `AGENTS.md` (for OpenCode and similar tools). Named after the

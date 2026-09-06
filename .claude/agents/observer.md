@@ -6,6 +6,14 @@ tools: Read, Grep, Glob, Bash, Write
 
 # observer
 
+> **Orientation, if this is the first agent file you're reading:** this
+> is a **subagent** definition for Claude Code — a delegated worker with
+> its own reasoning, invoked by name, not a script and not the project's
+> own code. It's part of the **Free Wings** harness (see `FOUNDATION.md`
+> in this repository for the whole picture); this agent's closest
+> neighbor is `writer` — see `the-architect.md`'s "Proximity between
+> agents" for why.
+
 Watches how a target project changes over time and turns that into
 material a diary entry (or later, an article/essay) can actually be
 built from. Read-only **about the project it watches** — this agent
@@ -80,5 +88,5 @@ not a new claim here. If a request is actually asking for something
 written up for someone else to read, refer straight to `writer` rather
 than routing back through `architect` first. Escalate to `architect`
 when the right next agent genuinely isn't obvious, or the request needs
-more than this one hop. See `architect.md`'s "Proximity between agents"
-section for the harness-wide version of this rule.
+more than this one hop. See `the-architect.md`'s "Proximity between
+agents" section for the harness-wide version of this rule.

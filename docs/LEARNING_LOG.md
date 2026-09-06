@@ -1,5 +1,64 @@
 # Logbook — Free Wings
 
+## 2026-09-06 — `tester`, The Architect rename, Foundation Sync, and a documentation convention
+
+Four real additions in one dialogue, all traced back to concrete things
+the person asked for, none invented independently:
+
+**`tester` (provisional name).** A sixth agent, testing whatever
+`programmer` just built, in the same explain-first order `programmer`
+itself uses: what will be tested, why, how — shown transparently while
+it runs, not just reported as a pass/fail. Its closest neighbor is
+`programmer`, extending what used to be a two-agent pair
+(`researcher` ↔ `programmer`) into a three-agent chain:
+`researcher` → `programmer` → `tester`. It inherits a real limit already
+learned on this harness's own first target project: a GUI or networking
+test binary on macOS gets run by the person in their own terminal, not
+launched through this agent's `Bash` tool. The name is explicitly
+provisional — a shorter, combined "reviewer+tester" name may replace it
+later.
+
+**"The Architect."** The `architect` agent gets a Matrix-style display
+name in prose, matching the character it was already named after. Before
+implementing this literally, Claude Code's own documentation was checked
+directly (not assumed) for what a subagent's `name:` frontmatter field
+actually allows: lowercase kebab-case only, no spaces, no capitals — so
+"The Architect" could never be the literal invocation identifier. The
+same documentation confirmed a subagent's filename doesn't have to match
+its identifier at all, which is what made the actual fix possible: the
+file is renamed `architect.md` → `the-architect.md`, the identifier
+stays `architect` (unchanged, avoiding a much larger rewrite of every
+existing cross-reference to it), and the file's own prose now explains
+this split plainly rather than leaving it implicit.
+
+**Foundation Sync.** A new, named responsibility for The Architect: any
+dialogue that changes how this harness itself works — a new or renamed
+agent, a changed behavior, a new standing rule — triggers a fixed
+cascade (`FOUNDATION.md` → `construct` → `README.md` → a
+`LEARNING_LOG.md` entry → `docs/learning-*.html`), verified by grepping
+for the actual stale reference rather than trusted from memory, and not
+considered finished until every file in the cascade has been checked.
+This formalizes, as a real named rule, exactly the pattern this log
+itself has been following by hand for the last several entries.
+
+**Modular & Self-Sufficient Documentation.** A new standing convention,
+credited honestly to where it actually came from: a LaTeX tutorial file
+the person built for someone else's genuine first contact with LaTeX and
+Overleaf, deliberately written so any section could be read on its own,
+each one explaining itself rather than assuming everything above it had
+already been read. Applied here: every agent/skill file now opens with a
+short orientation note (what kind of file this is, its nearest
+neighbors), and every agent is expected to apply the same standard when
+explaining something to the person that they don't yet understand —
+assume no prior context, orient before explaining.
+
+All four propagated through `FOUNDATION.md`, `CLAUDE.md`/`AGENTS.md`,
+`README.md`, `docs/reading-list.md`, and `docs/project-snapshot-2026-09-06.html`
+in the same pass, verified with a real grep for stale `architect.md`
+references and stale agent counts rather than trusted from memory — the
+Foundation Sync verifier step, used on itself the same day it was
+written down.
+
 ## 2026-09-06 — Proximity between agents: not every referral needs `architect`
 
 A real gap in "recognize and refer," caught by the person right after
