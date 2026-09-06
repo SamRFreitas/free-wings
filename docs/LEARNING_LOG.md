@@ -46,7 +46,48 @@ research area — "lost in the middle," context rot — relevant to a
 harness whose own `LEARNING_LOG.md`/observations/ADRs only grow larger
 over a project's lifetime); and whether real prior art exists for a solo
 developer validating whether an AI-assisted harness is actually helping.
-Result of that run: [to be filled in once `researcher` reports back].
+
+**Result of that run**, independently re-verified via live search, not
+from the flagged PDF: the earlier suspicion held up. Cognitive Load
+Theory, Shannon entropy, DORA, and SPACE are all real, established —
+but none of them actually derive the specific formulas the PDF built on
+their names (a percentage-reduction cognitive-load formula, a
+reversibility formula); the math was invented, the names borrowed for
+credibility. "Reversibility" as a formal, measurable ADR metric wasn't
+found anywhere in real software-engineering literature — only as an
+informal heuristic ("defer irreversible decisions") and in the
+mismatched physical-building sources already flagged. ADR-as-graph
+contradiction detection turned out to be real but genuinely young
+(2024-2026 papers, one explicitly a "vision" paper, not an established
+technique) — worth knowing about, not worth treating as settled.
+
+The context/token thread came back much stronger: "lost in the middle"
+and "context rot" are well-documented and current, and real,
+low-infrastructure, embedding-free heuristics already exist in practice
+— budget-by-category with alert thresholds, recency-based pruning,
+"observation masking" (dropping stale tool output wholesale) preferred
+over LLM summarization specifically because naive summarization has a
+documented failure mode of smoothing over how stuck an agent actually
+is. Real prior art exists for pruning a growing log for LLM context
+specifically (not invented for this project) — with the same
+summarization-smooths-over-severity caveat applying directly to this
+project's own `LEARNING_LOG.md` if it's ever auto-summarized.
+
+For whether AI assistance actually helps a solo developer: the closest
+real research (GitHub Copilot studies) is genuinely mixed — real gains
+in some controlled studies, no significant effect in at least one — so
+there's no single citable number to anchor a productivity claim on. The
+honest minimal check `researcher` synthesized from what the literature
+actually supports: track a small number of directly observable things
+(did the task ship, rough time vs. gut estimate, did context need a
+manual correction mid-task, a periodic subjective note) rather than a
+composite formula the underlying research doesn't support.
+
+Per `researcher`'s own new checkpoint rule, its report ended with a
+plain-terms summary and a direct question back to the person, instead of
+recommending what to build next — no context-checker agent designed yet
+as a result of this entry; that's still an open next step, deliberately
+left open here rather than closed.
 
 ## 2026-09-06 — Verifying a second time, an ADR judgment call, and dividing work in two agents
 
