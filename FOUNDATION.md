@@ -121,7 +121,11 @@ legible; together, they hold both.
   from explicitly-labeled project/person-specific parallels),
   **researcher** (grounds a claim in real, checked sources before it's
   trusted — exists directly because of a real mistake: asserting SDD's
-  fit before verifying its actual definition), and **The Architect**
+  fit before verifying its actual definition; when validating or
+  comparing data/metrics specifically, it stops at a comprehension
+  check instead of recommending a next step, and only proceeds once
+  the person's understanding is actually confirmed — see its own file's
+  "Validation checkpoint" section), and **The Architect**
   (file and invocation identifier both `the-architect` — a subagent's
   `name:` field must be kebab-case, verified against Claude Code's real
   docs; "The Architect" itself isn't valid, but the hyphenated

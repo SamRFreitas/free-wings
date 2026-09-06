@@ -1,5 +1,53 @@
 # Logbook — Free Wings
 
+## 2026-09-06 — A pseudo-scientific PDF, and a new checkpoint rule for `researcher`
+
+A long document arrived proposing "The Validator" — a new agent built to
+implement ten formula-heavy metrics (an "Índice de Reversibilidade," a
+"Medida de Impacto Cognitivo," etc.), presented as grounded in academic
+literature with a full numbered bibliography. Checked before building
+anything on it, not assumed: several numbered references in that
+bibliography (brain-computer interfaces, quantum circuit decoherence,
+machine unlearning) aren't about software architecture at all and don't
+appear cited anywhere in the document's own body text — a strong sign of
+citation padding from an under-curated "deep research" tool output, not
+genuine grounding. The reversibility formula's own cited sources turned
+out to be about literal building demolition/reuse (circular-economy
+architecture, the physical kind), with the formula itself invented, not
+derived from anything in those sources. Flagged plainly instead of
+building "The Validator" as specified — the same "verify before
+building" discipline this project already learned from the SDD mistake,
+applied here before a much larger investment, not after.
+
+The response to this was to hand it to `researcher`, not to design an
+agent from an unverified source. But a new requirement came with it:
+when `researcher`'s job is *validating or comparing data or metrics* —
+not just checking one fact — it must not hand off or recommend a next
+step in the same report as its findings. It has to end with a real
+comprehension check first, and wait for the person to actually confirm,
+in their own words, that they understand, before anything moves forward.
+This is Freire's dialogic principle again, but tightened into a hard
+gate specifically for this kind of task, because the risk this time
+wasn't "banking" a wrong implementation decision — it was banking a
+*metric that sounds authoritative without being genuinely understood by
+anyone*, which is arguably worse, since a false sense of "this is
+scientifically validated" is harder to walk back later than a plain
+wrong guess. Documented honestly in `researcher.md` itself: a subagent
+can't literally pause mid-execution for a live reply, so the rule is
+implemented as "the report stops short of recommending next steps" — the
+actual gate is enforced by whoever relays the report back to the person,
+not inside the subagent's own single execution.
+
+A first real research brief was then handed to `researcher`, covering
+three threads: which parts of the PDF's academic grounding are real
+versus fabricated; what current, legitimate literature actually says
+about context/token efficiency for LLM coding agents (a real, active
+research area — "lost in the middle," context rot — relevant to a
+harness whose own `LEARNING_LOG.md`/observations/ADRs only grow larger
+over a project's lifetime); and whether real prior art exists for a solo
+developer validating whether an AI-assisted harness is actually helping.
+Result of that run: [to be filled in once `researcher` reports back].
+
 ## 2026-09-06 — Verifying a second time, an ADR judgment call, and dividing work in two agents
 
 Follow-up to the previous entry, three real refinements:

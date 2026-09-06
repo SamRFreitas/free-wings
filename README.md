@@ -92,7 +92,10 @@ whatever comes after it. Every project under this harness:
    diary entries or articles),
    [`researcher`](.claude/agents/researcher.md) (checks a claim against
    real, current sources before it's trusted, instead of asserting it
-   from memory), and
+   from memory — and when validating or comparing data/metrics
+   specifically, stops at a comprehension check rather than
+   recommending a next step until understanding is actually confirmed),
+   and
    [**The Architect**](.claude/agents/the-architect.md) (file and
    invocation identifier both `the-architect` — kebab-case is required
    for a subagent's `name:` field, checked directly against Claude
