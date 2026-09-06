@@ -1,5 +1,47 @@
 # Logbook — Free Wings
 
+## 2026-09-06 — A "Model Adaptation Layer" proposal, declined; `observer` gets grounded signals instead
+
+A second proposal arrived, "MAL" — a dynamic system that would detect
+which LLM is running (by asking the model its own name/version and
+parsing the answer) and have The Architect adjust context size, query
+complexity, and iteration count per model, with "The Validator"
+reporting on it. Declined, for reasons distinct from the earlier PDF's
+problem (this one wasn't fabricated citations — it's an engineering
+proposal with real, checkable flaws):
+
+- Self-reported model identification is a known-unreliable pattern —
+  models frequently don't know their own exact version, or the harness
+  hosting them doesn't expose it. Building adaptation logic on top of an
+  unreliable detection step is building on sand.
+- It assumes "The Validator" exists to report into — the same agent
+  already declined as originally specified.
+- The actual problem it's solving — different models need different
+  treatment — already has a working, much cheaper answer in this
+  harness: `CLAUDE.md` (dense, for a strong model) versus `AGENTS.md`
+  (explicit, for a possibly weaker one), compiled once by `construct`,
+  not detected at runtime.
+- No evidence surfaced that this project actually juggles multiple,
+  wildly different-capability models within a single working session —
+  the real trigger MAL assumes. Building for a hypothetical, unobserved
+  problem is exactly what this harness's own principles (smallest
+  correct change, no abstraction the project doesn't need yet) already
+  push back on. If it becomes a real, observed problem later, real prior
+  art already exists to reuse (LiteLLM, OpenRouter-style model routing)
+  rather than reinventing it from scratch.
+
+Instead of a new agent, `observer` picked up the actual, grounded
+responsibility: a small set of research-backed signals (task shipped,
+time vs. gut-feel estimate, whether context needed a manual mid-task
+correction — the honest low-infrastructure proxy for context rot the
+research actually supports — and a short subjective note), folded into
+the same observation account it already produces. Deliberately not a
+score or a formula — the exact trap the earlier "Validator" proposal
+fell into. Reusing an existing agent's scope instead of adding a new one
+for every new concern is itself the point: this harness already worried,
+out loud, about validation work turning into bureaucracy for its own
+sake, and multiplying agents is how that actually happens.
+
 ## 2026-09-06 — A pseudo-scientific PDF, and a new checkpoint rule for `researcher`
 
 A long document arrived proposing "The Validator" — a new agent built to

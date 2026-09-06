@@ -116,9 +116,13 @@ legible; together, they hold both.
   tested, why, how, shown transparently while it runs; provisional name,
   may become a shorter combined "reviewer+tester" name later),
   **observer** (read-only about a target project, watches its evolution,
-  writes only to its own `docs/observations/`), **writer** (shapes raw
-  material into diary entries or articles, general themes kept separate
-  from explicitly-labeled project/person-specific parallels),
+  writes only to its own `docs/observations/`; also notes a small set of
+  research-grounded signals — task shipped, time vs. estimate, whether
+  context needed a manual mid-task correction, a subjective note — never
+  a scored formula, see its own file's "Grounded signals"), **writer**
+  (shapes raw material into diary entries or articles, general themes
+  kept separate from explicitly-labeled project/person-specific
+  parallels),
   **researcher** (grounds a claim in real, checked sources before it's
   trusted — exists directly because of a real mistake: asserting SDD's
   fit before verifying its actual definition; when validating or

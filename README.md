@@ -87,7 +87,8 @@ whatever comes after it. Every project under this harness:
    name later),
    [`observer`](.claude/agents/observer.md) (watches a project's
    evolution, read-only about it, writes only to its own
-   `docs/observations/`),
+   `docs/observations/` — also notes a few research-grounded signals on
+   whether the harness itself is helping, never a scored formula),
    [`writer`](.claude/agents/writer.md) (shapes existing material into
    diary entries or articles),
    [`researcher`](.claude/agents/researcher.md) (checks a claim against
