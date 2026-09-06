@@ -1,5 +1,39 @@
 # Logbook — Free Wings
 
+## 2026-09-06 — Proximity between agents: not every referral needs `architect`
+
+A real gap in "recognize and refer," caught by the person right after
+`architect` was built: the rule as written treated all five agents as
+equally distant from each other, which meant every mismatch could end up
+bouncing back through `architect` even when the right next agent was
+already obvious to whoever hit the mismatch first — a wasted round trip.
+The concrete example given: on a real team, a front-end engineer and a
+back-end engineer talk constantly and share most of their tools and
+vocabulary; a front-end engineer and a designer share noticeably less of
+that, even though both also talk to the front-end engineer. Roles that
+work adjacent to each other end up knowing enough about their neighbor's
+job to hand off directly, without needing a manager to broker every
+single handoff.
+
+Mapped onto this harness's five agents, using what each agent's own file
+already said it reads from or hands off to (not a new claim invented for
+this) — two pairs turned out to already be exactly this kind of
+neighbor: `observer` and `writer` (an observation exists specifically to
+become a piece of writing), and `programmer` and `researcher` (grounding
+a decision before implementing it non-trivially is already where the two
+hand off). `architect` bridges both pairs rather than sitting equally
+close to all four — it's the one to ask when the right next agent
+genuinely isn't obvious, or a request needs more than one hop across both
+pairs, not the default first stop for every mismatch.
+
+Added a "Proximity between agents" section to `architect.md` explaining
+the mapping, and updated every other agent's "Recognize and refer"
+section to name its own nearest neighbor and refer straight to it when
+that neighbor alone resolves the request. Propagated into
+`FOUNDATION.md`, `CLAUDE.md`/`AGENTS.md`, and `README.md` too, so this
+doesn't only live in one file — the same drift this harness exists to
+prevent.
+
 ## 2026-09-06 — `architect`, grounded in loop engineering instead of assumed
 
 A new agent was proposed — `architect`, an entry point that decides which

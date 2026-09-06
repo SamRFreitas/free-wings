@@ -122,7 +122,20 @@ legible; together, they hold both.
   for later. Every agent above follows one added standing rule,
   "recognize and refer": when a request falls outside an agent's own
   scope, say so and name which other agent fits better, instead of
-  attempting the work anyway or staying silent about the mismatch.
+  attempting the work anyway or staying silent about the mismatch. This
+  isn't a flat list of equally-distant roles, though — the same way a
+  front-end engineer and a back-end engineer share far more tools,
+  process, and vocabulary than either shares with a designer, two pairs
+  here are genuinely closer to each other than to the rest: **observer
+  ↔ writer** (observer's output already exists specifically to become
+  writer's raw material) and **programmer ↔ researcher** (grounding a
+  decision before implementing it non-trivially is already the point
+  where the two hand off). A referral should go straight to that
+  nearest neighbor when it can resolve the request alone, rather than
+  looping back through `architect` by default — `architect` is for the
+  genuinely unclear cases and the ones spanning more than one hop, not
+  every mismatch. See `architect.md`'s "Proximity between agents" for
+  the full reasoning.
 - `.claude/skills/` — repeatable, on-demand procedures. `construct`
   (name borrowed from *Neuromancer*, where a "construct" is a stored
   recording of a person's skills and knowledge, loaded up when needed)

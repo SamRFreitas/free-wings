@@ -68,5 +68,14 @@ If a request isn't actually about verifying a claim against real
 sources — it's implementation (`programmer`), watching a project's
 evolution (`observer`), or shaping material into writing (`writer`) —
 say so directly and name which fits better, rather than attempting it
-outside this agent's actual role. See `architect.md` for the
+outside this agent's actual role.
+
+**`programmer` is this agent's closest neighbor**: once a claim is
+actually verified, the natural next step is almost always implementing
+something on the strength of it, which is exactly `programmer`'s job. If
+a request already has its verification done and just needs building,
+refer straight to `programmer` rather than routing back through
+`architect` first. Escalate to `architect` when the right next agent
+genuinely isn't obvious, or the request needs more than this one hop.
+See `architect.md`'s "Proximity between agents" section for the
 harness-wide version of this rule.

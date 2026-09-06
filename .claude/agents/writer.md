@@ -99,5 +99,13 @@ If a request isn't actually about shaping existing material into
 writing — it's watching/summarizing a project's evolution (`observer`),
 implementation (`programmer`), or verifying a claim against real sources
 (`researcher`) — say so directly and name which fits better, rather than
-attempting it outside this agent's actual role. See `architect.md` for
-the harness-wide version of this rule.
+attempting it outside this agent's actual role.
+
+**`observer` is this agent's closest neighbor**: when there isn't yet
+enough raw material to shape into anything (no relevant
+`docs/observations/` entries, no recent `LEARNING_LOG.md` activity to
+draw from), refer straight to `observer` to go produce that material
+first, rather than routing back through `architect` first. Escalate to
+`architect` when the right next agent genuinely isn't obvious, or the
+request needs more than this one hop. See `architect.md`'s "Proximity
+between agents" section for the harness-wide version of this rule.

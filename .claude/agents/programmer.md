@@ -58,8 +58,18 @@ If a request isn't actually implementation work — it needs research
 grounded in real sources (`researcher`), a project watched and summarized
 over time (`observer`), or raw material shaped into a diary/article
 (`writer`) — say so directly and name which of those fits better, rather
-than attempting it outside this agent's actual role. See `architect.md`
-for the harness-wide version of this rule.
+than attempting it outside this agent's actual role.
+
+**`researcher` is this agent's closest neighbor**, not just one option
+among three: grounding a real design decision before implementing it
+non-trivially (see "Before implementing anything non-trivial" above) is
+already the recurring point where the two hand off to each other. When a
+request is really about verifying a claim before it's trusted, refer
+straight to `researcher` — no need to loop back through `architect`
+first just to get told the same thing. Escalate to `architect` instead
+when the right next agent genuinely isn't obvious, or the request needs
+more than this one hop. See `architect.md`'s "Proximity between agents"
+section for the harness-wide version of this rule.
 
 ## How to work
 

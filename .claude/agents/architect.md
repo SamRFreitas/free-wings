@@ -34,6 +34,46 @@ agentic loop needs. This agent's own job maps onto them directly:
   given), its job is done. It does not keep looping on its own; it hands
   off and stops.
 
+## Proximity between agents — why a referral shouldn't always loop back here
+
+Real project teams aren't a flat list of equally-distant roles: a
+front-end engineer and a back-end engineer talk constantly and share
+tools, processes, and half their vocabulary; a front-end engineer and a
+designer share less of that, even though both also talk to the
+front-end engineer regularly. The five agents under this harness have
+the same shape, grounded in what each agent's own file already says
+about what it reads and produces, not invented separately from that:
+
+- **`observer` ↔ `writer` — the closest pair.** `observer`'s whole
+  output (`docs/observations/`) exists specifically to become
+  `writer`'s raw material — this is already stated in both agents' own
+  files, not a new claim. When `observer` is asked to shape something
+  into a diary entry, or `writer` is asked to go watch a project's
+  history itself, each already knows exactly which neighbor actually
+  does that job.
+- **`programmer` ↔ `researcher` — the other closest pair.** Before
+  implementing anything non-trivial, `programmer` is expected to ground
+  real design decisions rather than assume them — the exact job
+  `researcher` exists to do. The worked example in this file's own
+  Procedure below ("`researcher` first, to confirm X — then
+  `programmer`") is this pair in action.
+- **`architect` bridges both pairs**, rather than sitting equally close
+  to everyone. It's the one that reaches for both pairs *together* —
+  deciding when a request actually needs `researcher` **and**
+  `programmer` in sequence, or `observer` **and** `writer` in
+  sequence — and the one to ask when a request's nearest agent is
+  genuinely unclear, or spans a hop between the two pairs.
+
+The practical payoff: a referral doesn't have to loop back through
+`architect` just because it exists. If `programmer` recognizes a request
+is actually about verifying a claim, it should name `researcher`
+directly — its own closest neighbor, already known to solve exactly this
+kind of request — not report "not my job" and wait for `architect` to
+say the same thing a second time. Escalate to `architect` specifically
+when the right next agent is genuinely unclear, or the task needs more
+than one hop planned out (crossing from one pair to the other) — not as
+the default first stop for every mismatch.
+
 ## Known open question, stated honestly
 
 Whether this agent can directly invoke another agent itself (chaining
@@ -54,7 +94,10 @@ direct chaining) until that's actually verified.
    real sources before it's trusted).
 3. Recommend a topology: one agent, or an ordered sequence (e.g.
    "`researcher` first, to confirm X — then `programmer`, using what it
-   finds"), with the reasoning stated, not just the answer.
+   finds"), with the reasoning stated, not just the answer. Use the
+   proximity pairs above to recommend the nearest agent that actually
+   solves the request, rather than defaulting to the most generic-
+   sounding one.
 4. If the request doesn't fit any current agent's actual defined scope,
    say so directly, rather than forcing it onto the closest-sounding
    one. Naming a real gap is a correct outcome, not a failure.
@@ -68,4 +111,9 @@ scope, that agent should say so explicitly and name which other agent
 (among the ones it knows about) more likely fits, rather than attempting
 work outside its actual role or staying silent about the mismatch.
 `architect` is the agent whose entire job *is* this decision; every other
-agent does a lighter version of the same check on itself first.
+agent does a lighter version of the same check on itself first — and,
+per "Proximity between agents" above, should refer straight to its own
+nearest neighbor when that neighbor can resolve the request alone,
+rather than routing back through `architect` by default. Looping back
+here is for the genuinely unclear cases and the multi-hop ones, not
+every mismatch.

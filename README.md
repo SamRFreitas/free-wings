@@ -100,7 +100,13 @@ whatever comes after it. Every project under this harness:
    engineering's structure (trigger, topology, verifier, stop rule —
    see [`docs/reading-list.md`](docs/reading-list.md) for the sources
    that grounding was actually checked against, and what's freely
-   accessible versus what isn't).
+   accessible versus what isn't). These referrals aren't equally likely
+   in every direction, either — `observer`↔`writer` and
+   `programmer`↔`researcher` are closer neighbor pairs than the rest
+   (each pair's own files already describe handing off to the other), so
+   an agent refers straight to its nearest neighbor when that alone
+   solves the request, rather than looping every mismatch back through
+   `architect` — see `architect.md`'s "Proximity between agents."
 
 ## License
 
