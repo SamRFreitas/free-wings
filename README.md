@@ -71,17 +71,36 @@ whatever comes after it. Every project under this harness:
 2. `construct` then generates `CLAUDE.md`/`AGENTS.md` from that
    `FOUNDATION.md`, same as it does for any existing project.
 3. The general agents this harness provides —
-   [`programmer`](.claude/agents/programmer.md),
-   [`observer`](.claude/agents/observer.md), and
-   [`writer`](.claude/agents/writer.md) — and its skills —
+   [`programmer`](.claude/agents/programmer.md) (explains and shows
+   reasoning first, then implements while still teaching),
+   [`observer`](.claude/agents/observer.md) (watches a project's
+   evolution, read-only about it, writes only to its own
+   `docs/observations/`),
+   [`writer`](.claude/agents/writer.md) (shapes existing material into
+   diary entries or articles),
+   [`researcher`](.claude/agents/researcher.md) (checks a claim against
+   real, current sources before it's trusted, instead of asserting it
+   from memory), and
+   [`architect`](.claude/agents/architect.md) (the entry point: decides
+   which of the other agents a task belongs to, or says plainly when it
+   fits none of them) — and its skills —
    [`construct`](.claude/skills/construct/SKILL.md),
    [`write-diary`](.claude/skills/write-diary/SKILL.md), and
    [`write-article`](.claude/skills/write-article/SKILL.md) — are
    symlinked into `~/.claude/agents/` and `~/.claude/skills/`
    respectively, so they're available from any project directory, not
-   just this one. They all work the same way: read the target project's
-   own `FOUNDATION.md` first, follow *that* project's conventions, never
-   guess at rules that aren't written down anywhere.
+   just this one — none of them are wired to Shadow Glass, or to any
+   other single project, by name. They all work the same way: read the
+   target project's own `FOUNDATION.md` first, follow *that* project's
+   conventions, never guess at rules that aren't written down anywhere.
+   If a request falls outside one agent's own scope, it says so and
+   names which other agent fits better ("recognize and refer") instead
+   of attempting the work anyway — `architect` is the agent whose whole
+   job is making that call up front, and its own design follows loop
+   engineering's structure (trigger, topology, verifier, stop rule —
+   see [`docs/reading-list.md`](docs/reading-list.md) for the sources
+   that grounding was actually checked against, and what's freely
+   accessible versus what isn't).
 
 ## License
 
@@ -92,7 +111,9 @@ spirit more closely — use this however you want, no strings attached.
 
 ## Status
 
-Founded 2026-09-05, named Free Wings on 2026-09-06. Shadow Glass is the
-first project sitting under this harness. See
-[`docs/LEARNING_LOG.md`](docs/LEARNING_LOG.md) for the full story,
-warts included.
+Founded 2026-09-05, named Free Wings on 2026-09-06. Five agents and
+three skills are built and tested live (see "Using this harness for a
+new project" above). Shadow Glass is the first project sitting under
+this harness — the second is whichever project you point `construct` at
+next. See [`docs/LEARNING_LOG.md`](docs/LEARNING_LOG.md) for the full
+story, warts included.

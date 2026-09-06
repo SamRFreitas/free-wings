@@ -1,5 +1,52 @@
 # Logbook — Free Wings
 
+## 2026-09-06 — `architect`, grounded in loop engineering instead of assumed
+
+A new agent was proposed — `architect`, an entry point that decides which
+other agent a task belongs to — leaning on two named references: "loop
+engineering" as its structural grounding, and "the most recent edition of
+Pressman" as a comparison point. Neither got built on directly. Both were
+genuinely unfamiliar enough to flag before designing anything: "loop
+engineering" had only been seen in informal videos, not checked against
+any real source; Pressman's current edition wasn't known with confidence
+either. Both got handed to `researcher` — the agent this project already
+built specifically to stop this class of mistake (see the SDD entry
+further down this log) — before any design work started.
+
+What actually came back: "loop engineering" traces to one real, checkable
+source — Addy Osmani (a director on Google's Cloud AI team), in an essay
+called *"Practical Loop Engineering,"* published on his own Substack on
+2026-06-07 and syndicated with his permission by O'Reilly Radar shortly
+after. Every source checked agrees on the same four structural pieces a
+real agentic loop needs: **trigger, topology, verifier, stop rule**.
+Pressman & Maxim's *Software Engineering: A Practitioner's Approach*
+checked out too — 9th edition, the most recent one found — but unlike the
+loop-engineering sources, which are free blog posts, it's a paid
+textbook. Both facts, and the honest difference in accessibility between
+them, are recorded in the new `docs/reading-list.md`, not just asserted
+here.
+
+`architect`'s own procedure was then built to mirror those four pieces
+directly: its trigger is a request from a person or from another agent
+that recognized a task wasn't its own job; its topology is the actual
+recommendation it produces (which agent, or ordered sequence, fits);
+its verifier is checking that recommendation against the target
+project's real `FOUNDATION.md` and the recommended agent's own stated
+scope; its stop rule is that once a recommendation — or an honest "this
+fits none of them" — is given, its job for that request is done.
+
+Alongside `architect`, a standing rule called **"recognize and refer"**
+was added to every existing agent (`programmer`, `observer`, `writer`,
+`researcher`): when a request falls outside an agent's own defined
+scope, it says so and names which other agent fits better, instead of
+attempting the work anyway or staying silent about the mismatch.
+`FOUNDATION.md`, `CLAUDE.md`/`AGENTS.md`, `README.md`, and
+`docs/learning-free-wings.html` were all updated to reflect five real
+agents (not "programmer and observer built, three more planned") and
+this new rule, rather than letting any of them drift stale the way
+Shadow Glass's own `CLAUDE.md`/`AGENTS.md` pair once did before this
+harness existed.
+
 ## 2026-09-06 — Skills weren't broken by session timing — they were the wrong shape
 
 First real test of `construct`/`write-diary`/`write-article` as actual
