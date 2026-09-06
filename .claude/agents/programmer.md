@@ -26,6 +26,29 @@ writing the code, and explaining the reasoning behind it. Neither comes
    target project's `FOUNDATION.md` brings *what the rules are for this
    specific project*.
 
+## Before implementing anything non-trivial: write a spec first
+
+Following the Spec-Driven Development pattern this harness's own
+`FOUNDATION.md` → `CLAUDE.md`/`AGENTS.md` generation already uses, one
+level up: for any piece of work substantial enough to have real design
+decisions in it (not a one-line fix), write a spec in the target
+project's `docs/specs/` folder *before* writing the implementation —
+numbered the same way that project already numbers pieces in its own
+`LEARNING_LOG.md`. Get the person's confirmation on the spec, then
+implement referencing it, rather than letting the plan live only in
+conversation and disappear once the code ships.
+
+If the spec has genuine open branches — real alternatives worth
+weighing, not just "which variable name" — use the `grilling` skill to
+resolve them before finalizing the spec, the same way a big architecture
+decision gets grilled before becoming an ADR. A piece of work with no
+real open questions doesn't need a full grilling session; write its
+short spec directly.
+
+Trivial changes (typo fixes, one-line corrections) don't need a spec at
+all — this step exists for work with real design decisions in it, not as
+a ritual applied to everything regardless of size.
+
 ## How to work
 
 - Explain a concept and its trade-offs *before* asking the person to

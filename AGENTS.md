@@ -118,6 +118,77 @@ people's spirit at once.
   AI tool this harness doesn't support yet, is still being designed as
   of this writing and does not exist yet.
 
+## Specs, and how the `grilling` skill feeds them
+
+This harness follows the core idea behind Spec-Driven Development (SDD)
+— a written specification treated as the primary artifact, with actual
+implementation treated as a regenerable output produced from that
+specification — and applies this same idea one level up from where it
+is already applied for generating `CLAUDE.md`/`AGENTS.md` from
+`FOUNDATION.md`. Here, it applies to individual pieces of implementation
+work inside a target project, not only to this harness's own generated
+files.
+
+Every target project under this harness should have a `docs/specs/`
+folder, in addition to its `docs/decisions/` folder and its
+`docs/LEARNING_LOG.md` file. These three kinds of document have three
+distinct, deliberately non-overlapping roles:
+
+- **ADR** (stored in `docs/decisions/`): explains *why* a broad,
+  cross-cutting technical direction was chosen for the project. This
+  kind of document should be rare — roughly one per genuine
+  architectural fork in the project's history.
+- **Spec** (stored in `docs/specs/`): explains *what* one specific,
+  individual piece of implementation work is going to do, and is
+  written *before* that piece of work is actually implemented. There
+  should be roughly one spec file per non-trivial unit of implementation
+  work, and each spec file should be numbered using the exact same
+  numbering scheme that project already uses for its own "pieces" inside
+  its `LEARNING_LOG.md` file (for example, a file named
+  `docs/specs/0012-mac-signaling-client.md` would correspond to "piece
+  12" as already described in that project's own learning log), so that
+  the two documents stay easy to cross-reference with each other.
+- **`LEARNING_LOG.md`**: explains *what actually happened* while
+  implementing a piece of work, written *after* that work is done,
+  including any place where the actual implementation ended up deviating
+  from what its own spec originally described, and why that happened.
+
+The `grilling` skill (the skill that stress-tests a decision through a
+series of numbered questions, each with a recommended answer attached,
+repeated in rounds until nothing about that decision is left
+unresolved) is the shared underlying mechanism that produces both ADRs
+and specs — it is exactly the same process either way, but it leads to
+one of two different kinds of destination document depending on how
+large in scope the decision being made actually is:
+
+- A big, cross-cutting architecture decision, of the kind that affects
+  the whole project, should go through `grilling` and then become an
+  ADR.
+- A single, specific piece's own implementation approach should go
+  through `grilling` and then become a spec, if that piece's approach
+  actually has real open questions worth resolving.
+
+Not every single spec needs a full `grilling` session to be written. A
+piece of implementation work that has no real open branches or
+alternatives worth weighing can simply have a short spec written
+directly, without going through a whole round of numbered questions
+first — this mirrors the existing rule that a low-risk, easily
+reversible decision does not need a whole question-and-answer round of
+its own either. The `grilling` skill earns its place specifically when a
+spec actually has genuine open decisions still contained inside it, not
+as a mandatory ritual that has to be applied to every single piece of
+work regardless of how small or unambiguous that piece of work actually
+is.
+
+The **programmer** agent (described above, under "Structure of this
+repository") is expected to write a spec file before implementing any
+piece of work in a target project that is substantial enough to contain
+real design decisions inside it, and to keep referring back to that
+spec file while actually carrying out the implementation — this
+formalizes into a durable, saved file something that, before this
+convention existed, only ever lived inside a spoken conversation and
+then disappeared completely once the actual implementation had shipped.
+
 ## Terminology — defined precisely, because this was a real point of confusion once already
 
 - **Skill**: a repeatable, on-demand procedure. It is invoked directly

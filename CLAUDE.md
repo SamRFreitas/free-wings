@@ -46,6 +46,25 @@ attached to be legible; together they carry both.
   *Neuromancer*'s stored-knowledge constructs); a tool-onboarding
   scaffolding skill (working name `simstim`) is in design.
 
+## Specs, and how `grilling` feeds them
+
+SDD (spec as primary artifact, implementation as regenerable output),
+applied one level up from harness-config generation: every target
+project gets `docs/specs/`, alongside `docs/decisions/` and
+`LEARNING_LOG.md`. Three roles, no overlap:
+
+- **ADR** — *why* a broad direction was chosen. Rare.
+- **Spec** — *what* one piece of work will do, written before
+  implementing it, numbered like that project's own LEARNING_LOG pieces.
+- **`LEARNING_LOG.md`** — *what actually happened*, after, deviations
+  from the spec included.
+
+`grilling` feeds both, same process, different destination by scale: a
+cross-cutting architecture decision → ADR; a piece's implementation
+approach → spec. Not every spec needs a full grilling session — only
+ones with real open branches. `programmer` writes a spec before
+implementing anything non-trivial, and references it while implementing.
+
 ## Terminology
 
 - **Skill**: repeatable, on-demand, invoked directly — no persistent

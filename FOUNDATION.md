@@ -114,6 +114,51 @@ legible; together, they hold both.
   being worked out as of this writing — see the harness's own
   `docs/LEARNING_LOG.md` for the reasoning trail.
 
+## Specs, and how `grilling` feeds them
+
+Following Spec-Driven Development's core idea — a written spec as the
+primary artifact, with implementation as a regenerable output derived
+from it — applied here to individual pieces of implementation work in a
+target project, not just to this harness's own `CLAUDE.md`/`AGENTS.md`
+generation (which already follows the same principle at the harness
+level).
+
+Every target project gets a `docs/specs/` folder, alongside its
+`docs/decisions/` and `docs/LEARNING_LOG.md`. Three documents, three
+distinct roles, deliberately not overlapping:
+
+- **ADR** (`docs/decisions/`) — *why* a broad, cross-cutting technical
+  direction was chosen. Rare — one per real architectural fork.
+- **Spec** (`docs/specs/`) — *what* one specific piece of implementation
+  work will do, written *before* implementing it. One per non-trivial
+  unit of work, numbered the same way a target project already numbers
+  its "pieces" in its own `LEARNING_LOG.md` (e.g. `docs/specs/0012-
+  mac-signaling-client.md`), so the two stay easy to cross-reference.
+- **`LEARNING_LOG.md`** — *what actually happened*, written after,
+  including anywhere the implementation ended up deviating from its own
+  spec, and why.
+
+`grilling` (the skill that stress-tests a decision through numbered,
+recommendation-attached question rounds until nothing is left open) is
+the shared mechanism feeding both ADRs and specs — same process, two
+different destinations depending on scale:
+
+- A big, cross-cutting architecture decision → `grilling` → an ADR.
+- A specific piece's implementation approach → `grilling` → a spec.
+
+Not every spec needs a full `grilling` session. A piece of work with no
+real open branches can just get a short spec written directly — the
+same way a low-risk, reversible decision doesn't need a whole question
+round of its own. `grilling` earns its place when a spec has genuine
+open decisions in it, not as a mandatory ritual for every piece of work
+regardless of size.
+
+The `programmer` agent (see `.claude/agents/` below) is expected to
+write a spec before implementing any non-trivial piece of work in a
+target project, and to reference that spec while implementing —
+formalizing what was, until now, a decision that only ever lived in
+conversation and then disappeared once the implementation shipped.
+
 ## Terminology — defined precisely, corrected once already
 
 - **Skill**: a repeatable, on-demand procedure, invoked directly
