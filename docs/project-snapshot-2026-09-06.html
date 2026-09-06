@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Snapshot — 2026-09-06</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f6f3ec; --panel: #ece4d3; --panel-line: #ddd2b8;
+    --ink: #1b2430; --ink-soft: #4a5468; --accent: #c9722c; --muted: #b9b0a0;
+    --source: #b23b3b; --generated: #2a5db0; --agents: #6b3fa0; --skills: #2f7d5f;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --sans: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #11151c; --panel: #1a2029; --panel-line: #2a3240;
+      --ink: #e8e3d6; --ink-soft: #a7b0c2; --accent: #e79350; --muted: #4a5568;
+      --source: #e0716f; --generated: #6fa3e0; --agents: #b892e8; --skills: #5fbf95;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.6; }
+  .page { max-width: 800px; margin: 0 auto; padding: 48px 24px 96px; }
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-family: var(--mono); font-size: clamp(24px, 5vw, 34px); font-weight: 600; margin: 8px 0 4px; text-wrap: balance; }
+  .subtitle { font-family: var(--mono); font-size: 14px; color: var(--ink-soft); margin: 0 0 28px; }
+  .headline { font-size: 16px; font-weight: 500; background: var(--panel); border-left: 4px solid var(--accent); padding: 16px 20px; border-radius: 6px; margin: 0 0 36px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 12.5px; margin: 0 0 24px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+  .tree { font-family: var(--mono); font-size: 13.5px; background: var(--panel); border: 1px solid var(--panel-line); border-radius: 10px; padding: 22px 24px; overflow-x: auto; }
+  .tree .line { white-space: pre; }
+  .tree .note { color: var(--ink-soft); font-family: var(--sans); font-style: italic; }
+  .tree .root { color: var(--ink); font-weight: 600; }
+  .tree .source { color: var(--source); font-weight: 600; }
+  .tree .generated { color: var(--generated); font-weight: 600; }
+  .tree .agents { color: var(--agents); font-weight: 600; }
+  .tree .skills { color: var(--skills); font-weight: 600; }
+  .tree .config { color: var(--muted); }
+
+  section { margin: 40px 0; padding-top: 32px; border-top: 1px solid var(--panel-line); }
+  h2 { font-family: var(--mono); font-size: 17px; font-weight: 600; margin: 0 0 12px; }
+  p { max-width: 66ch; }
+  code { font-family: var(--mono); font-size: 0.9em; background: var(--panel); border: 1px solid var(--panel-line); border-radius: 4px; padding: 0.1em 0.35em; }
+
+  .stat-row { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0; }
+  .stat { background: var(--panel); border: 1px solid var(--panel-line); border-radius: 8px; padding: 12px 16px; min-width: 120px; }
+  .stat .n { font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--accent); }
+  .stat .label { font-size: 12px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Project Snapshot — a dated record of a codebase's shape</div>
+  <h1>Free Wings</h1>
+  <p class="subtitle">2026-09-06 — founding day: named, MIT-licensed, three agents and four skills in place</p>
+
+  <p class="headline">
+    Same series Shadow Glass started (see its own
+    <code>docs/project-snapshot-2026-09-05.html</code>) — a dated,
+    visual record of a project's directory shape at a milestone. This
+    one is the harness's own "day one" photo: everything below was built
+    in a single founding session, one source file (<code>FOUNDATION.md</code>)
+    generating everything else that needs to be tool-specific.
+  </p>
+
+  <div class="stat-row">
+    <div class="stat"><div class="n">3</div><div class="label">general agents</div></div>
+    <div class="stat"><div class="n">4</div><div class="label">skills</div></div>
+    <div class="stat"><div class="n">1</div><div class="label">source of truth</div></div>
+    <div class="stat"><div class="n">1</div><div class="label">target project (Shadow Glass)</div></div>
+  </div>
+
+  <section style="border-top:none; margin-top:0; padding-top:0;">
+    <h2>The tree, as it stands today</h2>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--source)"></i>Source (hand-written)</span>
+      <span><i class="dot" style="background:var(--generated)"></i>Generated from the source</span>
+      <span><i class="dot" style="background:var(--agents)"></i>Agents</span>
+      <span><i class="dot" style="background:var(--skills)"></i>Skills</span>
+      <span><i class="dot" style="background:var(--muted)"></i>Config / docs / license</span>
+    </div>
+    <div class="tree"><div class="line"><span class="root">free-wings/</span>                        <span class="note">— Asas Livres</span></div><div class="line">├── <span class="source">FOUNDATION.md</span>                  <span class="note">— the one source of truth, tool-agnostic, hand-written</span></div><div class="line">├── <span class="generated">CLAUDE.md</span>                      <span class="note">— generated by `construct`, for Claude Code</span></div><div class="line">├── <span class="generated">AGENTS.md</span>                      <span class="note">— generated by `construct`, for OpenCode etc., more explicit</span></div><div class="line">├── <span class="config">README.md</span>                      <span class="note">— human-facing: what this is, how to adopt it</span></div><div class="line">├── <span class="config">LICENSE</span>                        <span class="note">— MIT</span></div><div class="line">├── <span class="config">.gitignore</span></div><div class="line">│</div><div class="line">├── <span class="agents">.claude/agents/</span></div><div class="line">│   ├── programmer.md              <span class="note">— explains + implements while teaching</span></div><div class="line">│   ├── observer.md                <span class="note">— read-only about a project, writes only to docs/observations/</span></div><div class="line">│   └── writer.md                  <span class="note">— general + labeled project-specific themes</span></div><div class="line">│</div><div class="line">├── <span class="skills">.claude/skills/</span></div><div class="line">│   ├── construct.md               <span class="note">— FOUNDATION.md → CLAUDE.md/AGENTS.md</span></div><div class="line">│   ├── write-diary.md             <span class="note">— appends a LEARNING_LOG.md entry</span></div><div class="line">│   ├── write-article.md           <span class="note">— docs/articles/, for external readers</span></div><div class="line">│   └── write-linkedin-post.md     <span class="note">— docs/social/, short and hook-first</span></div><div class="line">│</div><div class="line">└── <span class="config">docs/</span></div><div class="line">    ├── LEARNING_LOG.md            <span class="note">— this founding session, warts included</span></div><div class="line">    └── decisions/                <span class="note">— empty so far; today's decisions live in FOUNDATION.md's prose</span></div></div>
+  </section>
+
+  <section>
+    <h2>What's symlinked out, not shown above</h2>
+    <p>
+      Every agent and skill above also has a symlink in
+      <code>~/.claude/agents/</code> or <code>~/.claude/skills/</code> —
+      one editable source (this repo), globally invokable from any
+      project directory. Agents were confirmed to hot-load mid-session;
+      skills, as of this snapshot, need a session restart to register —
+      a real asymmetry found while testing today, not assumed.
+    </p>
+  </section>
+
+  <section>
+    <h2>What this snapshot doesn't show</h2>
+    <p>
+      On purpose: <code>.git/</code>, and anything gitignored. The point
+      of a snapshot is the shape deliberately authored, not tooling
+      metadata.
+    </p>
+  </section>
+</div>
+</body>
+</html>
