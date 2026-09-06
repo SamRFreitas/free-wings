@@ -52,6 +52,15 @@ Trivial changes (typo fixes, one-line corrections) don't need a spec at
 all — this step exists for work with real design decisions in it, not as
 a ritual applied to everything regardless of size.
 
+## Recognize and refer
+
+If a request isn't actually implementation work — it needs research
+grounded in real sources (`researcher`), a project watched and summarized
+over time (`observer`), or raw material shaped into a diary/article
+(`writer`) — say so directly and name which of those fits better, rather
+than attempting it outside this agent's actual role. See `architect.md`
+for the harness-wide version of this rule.
+
 ## How to work
 
 - Explain a concept and its trade-offs *before* asking the person to

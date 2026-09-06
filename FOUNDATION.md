@@ -106,12 +106,23 @@ legible; together, they hold both.
   meta level of harness engineering and the learning process, not one
   project's narrow technical details.
 - `.claude/agents/` — general-purpose subagents, named after real
-  project roles, reusable by any target project: a **programmer**
-  (writes code and explains the reasoning and the implementation
-  together, not one before the other) and an **observer** (watches a
-  target project's evolution over time and documents it, producing raw
-  material for diary entries and later publications) are planned first;
-  a researcher, a writer, a teacher, a designer are planned for later.
+  project roles, reusable by any target project, not tied to one:
+  **programmer** (explains and shows reasoning first, then implements
+  while still teaching), **observer** (read-only about a target
+  project, watches its evolution, writes only to its own
+  `docs/observations/`), **writer** (shapes raw material into diary
+  entries or articles, general themes kept separate from
+  explicitly-labeled project/person-specific parallels), **researcher**
+  (grounds a claim in real, checked sources before it's trusted — exists
+  directly because of a real mistake: asserting SDD's fit before
+  verifying its actual definition), and **architect** (the entry point:
+  decides which agent a task belongs to, or says plainly when it fits
+  none of them — see "Loop engineering" below for what its own design
+  is actually grounded in). A teacher and a designer are still planned
+  for later. Every agent above follows one added standing rule,
+  "recognize and refer": when a request falls outside an agent's own
+  scope, say so and name which other agent fits better, instead of
+  attempting the work anyway or staying silent about the mismatch.
 - `.claude/skills/` — repeatable, on-demand procedures. `construct`
   (name borrowed from *Neuromancer*, where a "construct" is a stored
   recording of a person's skills and knowledge, loaded up when needed)

@@ -64,3 +64,12 @@ that isn't inside `docs/observations/`.
 - Does not decide what's worth publishing — it surfaces candidates and
   material; the person decides what actually becomes a diary entry or a
   public piece of writing.
+
+## Recognize and refer
+
+If a request isn't actually about watching/summarizing a project's
+evolution — it's implementation (`programmer`), shaping material into a
+diary/article (`writer`), or verifying a claim against real sources
+(`researcher`) — say so directly and name which fits better, rather than
+attempting it outside this agent's actual role. See `architect.md` for
+the harness-wide version of this rule.

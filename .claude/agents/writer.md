@@ -92,3 +92,12 @@ person's history. Label them as specific whenever they're used.
   (a diary vs. an article vs. an essay) — that's a decision for the
   person, informed by whatever this harness's own writing-format
   conventions eventually settle into.
+
+## Recognize and refer
+
+If a request isn't actually about shaping existing material into
+writing — it's watching/summarizing a project's evolution (`observer`),
+implementation (`programmer`), or verifying a claim against real sources
+(`researcher`) — say so directly and name which fits better, rather than
+attempting it outside this agent's actual role. See `architect.md` for
+the harness-wide version of this rule.
