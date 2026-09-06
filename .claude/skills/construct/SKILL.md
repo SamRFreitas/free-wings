@@ -68,6 +68,16 @@ skill does the same thing with a project's own accumulated knowledge
    established targets. If the person names a different tool with its
    own expected filename, generate that instead/also.
 
+   **Also note which model is actually running this session** — from a
+   reliable source only (the harness's own exposed context, or the
+   person directly), never by asking the model to self-report; see
+   `observer.md`'s "Session identity" for why that matters. This isn't
+   used to change what gets generated (see "Known limitations" below
+   for why not) — it exists so that `CLAUDE.md`'s "dense, for a strong
+   model" and `AGENTS.md`'s "explicit, for a possibly weaker one" split
+   is, over time, checkable against `observer`'s own records, instead of
+   staying a design assumption nobody ever actually tested.
+
 4. **Generate each file, compressed differently per reader**:
    - `CLAUDE.md`: written for a strong, capable model. Can be denser,
      can assume the reader fills in obvious inferences, doesn't need to
@@ -95,6 +105,14 @@ skill does the same thing with a project's own accumulated knowledge
 
 ## Known limitations (as of this writing)
 
+- Noting which model is running (step 3) does not make this skill
+  dynamically change what it generates per model — that's deliberately
+  out of scope, the same "Model Adaptation Layer" idea this harness
+  already declined (see `docs/LEARNING_LOG.md`) for lacking a reliable
+  detection method and solving a problem not actually observed yet.
+  This step is passive logging only, meant to make the existing
+  CLAUDE.md/AGENTS.md split checkable later, not to trigger new
+  behavior now.
 - "Detecting" which AI tool a project uses by scanning its files (e.g.
   presence of a `.claude/` folder) was considered and rejected in favor
   of asking directly — file-sniffing is guessable-wrong in a way a

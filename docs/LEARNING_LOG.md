@@ -1,5 +1,36 @@
 # Logbook — Free Wings
 
+## 2026-09-06 — `observer` captures session identity, corrected before it shipped
+
+A request came in to have `observer` "ask which model" is running each
+session, with specs, plus a harness-structure snapshot and per-session
+results — and to add the same to `construct`. Caught immediately, before
+writing anything: "ask the model which model it is" is exactly the
+self-report pattern already flagged as unreliable a few messages earlier
+in this same conversation, in the MAL rejection above. Implementing it
+anyway would have quietly contradicted a rule this project had just
+committed to.
+
+The actually reliable version, implemented instead: model identity comes
+from a real source — the harness's own exposed session context (Claude
+Code states its own model plainly, not something to guess at), a tool's
+own configuration when one exists, or asking the person directly, since
+they're the one who chose it. Never by asking the model to introspect
+conversationally. If none of those is available, `observer` says so
+plainly rather than fabricating a name.
+
+`observer` now captures this, plus a short harness-state note (agent/
+skill count, anything recently changed), as the very first thing it does
+— before even reading `FOUNDATION.md` — and also now logs, per
+observation, which agents/skills were actually used and a one-line note
+on how each went. `construct` picked up the same reliable
+model-identification step, passively logged only (explicitly not used
+to change generation behavior — that would just be MAL again under a
+different name) — its purpose is to make the existing, never-empirically-
+tested "CLAUDE.md dense for a strong model, AGENTS.md explicit for a
+weaker one" split checkable later against `observer`'s own real records,
+instead of staying an untested assumption indefinitely.
+
 ## 2026-09-06 — A "Model Adaptation Layer" proposal, declined; `observer` gets grounded signals instead
 
 A second proposal arrived, "MAL" — a dynamic system that would detect

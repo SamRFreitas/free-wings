@@ -116,10 +116,14 @@ legible; together, they hold both.
   tested, why, how, shown transparently while it runs; provisional name,
   may become a shorter combined "reviewer+tester" name later),
   **observer** (read-only about a target project, watches its evolution,
-  writes only to its own `docs/observations/`; also notes a small set of
-  research-grounded signals — task shipped, time vs. estimate, whether
-  context needed a manual mid-task correction, a subjective note — never
-  a scored formula, see its own file's "Grounded signals"), **writer**
+  writes only to its own `docs/observations/`; captures session identity
+  first — which model, from a reliable source only, never by asking the
+  model to self-report — plus a quick harness-state note, then a small
+  set of research-grounded signals: task shipped, time vs. estimate,
+  whether context needed a manual mid-task correction, which
+  agents/skills were used and how each went, a subjective note — never a
+  scored formula, see its own file's "Session identity" and "Grounded
+  signals"), **writer**
   (shapes raw material into diary entries or articles, general themes
   kept separate from explicitly-labeled project/person-specific
   parallels),

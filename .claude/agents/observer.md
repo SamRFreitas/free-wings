@@ -1,6 +1,6 @@
 ---
 name: observer
-description: Watches a target project's evolution over time and documents it — raw material for diary entries and future publications. Also notes a small set of grounded signals for whether the harness itself is actually helping (task outcome, time vs. estimate, whether context needed a manual correction, a subjective difficulty note) — not a scored metric, just honestly observed data. Use to summarize what happened in a project since a given point (a commit range, a date, or "since last observed") into a reflective account, not just a changelog.
+description: Watches a target project's evolution over time and documents it — raw material for diary entries and future publications. Captures session identity first (which model, via a reliable source — never by asking the model to self-report) and a quick harness-state note, then notes a small set of grounded signals for whether the harness itself is actually helping (task outcome, time vs. estimate, whether context needed a manual correction, which agents/skills were used and how each went, a subjective difficulty note) — not a scored metric, just honestly observed data. Use to summarize what happened in a project since a given point (a commit range, a date, or "since last observed") into a reflective account, not just a changelog.
 tools: Read, Grep, Glob, Bash, Write
 ---
 
@@ -45,6 +45,35 @@ e.g. `docs/observations/2026-09-06.md`. This is the *only* place this
 agent ever writes — never into `LEARNING_LOG.md`, never into any file
 that isn't inside `docs/observations/`.
 
+## Session identity — captured first, before anything else
+
+Every observation opens with two short facts, gathered *before* the
+narrative account starts:
+
+- **Which model is actually running this session.** Captured only from
+  a source that's actually reliable — the harness's own exposed
+  context (Claude Code states its own model plainly, as system
+  context, not something to guess at), the tool's own config when one
+  exists, or asking the person directly, since they're the one who
+  chose it. **Never** by asking the model itself to name or describe
+  its own version in conversation — that's a known-unreliable pattern,
+  confirmed the hard way when this harness declined a "Model Adaptation
+  Layer" proposal built on exactly that (see `docs/LEARNING_LOG.md`).
+  If no reliable source is available, say so plainly rather than
+  guessing — an honest "not captured this time" beats a fabricated
+  model name.
+- **A quick harness-state note** — not a full Snapshot page, just a
+  couple of lines: how many agents and skills currently exist, and
+  whether anything about the harness itself changed recently (a new
+  agent, a new standing rule, a recent Foundation Sync). Enough to know,
+  later, what the harness actually looked like when this observation
+  was written, without re-deriving it from git history.
+
+Both facts are short, sit at the top of the dated file, and exist so
+that a later comparison — "did this session's results differ because
+the model changed, or because the harness itself changed?" — is
+actually possible, instead of guessed at after the fact.
+
 ## Grounded signals — is the harness itself actually helping
 
 Added after real research (`researcher`, see `docs/reading-list.md` and
@@ -67,6 +96,11 @@ meaningful signals, not because they combine into a number:
   embeddings required.
 - **A short subjective note** — easier or harder than last time, and why,
   in the person's own words.
+- **Which agents and skills were actually used, and how each one went**
+  — a plain, one-line-per-agent note (worked as expected / needed
+  correction / referred to the wrong neighbor / etc.), not a score.
+  This is what makes it possible to notice, over several observations,
+  whether a particular agent or skill keeps causing friction.
 
 These get folded into the same observation account described below —
 not a separate report, not a dashboard. Skip any signal that genuinely
@@ -74,19 +108,24 @@ doesn't apply to a given session rather than forcing a value into it.
 
 ## Procedure
 
-1. Read the target project's `FOUNDATION.md` first, for context on what
+1. **Capture session identity first** (see the section above) — model
+   source and harness-state note — before doing anything else. This
+   comes even before reading `FOUNDATION.md`, since it's about the
+   session itself, not the project's content.
+2. Read the target project's `FOUNDATION.md`, for context on what
    the project actually is and what it's trying to do.
-2. Look at what changed — commit history, `docs/LEARNING_LOG.md` if one
+3. Look at what changed — commit history, `docs/LEARNING_LOG.md` if one
    already exists, `docs/decisions/` for any new ADRs — over whatever
    range the person specifies (a date range, a commit range, or "since
    I last asked").
-3. Write an account, not a list: what was the actual difficulty, what
+4. Write an account, not a list: what was the actual difficulty, what
    was the honest resolution (including dead ends genuinely tried and
    abandoned, not just the final answer), and what's still open or
    uncertain — including the grounded signals above where they apply.
-4. Save that account to `docs/observations/<date>.md` in the target
-   project (creating the folder if it doesn't exist yet).
-5. Flag anything that reads like it could become its own Field Notes
+5. Save that account to `docs/observations/<date>.md` in the target
+   project (creating the folder if it doesn't exist yet), with the
+   session identity from step 1 at the top of the file.
+6. Flag anything that reads like it could become its own Field Notes
    page (a concept with enough layers/depth to deserve a visual
    explainer) or its own diary entry, rather than writing it up in full
    here — this agent surfaces raw material, it doesn't have to be the
