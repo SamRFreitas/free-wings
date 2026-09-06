@@ -74,6 +74,13 @@ whatever comes after it. Every project under this harness:
    own `FOUNDATION.md` first, follow *that* project's conventions, never
    guess at rules that aren't written down anywhere.
 
+## License
+
+[MIT](LICENSE) — chosen deliberately over a copyleft license (like GPL):
+Santos Dumont's refusal to patent his work was an unconditional gift, not
+an obligation attached to how others used it afterward. MIT matches that
+spirit more closely — use this however you want, no strings attached.
+
 ## Status
 
 Founded 2026-09-05, named Free Wings on 2026-09-06. Shadow Glass is the
