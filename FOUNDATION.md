@@ -4,7 +4,7 @@
 
 > The source. Not read automatically by any AI tool — compiled into
 > whatever each tool actually needs (`CLAUDE.md`, `AGENTS.md`, and
-> whatever else shows up later) by the `construct` skill. This file is
+> whatever else shows up later) by the `construct` bootstrapper. This file is
 > the one place the *reasoning* lives in full; the generated files are
 > optimized excerpts of it, not the other way around.
 
@@ -86,8 +86,13 @@ legible; together, they hold both.
 - `FOUNDATION.md` (this file) — the one source of truth, tool-agnostic,
   as dense and complete as it needs to be. Never generated; always
   hand-written and hand-edited directly.
+- `CONSTRUCT.md` — the bootstrapper itself. Reads this `FOUNDATION.md`
+  and the `hangar/` blueprint, then generates/updates the tool‑specific
+  files (`CLAUDE.md`, `AGENTS.md`, etc.) for the environment it detects.
+  This file is the orchestrator — not a skill, not a script — and lives
+  at the project root.
 - `CLAUDE.md`, `AGENTS.md`, and any future tool-specific file — generated
-  from this Foundation by the `construct` skill, each one optimized for
+  from this Foundation by the `construct` bootstrapper, each one optimized for
   its specific reader (a weaker model reading `AGENTS.md`, for instance,
   gets more explicit, less-compressed instructions than a stronger one
   reading `CLAUDE.md` — the same underlying truth, different
@@ -105,7 +110,7 @@ legible; together, they hold both.
 - `docs/LEARNING_LOG.md` — the diary: one entry per session, at the
   meta level of harness engineering and the learning process, not one
   project's narrow technical details.
-- `.claude/agents/` — general-purpose subagents, named after real
+- `agents/` — general-purpose subagents, named after real
   project roles, reusable by any target project, not tied to one:
   **programmer** (explains and shows reasoning first, then implements
   while still teaching — divided into small pieces, one function or one
@@ -160,20 +165,12 @@ legible; together, they hold both.
   ones spanning more than one hop, not every mismatch. See
   `the-architect.md`'s "Proximity between agents" for the full
   reasoning.
-- `.claude/skills/` — repeatable, on-demand procedures. `construct`
-  (name borrowed from *Neuromancer*, where a "construct" is a stored
-  recording of a person's skills and knowledge, loaded up when needed)
-  reads a project's `FOUNDATION.md` and generates/updates that project's
-  `CLAUDE.md`/`AGENTS.md`/etc. from it. For a brand-new project with no
-  `FOUNDATION.md` yet, `construct` instead scaffolds it automatically
-  from the `hangar/` blueprint (folders created directly, never handed
-  to the person to copy by hand) and guides the dialogue that produces
-  its first real `FOUNDATION.md` — the dialogue itself still can't be
-  automated (see "Pedagogical approach"), only the mechanical scaffolding
-  can be.
-  `write-diary` and `write-article` (both reuse the `writer` agent's own
-  file rather than duplicating its themes) and `loop-status` (see "Loop
-  Status" above) are the other skills this harness provides so far.
+- `skills/` — repeatable, on-demand procedures. Currently:
+  `write-diary` (reuses the `writer` agent's own file rather than
+  duplicating its themes), `write-article` (same reuse), and
+  `loop-status` (see "Loop Status" above). These are the only skills
+  this harness provides. (The `construct` is **not** a skill — it is
+  the bootstrapper, located at the root as `CONSTRUCT.md`.)
 - `hangar/` — the blueprint `construct` reads from when scaffolding a
   brand-new project: a skeleton `FOUNDATION.md` (section prompts, not
   filled-in content) and empty `docs/decisions/`, `docs/specs/`,
@@ -220,7 +217,7 @@ round of its own. `grilling` earns its place when a spec has genuine
 open decisions in it, not as a mandatory ritual for every piece of work
 regardless of size.
 
-The `programmer` agent (see `.claude/agents/` below) is expected to
+The `programmer` agent (see `agents/` below) is expected to
 write a spec before implementing any non-trivial piece of work in a
 target project, and to reference that spec while implementing —
 formalizing what was, until now, a decision that only ever lived in
@@ -278,7 +275,7 @@ session. It's also shown proactively, but only at real checkpoints (the
 start and end of a multi-step cascade or a multi-piece implementation),
 not on every message — a status block on every turn would be exactly
 the kind of context bloat `observer`'s own grounded signals exist to
-watch for. See `.claude/skills/loop-status/SKILL.md` for the exact
+watch for. See `skills/loop-status/SKILL.md` for the exact
 block format and the full reasoning.
 
 ## Modular & Self-Sufficient Documentation
@@ -301,8 +298,8 @@ it does**, and **how it connects to the rest of the system** (its
 nearest neighbors, what reads it, what it reads). In practice, this
 means a short orientation note near the top of agent and skill files,
 present *from the moment a new one is created*, not added afterward as
-a separate cleanup step (see any `.claude/agents/*.md` or
-`.claude/skills/*/SKILL.md` file for the actual pattern); it means every
+a separate cleanup step (see any `agents/*.md` or
+`skills/*/SKILL.md` file for the actual pattern); it means every
 agent applies the same standard when explaining something to a person
 who doesn't yet understand it — assume no prior context, orient before
 explaining, don't presume the concept has already been introduced; and
@@ -368,7 +365,9 @@ mood) across every project under this harness: `feat`, `fix`,
 
 Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
 Six agents (`programmer`, `tester`, `observer`, `writer`, `researcher`,
-The Architect) and four skills (`construct`, `write-diary`,
-`write-article`, `loop-status`) are built and tested live. Shadow Glass
-is the first project sitting under this harness, and now has its own real
+The Architect) are built and tested live. Three skills
+(`write-diary`, `write-article`, `loop-status`) are available, plus the
+`construct` bootstrapper (root `CONSTRUCT.md`) which handles generation
+of tool‑specific files from this Foundation. Shadow Glass is the first
+project sitting under this harness, and now has its own real
 `FOUNDATION.md`, generated `CLAUDE.md`/`AGENTS.md` from it.
