@@ -361,6 +361,8 @@ Conventional Commits (`type(scope): description`, lowercase, imperative
 mood) across every project under this harness: `feat`, `fix`,
 `refactor`, `docs`, `style`, `test`, `chore`, `perf`, `ci`.
 
+**Granularity:** Commits should be atomic and focused on a single logical change. Whenever possible, one commit should correspond to one file (or to a set of changes that are genuinely inseparable, such as adding a file and its associated index). Avoid commits that mix unrelated changes across multiple files. This keeps the history clean, makes reverts easier, and helps future contributors understand the evolution of the project. If a change spans multiple files but they are interdependent (e.g., renaming a function and updating its callers), a single commit is acceptable — but the preference is for small, focused commits that are easy to review and understand.
+
 ## Current status
 
 Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
