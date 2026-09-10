@@ -33,7 +33,7 @@ This repository itself is not software with a runtime. It is the
 **general layer** — philosophy, formats, naming conventions, reusable
 blueprints for agents and skills — that any target project (Shadow
 Glass first) can sit underneath. A general-purpose agent working inside
-this harness (a "programmer," an "observer") reads a target project's
+this harness (a "programmer," a "deneir") reads a target project's
 own `FOUNDATION.md` directly, by absolute path, to understand that
 project — no bespoke per-project adapter file needs to be hand-written
 and kept in sync; every project having its own `FOUNDATION.md` already
@@ -138,7 +138,7 @@ legible; together, they hold both.
       generates foundations.
 
     - `hangar/blueprints/agents/` — one markdown file per agent
-      (`programmer.md`, `tester.md`, `observer.md`, `writer.md`,
+      (`programmer.md`, `tester.md`, `deneir.md`, `writer.md`,
       `researcher.md`, `the-architect.md`). These are the canonical,
       tool-agnostic descriptions; `construct` compiles each into the
       format the detected tool expects, guided by that tool's blueprint
@@ -156,7 +156,7 @@ legible; together, they hold both.
       provisional name, may become a shorter combined
       "reviewer+tester" name later.
 
-      **observer** — read-only about a target project, watches its
+      **deneir** — read-only about a target project, watches its
       evolution, writes only to its own `docs/observations/`;
       captures session identity first — which model, from a reliable
       source only, never by asking the model to self-report — plus a
@@ -165,7 +165,10 @@ legible; together, they hold both.
       whether context needed a manual mid-task correction, which
       agents/skills were used and how each went, a subjective note —
       never a scored formula, see its own file's "Session identity"
-      and "Grounded signals".
+      and "Grounded signals". Named after Deneir, the god of writing
+      and record-keeping in Forgotten Realms, whose central tenet —
+      "information that is not recorded and preserved is information
+      lost" — is the agent's own functional reason to exist.
 
       **writer** — shapes raw material into diary entries or
       articles, general themes kept separate from
@@ -202,8 +205,8 @@ legible; together, they hold both.
       though — the same way a front-end engineer and a back-end
       engineer share far more tools, process, and vocabulary than
       either shares with a designer, some pairs here are genuinely
-      closer to each other than to the rest: **observer ↔ writer**
-      (observer's output already exists specifically to become
+      closer to each other than to the rest: **deneir ↔ writer**
+      (deneir's output already exists specifically to become
       writer's raw material), and a three-agent chain
       **researcher → programmer → tester** (grounding a decision is
       where researcher hands off to programmer, before implementing;
@@ -216,13 +219,14 @@ legible; together, they hold both.
       hop, not every mismatch. See `the-architect.md`'s "Proximity
       between agents" for the full reasoning.
 
-    - `hangar/blueprints/skills/` — one folder per skill, each with
-      a `SKILL.md`. Currently: `write-diary` (reuses the `writer`
-      agent's own file rather than duplicating its themes),
-      `write-article` (same reuse), and `loop-status` (see "Loop
-      Status" above). These are the only skills this harness
-      provides. (The `construct` is **not** a skill — it is the
-      bootstrapper, located at the root as `CONSTRUCT.md`.)
+    - `hangar/blueprints/skills/` — one `.md` file per skill, each
+      defining a repeatable, on-demand procedure. Currently:
+      `write-diary.md` (reuses the `writer` agent's own file rather
+      than duplicating its themes), `write-article.md` (same reuse),
+      and `loop-status.md` (see "Loop Status" above). These are the
+      only skills this harness provides. (The `construct` is **not**
+      a skill — it is the bootstrapper, located at the root as
+      `CONSTRUCT.md`.)
 
     - `hangar/blueprints/tools/` — one file per supported tool
       (examples of names such a file might take: `claude.md`,
@@ -342,8 +346,8 @@ or invoking the `loop-status` skill directly gets this readout in any
 session. It's also shown proactively, but only at real checkpoints (the
 start and end of a multi-step cascade or a multi-piece implementation),
 not on every message — a status block on every turn would be exactly
-the kind of context bloat `observer`'s own grounded signals exist to
-watch for. See `hangar/blueprints/skills/loop-status/SKILL.md` for the
+the kind of context bloat `deneir`'s own grounded signals exist to
+watch for. See `hangar/blueprints/skills/loop-status.md` for the
 exact block format and the full reasoning.
 
 ## Modular & Self-Sufficient Documentation
@@ -367,7 +371,7 @@ to the rest of the system** (its nearest neighbors, what reads it, what
 it reads). In practice, this means a short orientation note near the top
 of agent and skill blueprints, present *from the moment a new one is
 created*, not added afterward as a separate cleanup step (see any
-`hangar/blueprints/agents/*.md` or `hangar/blueprints/skills/*/SKILL.md`
+`hangar/blueprints/agents/*.md` or `hangar/blueprints/skills/*.md`
 file for the actual pattern); it means every agent applies the same
 standard when explaining something to a person who doesn't yet
 understand it — assume no prior context, orient before explaining,
@@ -453,7 +457,7 @@ commits that are easy to review and understand.
 ## Current status
 
 Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
-Six agent blueprints (`programmer`, `tester`, `observer`, `writer`,
+Six agent blueprints (`programmer`, `tester`, `deneir`, `writer`,
 `researcher`, `The Architect`) and three skill blueprints
 (`write-diary`, `write-article`, `loop-status`) are built and tested
 live. The `construct` bootstrapper (`CONSTRUCT.md`) reads

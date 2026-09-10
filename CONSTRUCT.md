@@ -68,12 +68,12 @@ The philosophy here is uniform across tools: the tool's own harness follows the 
 
 - **Blueprint sources (tool-agnostic)**:
   - `FOUNDATION.md` at the project root — the source of truth.
-  - `hangar/blueprints/agents/` — one blueprint file per agent.
-  - `hangar/blueprints/skills/` — one folder per skill, each with a `SKILL.md`.
+  - `hangar/blueprints/agents/` — one `.md` file per agent.
+  - `hangar/blueprints/skills/` — one `.md` file per skill.
   These are schemas, not executables. They do not run on their own.
 
 - **Per-tool compilation logic**:
-  - I read `hangar/blueprints/tools/<tool>.md` to learn exactly where the compiled outputs go, what file names the tool expects, and any format quirks.
+  - I read `hangar/blueprints/tools/<tool>.md` to learn exactly where the compiled outputs go, what file names the tool expects, and any format quirks (including whether a skill blueprint's flat `.md` file needs to be converted into that tool's own folder-and-file convention, if it has one).
   - I then follow those instructions literally: compile each blueprint into the location and shape the tool demands.
   - If no blueprint exists for the detected tool, I stop and ask the user for guidance rather than guessing. Adding support for a new tool means writing a new file in `hangar/blueprints/tools/`, not editing this `CONSTRUCT.md`.
 
@@ -138,7 +138,7 @@ If I detect that `FOUNDATION.md` is missing, I will:
 
 ## Handling Write Permissions
 
-This harness recognizes that some agents (e.g., the `observer`) are intentionally read‑only and may not have write access. Additionally, a user may open the project in an environment where write permissions are restricted (e.g., a container, a shared drive).
+This harness recognizes that some agents (e.g., `deneir`) are intentionally read‑only and may not have write access. Additionally, a user may open the project in an environment where write permissions are restricted (e.g., a container, a shared drive).
 
 - **If I am a read‑only agent** (or if I detect that I lack write permissions), I will **not attempt** to generate files. Instead, I will:
   - Explain to the user: *"I am a read‑only agent (or lack write permissions). I cannot perform the bootstrap. Please invoke the construct with a write‑capable agent, or grant write permissions to this directory."*
