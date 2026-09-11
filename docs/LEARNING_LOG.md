@@ -553,3 +553,7 @@ project adopting this harness, and a short Freire/Santos Dumont section
 for anyone arriving from outside), a directory Snapshot of this
 repository once everything above settles, and real tests of the
 untested agents/skills against Shadow Glass.
+
+## 2026-09-11 — `construct` bootstrapped `.opencode/` from FOUNDATION.md
+
+AI-Assisted Tool detected: OpenCode. Target: Free Wings itself. Action: Generated `.opencode/AGENTS.md` (project root), `.opencode/agents/` with compiled agent blueprints (programmer, tester, deneir, writer, researcher, the-architect), and `.opencode/skills/` with compiled skill blueprints (write-diary, write-article, loop-status). All derived from `FOUNDATION.md` and `hangar/blueprints/` via the OpenCode adapter. No issues encountered.
