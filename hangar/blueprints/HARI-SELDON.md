@@ -1,12 +1,18 @@
 # Hari Seldon — Foundation Blueprint for New Projects
 
-> This is a blueprint, not the Foundation itself. The `construct` bootstrapper reads this structure to guide the dialogue that produces a real `FOUNDATION.md` for a project that doesn't have one yet. All content below must come from a real conversation between the person and their AI assistant — never filled in by guessing.
+> This is a blueprint, not the Foundation itself. It is passed as an optional parameter to `construct` — `@CONSTRUCT @HARI-SELDON` — when the target is another project rather than Free Wings itself. In that mode, `construct` reads this blueprint and walks the person through a dialogue that fills each section, producing the target project's real `FOUNDATION.md`. All content below must come from a real conversation between the person and their AI assistant — never filled in by guessing.
 
 <!--
-Orientation — where you are: this file lives inside `hangar/blueprints/`, alongside its siblings `agents/`, `skills/`, and `tools/`. None of them execute on their own; they exist to be read by `construct`.
-What this file does: it provides the section skeleton for a new project's `FOUNDATION.md`. When `construct` detects that a project has no `FOUNDATION.md`, it reads this blueprint and walks the person through a dialogue that fills each section with real content.
-How it connects: read by `construct` (at the project root) during scaffolding. Produces a `FOUNDATION.md` (at the target project's root). Named after Hari Seldon, the fictional creator of the Foundation in Asimov's novels — the blueprint that generates foundations.
+Orientation — where you are: this file lives inside `hangar/blueprints/`, alongside its siblings `agents/`, `skills/`, and `adapters/`. None of them execute on their own; they exist to be read by `construct`.
+What this file does: it provides the section skeleton for a new project's `FOUNDATION.md`. It is the parameter that tells `construct` the target is another project — when `construct` is invoked with `@CONSTRUCT @HARI-SELDON`, it reads this blueprint and walks the person through a dialogue that fills each section with real content.
+How it connects: passed as a parameter to `construct`. Together, `construct` + `HARI-SELDON` scaffold a new project's `FOUNDATION.md`. Without HARI-SELDON as the parameter, `construct` operates on Free Wings itself and does not read this file. Named after Hari Seldon, the fictional creator of the Foundation in Asimov's novels — the blueprint that generates foundations.
 A note on scope: this blueprint deliberately does not carry Free Wings' own identity-level content (its name, its Freire/Dumont philosophy, its bilingual-by-design commitment). Those belong to Free Wings itself. What this blueprint does offer is the harness's standing rules as optional inheritance — see "Harness conventions" below.
+
+Relationship to the other two pillars:
+- `FOUNDATION.md` — the source of truth of whichever project I help scaffold. My job is to produce the target project's own `FOUNDATION.md`; I do not produce Free Wings' own.
+- `CONSTRUCT.md` — the bootstrapper that receives me as a parameter. It reads me during scaffolding, and together we produce the target project's `FOUNDATION.md`.
+- Me (`HARI-SELDON.md`) — the optional parameter that tells `construct` the target is another project.
+
 This is a blueprint, not a file to copy by hand. The actual content in each section below has to come from a real conversation between the person and their AI assistant. Nothing below should ever be filled in by guessing.
 -->
 
@@ -24,7 +30,7 @@ This is a blueprint, not a file to copy by hand. The actual content in each sect
 
 ## Language convention
 
-[What language does conversation happen in? What language do written files (code comments, docs, commit messages) use? These aren't always the same — ask, don't assume. Not every contributor or AI tool works in English; state the project's choice explicitly.]
+[What language does conversation happen in? What language do written files (code comments, docs, commit messages) use? These aren't always the same — ask, don't assume. Not every contributor or AI-Assisted Tool works in English; state the project's choice explicitly.]
 
 ## Commit convention
 
@@ -36,7 +42,7 @@ This is a blueprint, not a file to copy by hand. The actual content in each sect
 
 - **Pedagogical approach** — [default: explain a concept and its trade-offs before asking for a decision, unless the decision is low-risk and reversible. Adopt, adapt, or replace?]
 
-- **Terminology** — [default: the harness glossary defines Skill, Agent, Blueprint, Field Notes, and Snapshot, and avoids the word "artifact". Adopt, adapt, or replace?]
+- **Terminology** — [default: the harness glossary defines AI-Assisted Tool, Skill, Agent, Blueprint, Adapter, Field Notes, and Snapshot, and avoids the word "artifact". Adopt, adapt, or replace?]
 
 - **Modular & Self-Sufficient Documentation** — [default: every file orients the reader — where they are, what it does, how it connects to the rest. Adopt, adapt, or replace?]
 
