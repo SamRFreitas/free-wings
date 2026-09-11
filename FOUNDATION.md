@@ -2,32 +2,34 @@
 
 **Project: Free Wings** (*Asas Livres*)
 
-> The source. Not read automatically by any AI tool — compiled into
-> whatever each tool actually needs (tool-specific instruction files
-> such as `CLAUDE.md` or `AGENTS.md`, and whatever else shows up later)
-> by the `construct` bootstrapper. This file is the one place the
-> *reasoning* lives in full; the generated files are optimized excerpts
-> of it, not the other way around.
+> The source. Not read automatically by any AI-Assisted Tool — compiled
+> into whatever each AI-Assisted Tool actually needs (AI-Assisted-Tool-
+> specific instruction files such as `CLAUDE.md` or `AGENTS.md`, and
+> whatever else shows up later) by the `construct` bootstrapper. This
+> file is the one place the *reasoning* lives in full; the generated
+> files are optimized excerpts of it, not the other way around.
 
 Every project under this harness — this Free Wings repository included
-— has exactly one `FOUNDATION.md`, tool-agnostic by design.
-Nothing in this file should ever assume a specific AI tool is reading
-it; the moment it does, that content has drifted out of the Foundation
-and belongs in a generated, tool-specific file instead.
+— has exactly one `FOUNDATION.md`, AI-Assisted-Tool-agnostic by design.
+Nothing in this file should ever assume a specific AI-Assisted Tool is
+reading it; the moment it does, that content has drifted out of the
+Foundation and belongs in a generated, AI-Assisted-Tool-specific file
+instead.
 
 ## What this project is
 
 **Free Wings** (*Asas Livres*) is the general, reusable layer of a pattern meant to
 apply to *every* project, not just itself: each project keeps its own
-`FOUNDATION.md` (dense, complete, tool-agnostic) as its single source of
-truth, and generates whatever tool-specific instruction files it
-actually needs from that one source — instead of hand-maintaining
-multiple files that inevitably drift apart, which is exactly the
-maintenance burden Shadow Glass's own pair of tool files
-(`CLAUDE.md`/`AGENTS.md`, in that specific case) already accumulated by
-being edited by hand, twice, every time something changed. Those two
-file names are examples of the pattern, not requirements of it: any
-tool that reads a configuration file can be supported the same way.
+`FOUNDATION.md` (dense, complete, AI-Assisted-Tool-agnostic) as its
+single source of truth, and generates whatever AI-Assisted-Tool-specific
+instruction files it actually needs from that one source — instead of
+hand-maintaining multiple files that inevitably drift apart, which is
+exactly the maintenance burden Shadow Glass's own pair of AI-Assisted-
+Tool-specific files (`CLAUDE.md`/`AGENTS.md`, in that specific case)
+already accumulated by being edited by hand, twice, every time something
+changed. Those two file names are examples of the pattern, not
+requirements of it: any AI-Assisted Tool that reads a configuration file
+can be supported the same way.
 
 This repository itself is not software with a runtime. It is the
 **general layer** — philosophy, formats, naming conventions, reusable
@@ -44,8 +46,9 @@ over-engineered: a compiler has one front-end (the part that understands
 the source language, written once) and many pluggable back-ends (one per
 target architecture). This `FOUNDATION.md`, in any project, plays the
 front-end's role — general, written once, describing what's actually
-true about that project. Each generated tool-specific file plays a
-back-end's role — the same truth, compiled for one specific reader.
+true about that project. Each generated AI-Assisted-Tool-specific file
+plays a back-end's role — the same truth, compiled for one specific
+reader.
 
 ## Philosophy — why this exists, not just what it does
 
@@ -86,33 +89,42 @@ legible; together, they hold both.
 
 ## Structure
 
-- `FOUNDATION.md` (this file) — the one source of truth, tool-agnostic,
-  as dense and complete as it needs to be. Never generated; always
-  hand-written and hand-edited directly.
+Free Wings is carried by three pillars — `FOUNDATION.md`,
+`CONSTRUCT.md`, and `hangar/blueprints/HARI-SELDON.md` — described in
+full below. None assumes a specific AI-Assisted Tool.
+
+- `FOUNDATION.md` (this file) — the one source of truth, AI-Assisted-
+  Tool-agnostic, as dense and complete as it needs to be. Never
+  generated; always hand-written and hand-edited directly.
 - `CONSTRUCT.md` — the bootstrapper itself. Reads this `FOUNDATION.md`
-  and the `hangar/blueprints/`, then generates/updates the tool‑specific
-  files for the environment it detects. This file is the orchestrator —
-  not a skill, not a script — and lives at the project root. It does
-  not hardcode per-tool logic; that logic lives in
-  `hangar/blueprints/tools/`.
-- Tool-specific configuration files — generated from this Foundation by
-  the `construct` bootstrapper. `CLAUDE.md` (for Claude Code) and
-  `AGENTS.md` (for OpenCode and similar tools) are the currently-known
-  examples; the list is open-ended and grows as new tools appear. Each
-  one is optimized for its specific reader (a weaker model reading
-  `AGENTS.md`, for instance, gets more explicit, less-compressed
-  instructions than a stronger one reading `CLAUDE.md` — the same
-  underlying truth, different compression). The exact shape each tool
-  expects is not defined here; it lives in `hangar/blueprints/tools/`.
+  and the `hangar/blueprints/`, then generates/updates the AI-Assisted-
+  Tool-specific files for the environment it detects. This file is the
+  orchestrator — not a skill, not a script — and lives at the project
+  root. It does not hardcode per-AI-Assisted-Tool logic; that logic
+  lives in `hangar/blueprints/adapters/`. Invoked as `@CONSTRUCT` alone,
+  it bootstraps Free Wings itself; invoked as `@CONSTRUCT @HARI-SELDON`,
+  it scaffolds another project's `FOUNDATION.md` first and then
+  bootstraps that project. See `CONSTRUCT.md` for the full invocation
+  contract.
+- AI-Assisted-Tool-specific configuration files — generated from this
+  Foundation by the `construct` bootstrapper. `CLAUDE.md` (for Claude
+  Code) and `AGENTS.md` (for OpenCode and similar AI-Assisted Tools)
+  are the currently-known examples; the list is open-ended and grows as
+  new AI-Assisted Tools appear. Each one is optimized for its specific
+  reader (a weaker model reading `AGENTS.md`, for instance, gets more
+  explicit, less-compressed instructions than a stronger one reading
+  `CLAUDE.md` — the same underlying truth, different compression). The
+  exact shape each AI-Assisted Tool expects is not defined here; it
+  lives in `hangar/blueprints/adapters/`.
   **Gitignored, not committed** — same reasoning as never committing a
   `build/` folder: a file that's 100% regenerable from a tracked source
   doesn't belong in version control, and committing it would silently
-  assume every future contributor needs every supported tool's file,
-  rather than generating only the one they actually use. This isn't
-  specific to this repository — any project under this harness can make
-  the same call, though an existing project (Shadow Glass, at the time
-  of this decision) may reasonably keep them committed if that's already
-  the established practice there.
+  assume every future contributor needs every supported AI-Assisted
+  Tool's file, rather than generating only the one they actually use.
+  This isn't specific to this repository — any project under this
+  harness can make the same call, though an existing project (Shadow
+  Glass, at the time of this decision) may reasonably keep them
+  committed if that's already the established practice there.
 - `docs/decisions/` — ADRs about the harness itself (not about any one
   target project — those live in that project's own `docs/decisions/`).
 - `docs/LEARNING_LOG.md` — the diary: one entry per session, at the
@@ -121,28 +133,33 @@ legible; together, they hold both.
 - `hangar/` — the workshop. Named for where an aircraft is prepared
   before it flies; nothing inside `hangar/` executes directly. Every
   file here exists to be read by `construct`, which compiles the
-  blueprints into the tool-specific outputs that *do* fly. The
-  philosophy is uniform: the tool's own harness follows the blueprint
-  ideas, never the other way around.
+  blueprints into the AI-Assisted-Tool-specific outputs that *do* fly.
+  The philosophy is uniform: the AI-Assisted Tool's own harness follows
+  the blueprint ideas, never the other way around.
 
-  - `hangar/blueprints/` — the schemas. Every file here is a
-    tool-agnostic blueprint; `construct` compiles each into the format
-    its target tool expects.
+  - `hangar/blueprints/` — the schemas and rules that `construct`
+    reads. It contains blueprints (`agents/`, `skills/`, and
+    `HARI-SELDON.md`) plus `adapters/` (read as compilation rules).
+    Most blueprints are compiled into AI-Assisted-Tool-specific outputs;
+    `HARI-SELDON.md` is read during scaffolding instead. Each entry
+    below describes its own role in full.
 
     - `hangar/blueprints/HARI-SELDON.md` — the project foundation
-      blueprint. A section skeleton with guidance — prompts for
-      project-specific content and optional-inheritance defaults, not
-      filled-in project content. `construct` reads it when scaffolding
-      a brand-new project. Named after Hari Seldon, the fictional
-      creator of the Foundation in Asimov's novels: the blueprint that
-      generates foundations.
+      blueprint. Passed as an optional parameter to `construct`
+      (`@CONSTRUCT @HARI-SELDON`) when the target is another project.
+      `construct` reads it during scaffolding. A section skeleton with
+      guidance — prompts for project-specific content and
+      optional-inheritance defaults, not filled-in project content.
+      Named after Hari Seldon, the fictional creator of the Foundation
+      in Asimov's novels: the blueprint that generates foundations.
 
     - `hangar/blueprints/agents/` — one markdown file per agent
       (`programmer.md`, `tester.md`, `deneir.md`, `writer.md`,
       `researcher.md`, `the-architect.md`). These are the canonical,
-      tool-agnostic descriptions; `construct` compiles each into the
-      format the detected tool expects, guided by that tool's blueprint
-      in `hangar/blueprints/tools/`. The agents, described in full:
+      AI-Assisted-Tool-agnostic descriptions; `construct` compiles each
+      into the format the detected AI-Assisted Tool expects, guided by
+      that AI-Assisted Tool's adapter in `hangar/blueprints/adapters/`.
+      The agents, described in full:
 
       **programmer** — explains and shows reasoning first, then
       implements while still teaching — divided into small pieces,
@@ -185,10 +202,10 @@ legible; together, they hold both.
 
       **The Architect** — file and invocation identifier both
       `the-architect` (this harness keeps identifiers kebab-case, a
-      convention that happens to match what some tools require for a
-      subagent's `name:` field; the exact tool-specific validation
-      rule lives in the tool's blueprint under
-      `hangar/blueprints/tools/`, not here. "The Architect" itself
+      convention that happens to match what some AI-Assisted Tools
+      require for a subagent's `name:` field; the exact AI-Assisted-
+      Tool-specific validation rule lives in the tool's adapter under
+      `hangar/blueprints/adapters/`, not here. "The Architect" itself
       isn't a valid identifier because of the space and capitals, but
       the hyphenated `the-architect` is, so file and identifier
       match) — the entry point: decides which agent a task belongs
@@ -228,15 +245,19 @@ legible; together, they hold both.
       a skill — it is the bootstrapper, located at the root as
       `CONSTRUCT.md`.)
 
-    - `hangar/blueprints/tools/` — one file per supported tool
-      (examples of names such a file might take: `claude.md`,
-      `opencode.md`), describing how that tool's configuration file
-      should be shaped from the Foundation, where the compiled
-      outputs go, and any format quirks the tool expects. This is
-      where tool-specific compilation logic lives, kept out of
-      `CONSTRUCT.md` and out of `FOUNDATION.md` so that adding a new
-      tool means adding a blueprint, not editing the bootstrapper or
-      the Foundation.
+    - `hangar/blueprints/adapters/` — one file per supported
+      AI-Assisted Tool, each one an **adapter**: a description of how
+      `construct` adapts the harness's AI-Assisted-Tool-agnostic
+      blueprints to that specific AI-Assisted Tool — where the
+      compiled outputs go, what file names that AI-Assisted Tool
+      expects, and any format quirks. Two are provided by default —
+      `claude.md` (for Claude Code) and `opencode.md` (for OpenCode)
+      — both already part of the repository, serving double duty: as
+      active adapters *and* as working demonstrations of how easily a
+      new AI-Assisted Tool can be supported. Adding a new adapter is
+      a single file, not a change to `CONSTRUCT.md` or to the
+      Foundation. This is where AI-Assisted-Tool-specific compilation
+      logic lives, deliberately kept out of those two files.
 
   - `hangar/docs/learnings/` — learnings about the blueprints
     themselves and the harness-engineering process — distinct from
@@ -252,8 +273,8 @@ by the harness may adopt, adapt, or replace it — see
 Following Spec-Driven Development's core idea — a written spec as the
 primary source, with implementation as a regenerable output derived
 from it — applied here to individual pieces of implementation work, not
-just to this harness's own tool-specific file generation (which already
-follows the same principle at the harness level).
+just to this harness's own AI-Assisted-Tool-specific file generation
+(which already follows the same principle at the harness level).
 
 A project that adopts the pattern gets a `docs/specs/` folder, alongside
 its `docs/decisions/` and `docs/LEARNING_LOG.md`. Three documents, three
@@ -296,19 +317,19 @@ with the rest of the pattern.
 ## Foundation Sync — keeping the harness itself from drifting
 
 The same drift problem `FOUNDATION.md` exists to solve at the content
-level — tool-specific files slowly disagreeing with each other, the way
-Shadow Glass's own pair did by hand — can also happen at the *process*
-level: an agent's behavior changes, a new one gets added, a new standing
-rule gets adopted, and only one of the files describing it actually gets
-updated in the moment. **Foundation Sync**, owned by **The Architect**
-(`the-architect.md`), is the trigger for catching that before it
-happens: any dialogue that changes how this harness itself works — a
-new/renamed/retooled agent, a new skill, a new standing rule — fires a
-fixed cascade, walked in order, not chosen freely: `FOUNDATION.md` first
-(the source), then `construct` (regenerating the tool-specific
-configuration files — for example `CLAUDE.md`, `AGENTS.md`), then
-`README.md` (the human-facing onboarding doc), then a
-`docs/LEARNING_LOG.md` entry, then any `docs/learning-*.html` page
+level — AI-Assisted-Tool-specific files slowly disagreeing with each
+other, the way Shadow Glass's own pair did by hand — can also happen at
+the *process* level: an agent's behavior changes, a new one gets added,
+a new standing rule gets adopted, and only one of the files describing
+it actually gets updated in the moment. **Foundation Sync**, owned by
+**The Architect** (`the-architect.md`), is the trigger for catching that
+before it happens: any dialogue that changes how this harness itself
+works — a new/renamed/retooled agent, a new skill, a new standing rule
+— fires a fixed cascade, walked in order, not chosen freely:
+`FOUNDATION.md` first (the source), then `construct` (regenerating the
+AI-Assisted-Tool-specific configuration files — for example `CLAUDE.md`,
+`AGENTS.md`), then `README.md` (the human-facing onboarding doc), then
+a `docs/LEARNING_LOG.md` entry, then any `docs/learning-*.html` page
 (updated, or created new if the change deserves its own explanation and
 none exists yet). The cascade isn't done at the first file — it's done
 once every file in it has actually been checked, verified with a real
@@ -382,6 +403,12 @@ cascade as complete.
 
 ## Terminology — defined precisely, corrected once already
 
+- **AI-Assisted Tool**: the coding environment this harness runs
+  inside — Claude Code, OpenCode, Cursor, or any similar agentic
+  coding tool. Distinct from an *agent's tools* (the instruments an
+  agent uses — file reading, web search, shell execution, and so on).
+  When this document says "AI-Assisted Tool", it means the coding
+  environment.
 - **Skill**: a repeatable, on-demand procedure, invoked directly
   (`/name`). No persistent reasoning or memory of its own between
   separate invocations — one mechanical job, then done. (Note: "no
@@ -392,24 +419,37 @@ cascade as complete.
 - **Agent** (subagent): a delegated worker with its own reasoning and
   context, suited to open-ended or interpretive work, not just
   mechanical, repeatable procedures.
-- **Blueprint**: a tool-agnostic schema that `construct` reads and
-  compiles into a tool-specific output. Every file in
-  `hangar/blueprints/` is a blueprint; the outputs (the generated
-  tool-specific files) are the compiled instances. Same relationship
-  as the compiler front-end/back-end analogy above.
+- **Blueprint**: an AI-Assisted-Tool-agnostic schema that `construct`
+  reads. Most blueprints are *compiled* into AI-Assisted-Tool-specific
+  outputs — every file in `hangar/blueprints/agents/` and
+  `hangar/blueprints/skills/`. One blueprint, `HARI-SELDON.md`, is not
+  compiled: it is read as guidance during scaffolding of a brand-new
+  project's `FOUNDATION.md`. Both are blueprints; the difference is
+  what `construct` does with them.
+- **Adapter**: a description of how `construct` adapts the harness's
+  AI-Assisted-Tool-agnostic blueprints to one specific AI-Assisted
+  Tool — where the compiled outputs go, what file names that
+  AI-Assisted Tool expects, and any format quirks. One per supported
+  AI-Assisted Tool. Lives in `hangar/blueprints/adapters/<tool>.md`.
+  Read as a rule *during* compilation; not compiled into an output
+  itself, and not a skill (a skill is invoked directly by the user or
+  an agent — an adapter is read by `construct` in the middle of its
+  own execution). Adding support for a new AI-Assisted Tool means
+  adding a new adapter, not editing `CONSTRUCT.md`.
 - **Field Notes**: standalone, self-contained HTML pages with visual
   explanations of a concept — opened directly in a browser from the
-  local filesystem. Never published through a tool-specific publishing
-  feature (Claude Code's `Artifact` tool is the current example of such
-  a feature this harness deliberately doesn't use for this purpose).
+  local filesystem. Never published through an AI-Assisted-Tool-
+  specific publishing feature (Claude Code's `Artifact` tool is the
+  current example of such a feature this harness deliberately doesn't
+  use for this purpose).
 - **Snapshot**: a dated, visual record of a project's directory
   structure at a specific milestone — the *shape* of a codebase at a
   point in time, not its content.
 - Avoid the word **"artifact"** anywhere in this harness's own
-  vocabulary — it collides with tool-specific features of the same name
-  (Claude Code's `Artifact` tool being the current example), and using
-  the same word for two different things would be ambiguous every time
-  it came up.
+  vocabulary — it collides with AI-Assisted-Tool-specific features of
+  the same name (Claude Code's `Artifact` tool being the current
+  example), and using the same word for two different things would be
+  ambiguous every time it came up.
 
 ## Pedagogical approach
 
@@ -458,11 +498,12 @@ commits that are easy to review and understand.
 
 Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
 Six agent blueprints (`programmer`, `tester`, `deneir`, `writer`,
-`researcher`, `The Architect`) and three skill blueprints
-(`write-diary`, `write-article`, `loop-status`) are built and tested
-live. The `construct` bootstrapper (`CONSTRUCT.md`) reads
-`hangar/blueprints/` and compiles tool-specific outputs, following the
-per-tool compilation logic in `hangar/blueprints/tools/`. Shadow Glass
-is the first project sitting under this harness, and now has its own
-real `FOUNDATION.md`, with tool-specific configuration files generated
-from it.
+`researcher`, `The Architect`), three skill blueprints (`write-diary`,
+`write-article`, `loop-status`), and two adapters (`claude.md`,
+`opencode.md`) are built and tested live. The `construct` bootstrapper
+(`CONSTRUCT.md`) reads `hangar/blueprints/` and compiles AI-Assisted-
+Tool-specific outputs, following the per-AI-Assisted-Tool compilation
+logic in `hangar/blueprints/adapters/`. Shadow Glass is the first
+project sitting under this harness, and now has its own real
+`FOUNDATION.md`, with AI-Assisted-Tool-specific configuration files
+generated from it.
