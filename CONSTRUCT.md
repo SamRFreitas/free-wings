@@ -14,7 +14,7 @@
 > to create the structure.**
 >
 > - `@CONSTRUCT` alone → **bootstrap Free Wings itself**. Execute Steps 1–5.
-> - `@CONSTRUCT @HARI-SELDON` → **bootstrap another project**. Execute the scaffolding dialogue first, then Steps 1–5.
+> - `@CONSTRUCT @HARI-SELDON` → **bootstrap another project**. The target path must be supplied inline (e.g., `target: /path/to/project`). If it isn't, ask for it once via the grilling philosophy before proceeding. Execute the scaffolding dialogue first if the target has no `FOUNDATION.md`, then Steps 1–5.
 >
 > Do not stop to offer a menu of options. Do not ask "what would you like me to do?". The invocation is unambiguous — the only task is the one described above. Begin at Step 1.
 
@@ -26,8 +26,13 @@ I am an AI assistant working in a project that follows the **Free Wings** harnes
 
 I am invoked as a function. The arguments passed to me determine the target:
 
-- **`@CONSTRUCT` alone** — target is the **Free Wings repository itself** (the cwd I am running in). I compile Free Wings' own blueprints into AI-Assisted-Tool-specific files for the detected AI-Assisted Tool.
-- **`@CONSTRUCT @HARI-SELDON`** — target is **another project**. The user supplies the path; if that project has no `FOUNDATION.md`, I scaffold one from `HARI-SELDON.md` via a real dialogue with the user, then compile that project's blueprints into AI-Assisted-Tool-specific files for the detected AI-Assisted Tool.
+- **`@CONSTRUCT` alone** — target is the **Free Wings repository itself** (the cwd I am running in). I compile Free Wings' own blueprints into AI-Assisted-Tool-specific files for the detected AI-Assisted Tool. Free Wings always has its own `FOUNDATION.md`, so this is always a **recompile** — never a scaffold.
+
+- **`@CONSTRUCT @HARI-SELDON`** — target is **another project**. The user supplies the target path inline — any phrasing that names a directory works (e.g., `target: /path/to/project`, `/path/to/project`, "o alvo é /path/to/project"). If the path is not supplied in the invocation, I apply the grilling philosophy to ask for it once, then proceed. Once the target is known, two sub-cases:
+  - **If the target has a `FOUNDATION.md`** — I read it and recompile its AI-Assisted-Tool-specific files from the harness's current blueprints. This is a **recompile**.
+  - **If the target has no `FOUNDATION.md`** — I scaffold one from `hangar/blueprints/HARI-SELDON.md` via a real dialogue with the user, then compile. This is a **scaffold**.
+
+The distinction between **recompile** and **scaffold** is the key one for downstream targets: recompile means the target already exists and its source of truth is in place; scaffold means the target is brand-new and its source of truth has to be produced first, through dialogue, before any compilation can happen.
 
 If the invocation was bare ("run construct", "rebuild") and ambiguous about the target, I ask once, using the grilling philosophy — then proceed.
 
@@ -100,8 +105,10 @@ If the AI-Assisted Tool was identified unambiguously (via runtime environment or
 
 ### Step 2: Locate the Source of Truth
 
-- **If the target has a `FOUNDATION.md`** (always true for Free Wings; may be true for a downstream project) — I read it. This is the target's single source of truth.
-- **If the target has no `FOUNDATION.md`** (only possible when HARI-SELDON was passed as the parameter) — I scaffold a new one using `hangar/blueprints/HARI-SELDON.md` as a blueprint, walking the person through filling in each section via a real dialogue. See "If FOUNDATION.md Does Not Exist (Scaffolding)" below.
+- **If the target has a `FOUNDATION.md`** — I read it. This is the target's single source of truth. Two sub-cases:
+  - **Free Wings itself** (bare `@CONSTRUCT`) — always has `FOUNDATION.md`; proceed straight to Step 3 (recompile).
+  - **Another project** (`@CONSTRUCT @HARI-SELDON`) — may or may not have `FOUNDATION.md` yet. If it does, I read it and proceed to Step 3 (recompile). If it does not, I scaffold (see below).
+- **If the target has no `FOUNDATION.md`** (only possible when `@HARI-SELDON` was passed as the parameter) — I scaffold a new one using `hangar/blueprints/HARI-SELDON.md` as a blueprint, walking the person through filling in each section via a real dialogue. See "If FOUNDATION.md Does Not Exist (Scaffolding)" below.
 
 ### Step 3: Generate/Update AI-Assisted-Tool-Specific Files
 
@@ -148,16 +155,17 @@ If the target already has a `docs/LEARNING_LOG.md`, I record this operation in i
 - **Timestamp** (current date and time).
 - **AI-Assisted Tool detected** (the specific one I identified).
 - **Target** (Free Wings itself, or the downstream project's path).
+- **Mode** (recompile or scaffold — see Invocation contract).
 - **Action taken** (e.g., "Generated .claude/CLAUDE.md from FOUNDATION.md", "Scaffolded FOUNDATION.md from hangar/blueprints/HARI-SELDON.md").
 - **Any deviations or issues encountered** (if applicable), including any permission issues and how they were resolved.
 
-If `docs/LEARNING_LOG.md` does not exist (the usual case for a project that has just been bootstrapped for the first time), I do **not** create it. Creating the project's diary is the project's own first act, not something `construct` does on its behalf. In that case, I mention in the Step 5 report that no `LEARNING_LOG.md` was found and that this bootstrap is a candidate for its first entry — the person decides whether to write it.
+If `docs/LEARNING_LOG.md` does not exist (the usual case for a project that has just been scaffolded for the first time), I do **not** create it. Creating the project's diary is the project's own first act, not something `construct` does on its behalf. In that case, I mention in the Step 5 report that no `LEARNING_LOG.md` was found and that this bootstrap is a candidate for its first entry — the person decides whether to write it.
 
 ### Step 5: Report Back
 
 One report, at the end of the run — not a running commentary during it. Concise: which files were generated and where, plus any deviation from the adapter's instructions or any issue encountered. Example:
 
-> *"Bootstrapped for [AI-Assisted Tool Name]. Generated [files]. No issues."*
+> *"Bootstrapped for [AI-Assisted Tool Name]. Mode: [recompile|scaffold]. Generated [files]. No issues."*
 
 That is enough. The user invoked construct to have the files built, not to have a conversation about building them.
 
@@ -167,7 +175,7 @@ That is enough. The user invoked construct to have the files built, not to have 
 
 This only happens when `@HARI-SELDON` was passed as the parameter and the target project has no `FOUNDATION.md` yet. In that case:
 
-1. **Create a scaffold** using `hangar/blueprints/HARI-SELDON.md` as a blueprint.
+1. **Create a scaffold** using `hangar/blueprints/HARI-SELDON.md` as a blueprint, **inside the target project's directory** (not inside Free Wings).
 2. **Populate the scaffold** by walking through the sections defined in `HARI-SELDON.md` and filling each with real content from the dialogue:
    - Project name
    - Purpose / philosophy — the project's own identity, independent of any harness defaults
@@ -177,7 +185,7 @@ This only happens when `@HARI-SELDON` was passed as the parameter and the target
    - Harness conventions — walk through each one with the person and record adopt / adapt / replace
    - Status
 3. **Ask the user** to review and confirm the filled-in content.
-4. **After the user confirms the content**, I proceed to generate the AI-Assisted-Tool-specific files (Step 3).
+4. **After the user confirms the content**, I proceed to generate the AI-Assisted-Tool-specific files (Step 3), writing into the target's directory.
 
 This is the only place in the procedure where dialogue is required rather than merely permitted — the content of a `FOUNDATION.md` can only come from a real conversation with the person who owns the project. I do not invent it.
 
@@ -219,11 +227,13 @@ This harness recognizes that some agents (e.g., `deneir`) are intentionally read
 
 - **You do not need to run any command.** I will automatically perform these steps when I start, as long as this file (`CONSTRUCT.md`) is present in the project root.
 - **To bootstrap Free Wings itself**, invoke me with `@CONSTRUCT` alone.
-- **To bootstrap another project**, invoke me with `@CONSTRUCT @HARI-SELDON`, and supply the target project's path. If that project has no `FOUNDATION.md` yet, I will walk you through the scaffolding dialogue before generating its AI-Assisted-Tool-specific files.
+- **To bootstrap another project**, invoke me with `@CONSTRUCT @HARI-SELDON` and include the target path (e.g., `target: /path/to/project`). If you forget the path, I will ask for it once. Then:
+  - **If the target has a `FOUNDATION.md`** — I recompile its AI-Assisted-Tool-specific files from the current blueprints.
+  - **If the target has no `FOUNDATION.md`** — I walk you through the scaffolding dialogue, then compile.
 - **If you want me to re-run this process later**, simply say: *"Run construct"* or *"Rebuild the configuration"*.
 - **If you change the target's `FOUNDATION.md`**, I will need to regenerate the AI-Assisted-Tool-specific files. You can trigger this by asking me to do so.
 - **If I report a permission issue**, you can either grant write access to the project directory or ask me to generate the files in an alternative location.
-- **If your AI-Assisted Tool isn't yet supported**, the fix is to add a new adapter file to `hangar/blueprints/adapters/` — following the examples in `claude.md` e `opencode.md` — not to edit `CONSTRUCT.md`. Adding a new adapter is a one-file operation, by design.
+- **If your AI-Assisted Tool isn't yet supported**, the fix is to add a new adapter file to `hangar/blueprints/adapters/` — following the examples in `claude.md` and `opencode.md` — not to edit `CONSTRUCT.md`. Adding a new adapter is a one-file operation, by design.
 
 ---
 
