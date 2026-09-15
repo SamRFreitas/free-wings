@@ -416,9 +416,13 @@ cascade as complete.
   all" — a skill still has the full model's judgment available for the
   turn it runs in; `construct` genuinely rewrites/optimizes text, it
   just doesn't carry a separate ongoing context the way an agent does.)
-- **Agent** (subagent): a delegated worker with its own reasoning and
-  context, suited to open-ended or interpretive work, not just
-  mechanical, repeatable procedures.
+- **Agent**: a delegated worker with its own reasoning and context,
+  suited to open-ended or interpretive work, not just mechanical,
+  repeatable procedures. (Note: the word "subagent" is **not** a
+  synonym for "agent" in this harness's vocabulary — it is reserved
+  for AI-Assisted-Tool-specific modes, such as OpenCode's `subagent`
+  mode, which means "reachable only via `@mention`, not in the Tab
+  cycle". The two concepts share a name but are unrelated.)
 - **Blueprint**: an AI-Assisted-Tool-agnostic schema that `construct`
   reads. Most blueprints are *compiled* into AI-Assisted-Tool-specific
   outputs — every file in `hangar/blueprints/agents/` and
