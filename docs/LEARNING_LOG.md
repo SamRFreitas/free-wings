@@ -561,3 +561,9 @@ AI-Assisted Tool detected: OpenCode. Target: Free Wings itself. Action: Generate
 ## 2026-09-15 — construct bootstrapped .opencode/ from FOUNDATION.md
 
 AI-Assisted Tool detected: OpenCode. Target: Free Wings itself (bare @CONSTRUCT). Mode: recompile. Action: Generated `AGENTS.md` (project root), `.opencode/agents/` with compiled agent blueprints (programmer, tester, deneir, writer, researcher, the-architect), and `.opencode/skills/` with compiled skill blueprints (write-diary, write-article, loop-status). All derived from `FOUNDATION.md` and `hangar/blueprints/` via the OpenCode adapter. No issues encountered.
+
+## 2026-09-22 — construct recompiled for OpenCode, verified adapter field formats
+
+Rerun of `@CONSTRUCT` (bare — target Free Wings itself, mode: recompile). AI-Assisted Tool detected: OpenCode, from the runtime environment (`OPENCODE=1` env var), not from directory presence. Action: regenerated `AGENTS.md` (project root) and `.opencode/agents/` (programmer, tester, deneir, researcher, writer, the-architect) and `.opencode/skills/` (`loop-status`, `write-article`, `write-diary`) from `FOUNDATION.md` + `hangar/blueprints/` via the OpenCode adapter.
+
+Followed the adapter's fixed mappings for agent frontmatter rather than guessing: `mode` (the-architect → primary, the rest → all) and the boolean `tools` record (researcher got `webfetch`/`websearch: true` since this OpenCode version exposes those named tools; no `Agent(...)`-style chaining entries for the-architect). Skills were compiled to folder-per-skill `SKILL.md` with `name`+`description` only — no `tools` field, since the OpenCode skill schema doesn't validate it. Confirmed `.gitignore` already covers `.opencode/` and `AGENTS.md`. No issues.
