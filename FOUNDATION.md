@@ -203,14 +203,24 @@ full below. None assumes a specific AI-Assisted Tool.
       **The Architect** — file and invocation identifier both
       `the-architect` (this harness keeps identifiers kebab-case, a
       convention that happens to match what some AI-Assisted Tools
-      require for a subagent's `name:` field; the exact AI-Assisted-
+      require for an agent's identifier; the exact AI-Assisted-
       Tool-specific validation rule lives in the tool's adapter under
       `hangar/blueprints/adapters/`, not here. "The Architect" itself
       isn't a valid identifier because of the space and capitals, but
       the hyphenated `the-architect` is, so file and identifier
       match) — the entry point: decides which agent a task belongs
       to, or says plainly when it fits none of them, and also owns
-      Foundation Sync, see below.
+      Foundation Sync, see below. It follows a project's evolution as
+      `deneir` does, with a different eye: `deneir` watches to tell
+      the story, The Architect watches the project and how it works,
+      in order to decide. It never writes code. It writes only the
+      records of its own decisions — ADRs and dated notes on existing
+      ADRs, multi-step plans, and the target project's
+      `FOUNDATION.md` — and only after showing the exact text and
+      path and getting the person's explicit approval. It may read
+      the repository's history (`git status`, `log`, `diff`, `show`,
+      `blame`) and never changes it. It recommends the next agent
+      with a ready-to-paste message; it does not invoke one itself.
 
       A teacher and a designer are still planned for later.
 
@@ -251,13 +261,18 @@ full below. None assumes a specific AI-Assisted Tool.
       blueprints to that specific AI-Assisted Tool — where the
       compiled outputs go, what file names that AI-Assisted Tool
       expects, and any format quirks. Two are provided by default —
-      `claude.md` (for Claude Code) and `opencode.md` (for OpenCode)
+      `claudecode.md` (for Claude Code) and `opencode.md` (for OpenCode)
       — both already part of the repository, serving double duty: as
       active adapters *and* as working demonstrations of how easily a
       new AI-Assisted Tool can be supported. Adding a new adapter is
       a single file, not a change to `CONSTRUCT.md` or to the
       Foundation. This is where AI-Assisted-Tool-specific compilation
       logic lives, deliberately kept out of those two files.
+      Each adapter uses its own tool's terminology and describes only
+      that tool — no adapter refers to another. Likewise, everything
+      `construct` compiles for one tool speaks only of that tool:
+      other AI-Assisted Tools may appear in the harness's own files as
+      examples, never in a compiled output.
 
   - `hangar/docs/learnings/` — learnings about the blueprints
     themselves and the harness-engineering process — distinct from
@@ -290,6 +305,12 @@ distinct roles, deliberately not overlapping:
 - **`LEARNING_LOG.md`** — *what actually happened*, written after,
   including anywhere the implementation ended up deviating from its own
   spec, and why.
+
+When a piece of work is too large for one spec, a **plan** sits above
+the specs: the ordered pieces and which agent takes each one, written
+by The Architect as `docs/specs/plan-<short-name>.md`. Same folder as
+the specs, told apart by the `plan-` prefix and by having no number —
+a plan spans several numbered pieces instead of being one of them.
 
 `grilling` (the skill that stress-tests a decision through numbered,
 recommendation-attached question rounds until nothing is left open) is
@@ -341,7 +362,10 @@ architectural fork, not every small addition — to also deserve its own
 new entry in `docs/decisions/`, following this harness's existing "rare,
 roughly one per genuine fork" ADR standard (see "Specs, and how
 `grilling` feeds them" above). A smaller change doesn't need one; the
-`LEARNING_LOG.md` entry already covers it. Full detail in
+`LEARNING_LOG.md` entry already covers it. The cascade belongs to
+Free Wings: a target project regulates itself, runs it only if its own
+`FOUNDATION.md` adopted it, and keeps that `FOUNDATION.md` as the
+record that survives a change of AI-Assisted Tool. Full detail in
 `the-architect.md`'s own "Foundation Sync" section.
 
 ## Loop Status — a visible readout of where a loop actually is
@@ -409,20 +433,21 @@ cascade as complete.
   agent uses — file reading, web search, shell execution, and so on).
   When this document says "AI-Assisted Tool", it means the coding
   environment.
-- **Skill**: a repeatable, on-demand procedure, invoked directly
-  (`/name`). No persistent reasoning or memory of its own between
-  separate invocations — one mechanical job, then done. (Note: "no
+- **Skill**: a repeatable, on-demand procedure. No persistent
+  reasoning or memory of its own between separate invocations — one mechanical job, then done. (Note: "no
   persistent memory between invocations" doesn't mean "no reasoning at
   all" — a skill still has the full model's judgment available for the
   turn it runs in; `construct` genuinely rewrites/optimizes text, it
   just doesn't carry a separate ongoing context the way an agent does.)
 - **Agent**: a delegated worker with its own reasoning and context,
   suited to open-ended or interpretive work, not just mechanical,
-  repeatable procedures. (Note: the word "subagent" is **not** a
-  synonym for "agent" in this harness's vocabulary — it is reserved
-  for AI-Assisted-Tool-specific modes, such as OpenCode's `subagent`
-  mode, which means "reachable only via `@mention`, not in the Tab
-  cycle". The two concepts share a name but are unrelated.)
+  repeatable procedures. Each agent has a blueprint in
+  `hangar/blueprints/agents/`; `construct` compiles it into the
+  agents directory of each AI-Assisted Tool, following that tool's own
+  configuration as described in its adapter. (Note: "subagent" is
+  **not** part of this harness's vocabulary — it is a concept inside
+  specific AI-Assisted Tools, with a meaning defined by each tool, and
+  belongs only in that tool's adapter.)
 - **Blueprint**: an AI-Assisted-Tool-agnostic schema that `construct`
   reads. Most blueprints are *compiled* into AI-Assisted-Tool-specific
   outputs — every file in `hangar/blueprints/agents/` and
@@ -503,7 +528,7 @@ commits that are easy to review and understand.
 Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
 Six agent blueprints (`programmer`, `tester`, `deneir`, `writer`,
 `researcher`, `The Architect`), three skill blueprints (`write-diary`,
-`write-article`, `loop-status`), and two adapters (`claude.md`,
+`write-article`, `loop-status`), and two adapters (`claudecode.md`,
 `opencode.md`) are built and tested live. The `construct` bootstrapper
 (`CONSTRUCT.md`) reads `hangar/blueprints/` and compiles AI-Assisted-
 Tool-specific outputs, following the per-AI-Assisted-Tool compilation
