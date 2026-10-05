@@ -1,5 +1,94 @@
 # Logbook — Free Wings
 
+## 2026-10-05 — The Architect records its own decisions, and each tool's terms stay in its adapter
+
+The first product session in Shadow Glass since the harness was set up
+showed two things the blueprints had wrong. Both were fixed the same
+day, and the fix was tested by recompiling Shadow Glass.
+
+**`the-architect` could decide but not record.** Its blueprint said it
+"doesn't implement, and doesn't observe, and doesn't write", and it was
+compiled with read-only tools. In practice nobody could save a
+multi-step plan, a dated note on an existing ADR, or the roadmap in a
+project's `FOUNDATION.md`: `programmer` refuses `FOUNDATION.md`, and
+`writer`, `researcher` and `deneir` have no permission in those places.
+`the-architect` made those decisions and handed them back as text for
+someone else to paste. It also could not run `git status`, `git log` or
+`git diff`, so it could not explain two reverted commits without the
+calling session pasting them in.
+
+Three alternatives were weighed (ADR 0001, the first ADR about the
+harness itself): keep it read-only and save by hand; give those writes
+to another agent; or let the one that decides be the one that records.
+The third was chosen:
+
+- It writes only the records of its own decisions — ADRs and dated
+  notes on existing ones, plans (`docs/specs/plan-<short-name>.md`), and
+  the target project's `FOUNDATION.md`. Never code.
+- Never on its own initiative: show the exact text and path, wait for
+  explicit approval, write only what was approved.
+- It reads the repository's history with read-only git commands and
+  never changes it.
+- It still recommends the next agent instead of invoking it — now
+  stated as a design choice, not as an unverified limit — and hands
+  over a ready-to-paste message, separating what was verified from what
+  is assumed.
+
+The honest cost: the approval rule and the read-only git rule are
+**text in the blueprint**. A tool that grants "write" or "shell" grants
+it whole, so no tool list enforces them. The agent has to follow the
+rule itself.
+
+A **plan** is new vocabulary that came with this: when a piece of work
+is too large for one spec, the plan sits above the specs, in the same
+folder, told apart by the `plan-` prefix and by having no number.
+
+**Tool-specific words had leaked into the harness.** "Subagent" was in
+`FOUNDATION.md`'s glossary with a meaning borrowed from one tool, and
+the two adapters described themselves by comparison with each other.
+Now:
+
+- "Subagent" is not harness vocabulary. It belongs only in the adapter
+  of a tool that has the concept, with that tool's meaning.
+- Each adapter describes its own tool only and never refers to another.
+- Everything `construct` compiles for one tool speaks only of that
+  tool, even where a blueprint names another tool's file as an example.
+- `construct` writes only the outputs its adapter lists and leaves
+  every other file in the tool's directory alone — a project's own
+  settings stay as they are.
+- The Claude Code adapter is `claudecode.md`, and now records how each
+  agent is best opened there (as the session itself, or delegated to),
+  with what was observed on 2026-10-05 marked as observed, not as
+  documented.
+
+**Foundation Sync got a scope.** The cascade belongs to Free Wings. A
+target project runs it only if its own `FOUNDATION.md` adopted it;
+otherwise that project regulates itself, and `the-architect` does not
+present the cascade as something it conducts there.
+
+**Tested the same day.** `@CONSTRUCT @HARI-SELDON` was run against
+Shadow Glass in Claude Code (recompile). `the-architect` came out with
+the tools the adapter lists and with the new "Write permissions" and
+"Reading the repository's history" sections; the compiled copies of
+`the-architect` and `programmer` dropped the blueprints' mention of
+another tool's file, as the new rule requires. The run also showed the
+rule about untouched files from the other side: Shadow Glass's local
+`.claude/settings.json` was missing, and `construct` reported it
+instead of recreating it.
+
+**Foundation Sync for this change**: `FOUNDATION.md`, `README.md`, the
+ADR and this entry are done. Still open:
+
+- `construct` has not been re-run for Free Wings itself; its own
+  generated files date from 2026-09-22 and still describe the old
+  `the-architect`.
+- No `docs/learning-*.html` page exists for this change.
+- The OpenCode adapter still maps `the-architect` to read-only tools,
+  so under OpenCode it cannot yet do what ADR 0001 allows.
+- `programmer` still refers to a `grilling` skill that has no
+  blueprint, and a few paths in the compiled bodies resolve against
+  this repository rather than the target project.
+
 ## 2026-09-06 — `loop-status`: a fourth skill, making loop engineering visible
 
 A request for a standing message pattern — whenever a session is
