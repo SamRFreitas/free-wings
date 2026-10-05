@@ -77,3 +77,11 @@ in order to decide.
   its scope: Free Wings, or a project whose `FOUNDATION.md` adopted it.
 - Open: the OpenCode adapter still maps `the-architect` to read-only
   tools, so under OpenCode it cannot yet do what this ADR allows.
+
+## Update — 2026-10-05
+
+The open point above is closed in the source: the OpenCode adapter now
+enables `write`, `edit` and `bash` for `the-architect`, with the same
+two limits kept in the blueprint's text. Not yet tested inside
+OpenCode, and that tool's generated files have not been recompiled
+since 2026-09-22.
