@@ -79,9 +79,13 @@ instead of recreating it.
 **Foundation Sync for this change**: `FOUNDATION.md`, `README.md`, the
 ADR and this entry are done. Still open:
 
-- `construct` has not been re-run for Free Wings itself; its own
-  generated files date from 2026-09-22 and still describe the old
-  `the-architect`.
+- `construct` was re-run for Free Wings itself at 17:37 (-03), in
+  Claude Code, detected from the runtime environment. Mode: recompile.
+  It generated `CLAUDE.md` and `.claude/` (six agents, three skills)
+  from the current blueprints, with no issues. The files for the other
+  supported tool still date from 2026-09-22 and describe the old
+  `the-architect`: `construct` compiles only for the tool it runs in,
+  so they stay stale until it is run there.
 - No `docs/learning-*.html` page exists for this change.
 - The OpenCode adapter mapped `the-architect` to read-only tools. It was
   corrected later the same day to enable `write`, `edit` and `bash`
