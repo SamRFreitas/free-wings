@@ -83,8 +83,10 @@ ADR and this entry are done. Still open:
   generated files date from 2026-09-22 and still describe the old
   `the-architect`.
 - No `docs/learning-*.html` page exists for this change.
-- The OpenCode adapter still maps `the-architect` to read-only tools,
-  so under OpenCode it cannot yet do what ADR 0001 allows.
+- The OpenCode adapter mapped `the-architect` to read-only tools. It was
+  corrected later the same day to enable `write`, `edit` and `bash`
+  (dated note on ADR 0001), but that has not been tested inside
+  OpenCode.
 - `programmer` still refers to a `grilling` skill that has no
   blueprint, and a few paths in the compiled bodies resolve against
   this repository rather than the target project.
