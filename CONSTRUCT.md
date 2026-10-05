@@ -130,11 +130,13 @@ The philosophy here is uniform across AI-Assisted Tools: the AI-Assisted Tool's 
 
 - **What gets created**: only the AI-Assisted-Tool-specific directory (e.g., `.claude/` or `.opencode/`) and its contents — the agents and skills compiled from the blueprints, plus the root-level configuration file (`CLAUDE.md`, `AGENTS.md`, etc.). **No `docs/` directory, and no files inside `docs/`, are created by `construct`.** Those appear in the target project later, as the project's own work requires them — `docs/decisions/` when the first ADR is written, `docs/LEARNING_LOG.md` when the first diary entry is added, and so on. `construct` only compiles the bootstrapping infrastructure, not the project's evolving documentation.
 
-- **Adapters currently provided**: `claude.md` (for Claude Code) and `opencode.md` (for OpenCode). Each adapter is a single file — adding support for a new AI-Assisted Tool means adding one more file here, not editing `CONSTRUCT.md` or the Foundation.
+- **Compiled outputs describe only the detected AI-Assisted Tool.** The root configuration file and every compiled agent/skill speak only of the tool they were compiled for — they never mention other AI-Assisted Tools, their files, or their adapters, even where `FOUNDATION.md` names them as examples. A person using one tool has no need to know the others exist. The same holds between adapters: each adapter describes its own tool only and never refers to another adapter.
+
+- **Adapters currently provided**: `claudecode.md` (for Claude Code) and `opencode.md` (for OpenCode). Each adapter is a single file — adding support for a new AI-Assisted Tool means adding one more file here, not editing `CONSTRUCT.md` or the Foundation.
 
 - **If no adapter exists for the confirmed AI-Assisted Tool** (the second case from Step 1), I must not guess at its structure. Instead, I stop and tell the user directly:
 
-  > *"Your AI-Assisted Tool ([tool name]) isn't yet supported by an adapter. To add it, follow the examples in `hangar/blueprints/adapters/claude.md` and `hangar/blueprints/adapters/opencode.md` — each shows how an AI-Assisted Tool's expected structure is described, as a single self-contained file. Create `hangar/blueprints/adapters/<your-tool>.md` following that pattern, then re-run construct."*
+  > *"Your AI-Assisted Tool ([tool name]) isn't yet supported by an adapter. To add it, follow the examples in `hangar/blueprints/adapters/claudecode.md` and `hangar/blueprints/adapters/opencode.md` — each shows how an AI-Assisted Tool's expected structure is described, as a single self-contained file. Create `hangar/blueprints/adapters/<your-tool>.md` following that pattern, then re-run construct."*
 
   Adding a new adapter is deliberately a **one-file operation** — no change to `CONSTRUCT.md` is required, and none should be made.
 
@@ -145,6 +147,8 @@ The philosophy here is uniform across AI-Assisted Tools: the AI-Assisted Tool's 
   1. **Adjust permissions** (e.g., `chmod` or change folder ownership) and then re‑run the construct.
   2. **Specify an alternative output location** (e.g., a temporary folder or a different project root) – if the user chooses this, I will generate the files there and report the location.
 - I will **not** overwrite existing files without explicit confirmation (already covered by "Dialogue first" rule).
+
+**Files I did not generate:** inside the AI-Assisted-Tool-specific directory, I write only the outputs the adapter lists. I never delete or change any other file there — a project's own settings, or agents and skills it added itself, stay exactly as they are.
 
 **Important:** The harness itself does not rely on any AI-Assisted-Tool-specific directory (`.claude/`, `.opencode/`, or others) as a source. Those directories are **outputs** of this bootstrap process, not part of the source tree. They should be `.gitignored` (unless the user explicitly decides otherwise).
 
@@ -233,7 +237,7 @@ This harness recognizes that some agents (e.g., `deneir`) are intentionally read
 - **If you want me to re-run this process later**, simply say: *"Run construct"* or *"Rebuild the configuration"*.
 - **If you change the target's `FOUNDATION.md`**, I will need to regenerate the AI-Assisted-Tool-specific files. You can trigger this by asking me to do so.
 - **If I report a permission issue**, you can either grant write access to the project directory or ask me to generate the files in an alternative location.
-- **If your AI-Assisted Tool isn't yet supported**, the fix is to add a new adapter file to `hangar/blueprints/adapters/` — following the examples in `claude.md` and `opencode.md` — not to edit `CONSTRUCT.md`. Adding a new adapter is a one-file operation, by design.
+- **If your AI-Assisted Tool isn't yet supported**, the fix is to add a new adapter file to `hangar/blueprints/adapters/` — following the examples in `claudecode.md` and `opencode.md` — not to edit `CONSTRUCT.md`. Adding a new adapter is a one-file operation, by design.
 
 ---
 
