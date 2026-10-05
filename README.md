@@ -31,10 +31,13 @@ Portuguese.
 
 ## Cloning this repo
 
-`CLAUDE.md` and `AGENTS.md` aren't committed — they're 100% regenerable
-from `FOUNDATION.md` (which is), so they're gitignored rather than
-tracked. Run the `construct` skill once after cloning to generate them
-locally before your AI tool has any repo-specific instructions to read.
+`CLAUDE.md`, `AGENTS.md`, `.claude/`, and `.opencode/` aren't
+committed — they're 100% regenerable from `FOUNDATION.md` and
+`hangar/blueprints/` (which are), so they're gitignored rather than
+tracked. After cloning, open the repository in your AI-Assisted Tool
+(the coding environment — Claude Code, OpenCode, …) and invoke
+`@CONSTRUCT` once to generate them locally, before your tool has any
+repo-specific instructions to read.
 
 ## What this actually is
 
@@ -46,10 +49,16 @@ whatever comes after it. Every project under this harness:
 - keeps one dense, tool-agnostic `FOUNDATION.md` as its single source of
   truth — never read automatically by any AI tool, but compiled into
   whatever each tool actually needs;
-- generates `CLAUDE.md` (Claude Code), `AGENTS.md` (OpenCode and
-  similar tools), and any future tool's file from that one source,
-  via the `construct` skill — instead of hand-maintaining several files
-  that drift apart from each other over time;
+- generates `CLAUDE.md` + `.claude/` (Claude Code), `AGENTS.md` +
+  `.opencode/` (OpenCode), and any future tool's files from that one
+  source, via the `construct` bootstrapper (`CONSTRUCT.md`) — instead
+  of hand-maintaining several files that drift apart from each other
+  over time. How each tool's files are shaped lives in one **adapter**
+  per tool, in `hangar/blueprints/adapters/` (`claudecode.md`,
+  `opencode.md`); supporting a new tool means adding one adapter file,
+  not editing `CONSTRUCT.md` or `FOUNDATION.md`. Adapters are
+  independent of each other, and what `construct` generates for one
+  tool never mentions the others;
 - keeps three kinds of written record, each with one job: an **ADR**
   for *why* a broad direction was chosen, a **spec** for *what* a piece
   of work is going to do (written before implementing it), and a
@@ -64,82 +73,88 @@ whatever comes after it. Every project under this harness:
 
 ## Using this harness for a new project
 
-1. Run the `construct` skill against the new project's own directory.
-   If it finds no `FOUNDATION.md` there yet, it automatically creates
-   `docs/decisions/`, `docs/specs/`, `docs/observations/`, and a
-   `docs/LEARNING_LOG.md` skeleton (from [`hangar/`](hangar/), this
-   harness's blueprint — nothing there is meant to be copied by hand),
-   then starts the real dialogue that produces that project's first
-   `FOUNDATION.md`. That dialogue can't be automated — it has to reflect
-   what the project actually is, the same way this repository's own
-   `FOUNDATION.md` was written — but every mechanical part of setting
-   the project up is handled for you.
-2. `construct` then generates `CLAUDE.md`/`AGENTS.md` from that
-   `FOUNDATION.md`, same as it does for any existing project.
-3. The general agents this harness provides —
-   [`programmer`](.claude/agents/programmer.md) (explains and shows
-   reasoning first, then implements while still teaching, in small
-   divided steps — one function or command at a time, checking the
-   person's own understanding along the way),
-   [`tester`](.claude/agents/tester.md) (tests what `programmer` just
-   built, same explain-first and divide-and-conquer style — a
-   provisional name, may become a shorter combined "reviewer+tester"
-   name later),
-   [`observer`](.claude/agents/observer.md) (watches a project's
-   evolution, read-only about it, writes only to its own
-   `docs/observations/` — captures which model is running each session,
-   from a reliable source only, plus a few research-grounded signals on
-   whether the harness itself is helping, never a scored formula),
-   [`writer`](.claude/agents/writer.md) (shapes existing material into
-   diary entries or articles),
-   [`researcher`](.claude/agents/researcher.md) (checks a claim against
-   real, current sources before it's trusted, instead of asserting it
-   from memory — and when validating or comparing data/metrics
-   specifically, stops at a comprehension check rather than
-   recommending a next step until understanding is actually confirmed),
-   and
-   [**The Architect**](.claude/agents/the-architect.md) (file and
-   invocation identifier both `the-architect` — kebab-case is required
-   for a subagent's `name:` field, checked directly against Claude
-   Code's own docs; "The Architect" itself isn't valid, but the
-   hyphenated `the-architect` is, so file and identifier match; the
-   entry point: decides which of the other agents a task belongs to, or
-   says plainly when it fits none of them) — and its skills —
-   [`construct`](.claude/skills/construct/SKILL.md),
-   [`write-diary`](.claude/skills/write-diary/SKILL.md),
-   [`write-article`](.claude/skills/write-article/SKILL.md), and
-   [`loop-status`](.claude/skills/loop-status/SKILL.md) (a short, honest
-   readout of where a loop actually is — trigger, current agent/skills
-   used, step count, context, next step — on request any time, or
-   proactively at real checkpoints only) — are
-   symlinked into `~/.claude/agents/` and `~/.claude/skills/`
-   respectively, so they're available from any project directory, not
-   just this one — none of them are wired to Shadow Glass, or to any
-   other single project, by name. They all work the same way: read the
-   target project's own `FOUNDATION.md` first, follow *that* project's
-   conventions, never guess at rules that aren't written down anywhere.
-   If a request falls outside one agent's own scope, it says so and
-   names which other agent fits better ("recognize and refer") instead
-   of attempting the work anyway — `the-architect` is the agent whose
-   whole job is making that call up front, and its own design follows
-   loop engineering's structure (trigger, topology, verifier, stop rule —
-   see [`docs/reading-list.md`](docs/reading-list.md) for the sources
-   that grounding was actually checked against, and what's freely
-   accessible versus what isn't). These referrals aren't equally likely
-   in every direction, either — `observer`↔`writer` is a closest pair,
-   and `researcher`→`programmer`→`tester` is a three-agent chain, each
-   link a closest pair (each pair's own files already describe handing
-   off to the other), so an agent refers straight to its nearest
+1. Open Free Wings in your AI-Assisted Tool and invoke
+   `@CONSTRUCT @HARI-SELDON` with the target project's path (e.g.
+   `target: /path/to/project`; if you forget it, `construct` asks once).
+   - **If the target already has a `FOUNDATION.md`** — this is a
+     **recompile**: `construct` reads it and regenerates that project's
+     tool-specific files from the harness's current blueprints.
+   - **If it doesn't** — this is a **scaffold**: `construct` first walks
+     you through a real dialogue, guided by
+     [`hangar/blueprints/HARI-SELDON.md`](hangar/blueprints/HARI-SELDON.md),
+     that produces the project's first `FOUNDATION.md`. That dialogue
+     can't be automated — it has to reflect what the project actually
+     is — then compilation runs as in a recompile.
+2. Either way, `construct` creates **only** the tool-specific directory
+   (`.claude/` or `.opencode/`) with the compiled agents and skills, plus
+   the root configuration file (`CLAUDE.md` or `AGENTS.md`). It does
+   **not** create `docs/` — `docs/decisions/`, `docs/specs/`,
+   `docs/LEARNING_LOG.md` and the rest appear later, when the project's
+   own work needs them. See [`CONSTRUCT.md`](CONSTRUCT.md) for the full
+   invocation contract.
+3. The general agents this harness provides (blueprints in
+   [`hangar/blueprints/agents/`](hangar/blueprints/agents/)):
+   - [`programmer`](hangar/blueprints/agents/programmer.md) — explains
+     and shows reasoning first, then implements while still teaching, in
+     small divided steps, checking the person's own understanding along
+     the way; writes a spec in `docs/specs/` before non-trivial work.
+   - [`tester`](hangar/blueprints/agents/tester.md) — tests what
+     `programmer` just built, same explain-first and divide-and-conquer
+     style (a provisional name, may become a combined "reviewer+tester"
+     later).
+   - [`deneir`](hangar/blueprints/agents/deneir.md) — watches a
+     project's evolution, read-only about it, writes only to its own
+     `docs/observations/`; captures which model is running each session
+     from a reliable source only, plus a few research-grounded signals,
+     never a scored formula.
+   - [`writer`](hangar/blueprints/agents/writer.md) — shapes existing
+     material into diary entries or articles.
+   - [`researcher`](hangar/blueprints/agents/researcher.md) — checks a
+     claim against real, current sources before it's trusted; when
+     validating or comparing data/metrics, stops at a comprehension
+     check until understanding is actually confirmed.
+   - [**The Architect**](hangar/blueprints/agents/the-architect.md)
+     (`the-architect`) — the entry point: decides which of the other
+     agents a task belongs to, or says plainly when it fits none of
+     them. It watches how the project works in order to decide, may
+     read the repository's history (never change it), and writes only
+     the records of its own decisions — ADRs, multi-step plans
+     (`docs/specs/plan-*.md`), the project's `FOUNDATION.md` — after
+     showing the text and getting explicit approval. Never code.
+     Identifiers are kebab-case across the harness; any
+     tool-specific naming rule lives in that tool's adapter.
+
+   And its three skills (blueprints in
+   [`hangar/blueprints/skills/`](hangar/blueprints/skills/)):
+   [`write-diary`](hangar/blueprints/skills/write-diary.md),
+   [`write-article`](hangar/blueprints/skills/write-article.md), and
+   [`loop-status`](hangar/blueprints/skills/loop-status.md) (a short,
+   honest readout of where a loop actually is — on request any time,
+   or proactively at real checkpoints only). `construct` itself is
+   **not** a skill — it is the bootstrapper at the root.
+
+   None of them is wired to Shadow Glass or to any other single project
+   by name. They all work the same way: read the target project's own
+   `FOUNDATION.md` first, follow *that* project's conventions, never
+   guess at rules that aren't written down anywhere.
+
+   If a request falls outside one agent's scope, it says so and names
+   which other agent fits better ("recognize and refer"). Referrals
+   aren't equally likely in every direction: `deneir`↔`writer` is a
+   closest pair, and `researcher`→`programmer`→`tester` is a
+   three-agent chain, so an agent refers straight to its nearest
    neighbor when that alone solves the request, rather than looping
    every mismatch back through `the-architect` — see
-   `the-architect.md`'s "Proximity between agents." `the-architect` also
-   owns **Foundation Sync**: any dialogue that changes how this harness
-   itself works triggers a fixed cascade —
-   `FOUNDATION.md` → `construct` → `README.md` → a `LEARNING_LOG.md`
-   entry → `docs/learning-*.html`, plus a judgment call on whether a new
-   ADR is warranted — checked and updated in full, not
-   just the first file, and verified by actually grepping for stale
-   references rather than trusted from memory.
+   `the-architect.md`'s "Proximity between agents." `the-architect`'s
+   own design follows loop engineering's structure (trigger, topology,
+   verifier, stop rule — see [`docs/reading-list.md`](docs/reading-list.md)
+   for the sources actually checked). It also owns **Foundation Sync**:
+   any dialogue that changes how this harness itself works triggers a
+   fixed cascade — `FOUNDATION.md` → `construct` → `README.md` → a
+   `LEARNING_LOG.md` entry → `docs/learning-*.html`, plus a judgment
+   call on whether a new ADR is warranted — checked and updated in
+   full, and verified by actually grepping for stale references rather
+   than trusted from memory.
 
 ## License
 
@@ -150,9 +165,10 @@ spirit more closely — use this however you want, no strings attached.
 
 ## Status
 
-Founded 2026-09-05, named Free Wings on 2026-09-06. Six agents and
-four skills are built and tested live (see "Using this harness for a
-new project" above). Shadow Glass is the first project sitting under
+Founded 2026-09-05, named Free Wings on 2026-09-06. Six agents,
+three skills, and two adapters (`claudecode.md`, `opencode.md`) are
+built and tested live (see "Using this harness for a new project"
+above). Shadow Glass is the first project sitting under
 this harness — the second is whichever project you point `construct` at
 next. See [`docs/LEARNING_LOG.md`](docs/LEARNING_LOG.md) for the full
 story, warts included.
