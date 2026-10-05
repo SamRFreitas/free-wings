@@ -19,20 +19,19 @@ construct procedure, in place of any hardcoded per-tool logic.
 | `hangar/blueprints/agents/<name>.md` | `.opencode/agents/<name>.md` |
 | `hangar/blueprints/skills/<name>.md` | `.opencode/skills/<name>/SKILL.md` |
 
-Same shape transformation as Claude Code: agent blueprints stay one
-file each; skill blueprints become a folder-per-skill with `SKILL.md`
-inside.
+Note the shape transformation: agent blueprints stay one file each;
+skill blueprints become a folder-per-skill with `SKILL.md` inside. The
+blueprint is flat; OpenCode's skill format is not.
 
 ## Format — `AGENTS.md` (project root)
 
 A compiled **excerpt** of `FOUNDATION.md`, optimized for OpenCode's
 reading context. Markdown, no YAML frontmatter.
 
-OpenCode reads `AGENTS.md` at the project root as the primary context
-file — the role Claude Code gives `CLAUDE.md`. Same priorities as
-described in the Claude adapter: philosophy, structure, agent and
-skill lists, conventions, current status. Not a literal copy of the
-Foundation.
+OpenCode reads `AGENTS.md` at the project root as its primary context
+file. Prioritize: philosophy, structure, agent and skill lists,
+conventions, and current status. Omit: lengthy historical reasoning
+that does not inform a session. Not a literal copy of the Foundation.
 
 ## Format — agent files
 
@@ -82,15 +81,16 @@ verbatim:**
 | `writer` | `all` | Invoked directly to shape material, or delegated to by `deneir`. Both ways are normal. |
 | `researcher` | `all` | Invoked directly to verify a claim, or delegated to by `programmer` / `the-architect`. Both ways are normal. |
 
-**Do not derive `mode` from the word "subagent" used in the Free Wings
-`FOUNDATION.md`** — that word there means "delegated worker" (a
-conceptual definition), not the OpenCode `subagent` mode (a UI
-placement). They are different concepts that happen to share a name.
+**Take `mode` only from the table above** — never infer it from the
+wording of a blueprint or of `FOUNDATION.md`. In OpenCode, `subagent`
+is a `mode` value: an agent reachable only via `@mention` or by
+delegation from a primary agent. The harness itself has no
+"subagent" concept; it only has agents.
 
 **`tools`** — the per-tool enable/disable map. **Format: an object
 (record) with tool names as keys and booleans as values.** Never a
-string, never a comma-separated list — that format belongs to Claude
-Code, not OpenCode, and using it causes a hard crash at startup
+string, never a comma-separated list — OpenCode rejects that format
+with a hard crash at startup
 (`InvalidError: expected record, received string`). The OpenCode schema
 is `z.record(z.string(), z.boolean())`.
 
@@ -148,8 +148,10 @@ invocation identifier is direct.
 ## Gitignore
 
 The generated `.opencode/` directory should be gitignored — it is a
-regenerable output, not source. Same reasoning as described in the
-Claude adapter.
+regenerable output, not source. Same reasoning as never committing a
+`build/` folder. If the target project has already established a
+practice of committing tool-specific files, respect that — see the
+`FOUNDATION.md` discussion of this choice.
 
 ## Known limits
 
