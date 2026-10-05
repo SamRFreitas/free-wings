@@ -104,7 +104,7 @@ verbatim:**
 | `deneir` | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Read-only about the project; writes only to `docs/observations/`. Needs `write` (new dated files), not `edit` (never modifies existing files), not `bash`. |
 | `researcher` | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Reads, uses web search/fetch (see below), writes only to `docs/research/`. Needs `write`, not `edit`, not `bash`. |
 | `writer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | Shapes material into diary entries / articles. Needs `edit` (revising drafts), not `bash`. |
-| `the-architect` | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | Read-only, never writes. |
+| `the-architect` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Decides, doesn't implement. `write`/`edit` record its own decisions (`docs/decisions/`, `docs/specs/plan-*.md`, `FOUNDATION.md`), only after explicit approval; `bash` is for read-only git. Both limits are enforced by the blueprint, not by this map (a key is boolean per tool, not per path or command). |
 
 For `researcher`, if the target OpenCode version supports `webfetch`
 and/or `websearch` as named tools, add them as `true`. If the exact
