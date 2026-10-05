@@ -130,3 +130,5 @@ harness-wide version of this rule.
 - Does not write a target project's `FOUNDATION.md` for it — that has
   to come from real dialogue with the person, the same way Free Wings'
   own and any downstream project's `FOUNDATION.md` files were written.
+  Once it exists, a change to it (roadmap, status, a decision) goes
+  through `the-architect`, which records it with the person's approval.
