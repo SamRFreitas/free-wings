@@ -36,12 +36,19 @@ context. Prioritize: philosophy, structure, agent and skill lists,
 conventions, and current status. Omit: lengthy historical reasoning
 that does not inform a session.
 
-## Format — agent files
+## Format — subagent files
+
+In Claude Code, a file in `.claude/agents/` defines a **subagent**: a
+specialized assistant Claude can delegate a task to, which runs in its
+own separate context and returns a summary to the conversation that
+called it. Each harness agent blueprint compiles into one subagent
+file. The same file can also run as the **main thread** of a session
+(see "Invocation" below).
 
 `.claude/agents/<name>.md` uses YAML frontmatter. Only `name` and
 `description` are required; all other fields are optional. **All field
 names, formats, and semantics below are verified against
-`code.claude.com/docs/en/sub-agents` (consulted 2026-09-15).**
+`code.claude.com/docs/en/sub-agents` (consulted 2026-10-02).**
 
 ```yaml
 ---
@@ -85,7 +92,18 @@ this table verbatim:
 | `deneir` | `Read, Grep, Glob, Bash, Write` | Read-only about the project; only writes to `docs/observations/`. The behavioral constraint is enforced by the blueprint, not the tool list (Claude Code's `tools` is boolean per tool, not per path). |
 | `researcher` | `Read, Grep, Glob, WebSearch, WebFetch, Write` | Reads, uses web search/fetch, writes only to `docs/research/`. |
 | `writer` | `Read, Grep, Glob, Write, Edit` | Shapes material into diary entries / articles; edits drafts. |
-| `the-architect` | `Read, Grep, Glob` | Read-only; never writes. |
+| `the-architect` | `Read, Grep, Glob, Bash, Write, Edit` | Decides, doesn't implement. `Write`/`Edit` record its own decisions (`docs/decisions/`, `docs/specs/plan-*.md`, `FOUNDATION.md`), only after explicit approval; `Bash` is for read-only git. Both limits are enforced by the blueprint, not the tool list (`tools` is boolean per tool, not per path or command). No `Agent`: it recommends, it does not spawn. |
+
+**Why no permission rule narrows `Bash` for `the-architect`.** Claude
+Code already runs the read-only forms of `git` without a permission
+prompt in every mode, and any other shell command goes through the
+normal permission flow. An `allow` rule in `.claude/settings.json`
+would therefore add nothing, and only a `deny` rule restricts — but
+permission rules apply to the whole session, not to one subagent, so
+denying `git commit` for `the-architect` would deny it for `programmer`
+and for the person too. The restriction stays in the blueprint's text.
+A project that wants a `deny` rule anyway adds it to its own
+`.claude/settings.json`; `construct` does not generate one.
 
 **If the mapping is unclear for a specific agent, ask the user rather
 than guessing.** **Safety rule:** an entry in `tools` that does not
@@ -101,8 +119,9 @@ specific model for a specific agent, a tool explicitly denied, a
 restricted subagent-spawning list — can be expressed without leaving
 this adapter.
 
-**`model`** (optional) — the model the subagent uses. Accepted values
-include `sonnet`, `opus`, `haiku`, and `inherit`. `inherit` means "use
+**`model`** (optional) — the model the subagent uses. Accepted values:
+`sonnet`, `opus`, `haiku`, `fable`, `inherit`, or a full model ID
+(e.g. `claude-opus-5-5`). `inherit` means "use
 the same model as the parent conversation". The harness does **not**
 specify a model — omit this field and let Claude Code decide, unless
 the person asks for a specific one.
@@ -114,8 +133,9 @@ almost everything but one specific tool. The harness does not use this
 by default.
 
 **`permissionMode`** (optional) — controls the subagent's permission
-behavior. Accepted values include `default`, `acceptEdits`,
-`bypassPermissions`, and `plan`. Omit by default — Claude Code's
+behavior. Accepted values: `default`, `acceptEdits`, `auto`,
+`dontAsk`, `bypassPermissions`, `plan`, or `manual` (an alias for
+`default`). Omit by default — Claude Code's
 `default` is what the harness expects.
 
 **`skills`** (optional) — a list of skill names to preload into the
@@ -123,22 +143,28 @@ subagent's context. Each listed skill is loaded as if invoked by the
 subagent itself. The harness does not use this by default — skills are
 invoked on-demand, not preloaded.
 
-**`Agent(<agent_type>)` inside `tools`** — a special entry in the
-`tools` list that lets a subagent spawn **specific other subagents**,
-restricted to the named type. Example: `tools: Read, Grep,
-Agent(researcher)` allows this agent to spawn only the `researcher`
-subagent. Without this entry, if a subagent is allowed to spawn others,
-it can spawn any registered subagent.
+**`Agent` and `Agent(<agent_type>, ...)` inside `tools`** — the entry
+that controls whether a subagent can spawn other subagents. Three
+cases:
 
-**Note on `the-architect` and subagent spawning.** The blueprint for
-`the-architect` carries a "Known open question, stated honestly"
-section: whether this agent can directly invoke another agent (chaining
-subagents) or can only *recommend* one is not confirmed. Until that is
-resolved, do **not** add `Agent(...)` entries to its `tools` — the
-harness assumes the safer case (recommend, don't chain). If the person
-later confirms that direct chaining is supported and desired, update
-**this adapter file** to include the mapping — not the blueprint, not
-`CONSTRUCT.md`.
+- `tools` **omitted** — the subagent inherits every tool, `Agent`
+  included, so it can spawn any subagent.
+- `tools` **listed with `Agent(a, b)`** — it can spawn only the named
+  subagent types. Example: `tools: Read, Grep, Agent(researcher)`.
+- `tools` **listed without `Agent`** — it cannot spawn any subagent.
+
+By default, nesting goes up to three layers below the main
+conversation; `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` in `settings.json`
+lowers it (`1` disables nesting).
+
+**Note on `the-architect` and subagent spawning.** The blueprint says
+`the-architect` recommends the next agent and does not invoke it. In
+Claude Code this holds by construction: its `tools` list has no `Agent`
+entry, so it cannot spawn a subagent — neither when delegated to as a
+subagent nor when running as the main thread (observed 2026-10-05). Do
+**not** add `Agent` or `Agent(...)` to its `tools`. If the person later
+wants direct chaining, that is a change to the blueprint first, and to
+this table second.
 
 ## Format — skill files
 
@@ -172,7 +198,8 @@ Grep, Glob`.
 agents, `tools` is an **allowlist** (only those tools are available).
 For skills, `allowed-tools` **grants permission without prompting** —
 it does not restrict the skill to only those tools. Other tools remain
-available, they just may require user approval.
+available, they just may require user approval. The grant lasts only
+for the turn that invokes the skill; it clears with the next message.
 
 The harness's skills (`write-diary`, `write-article`, `loop-status`)
 are not gated by permissions in a way that requires this field. Omit it
@@ -180,14 +207,66 @@ unless the blueprint explicitly needs a specific tool allowlist.
 
 ## Invocation
 
-Claude Code invokes agents via `@<name>` and skills via `/<name>`. Both
-use the file name (`<name>`, kebab-case) as the invocation identifier,
-so the mapping from blueprint name to invocation identifier is direct —
-no translation step. A subagent may also be run as the **main thread**
-of a conversation via the CLI flag `--agent <name>` — in that case the
-subagent *is* the primary conversation, which is a decision made at
-invocation time, not a field in the file. Claude Code has no `mode`
-field equivalent to OpenCode's `primary` / `subagent` / `all`.
+A subagent is invoked explicitly with an @-mention: type `@` and pick
+it from the typeahead (it appears as `@"<name> (agent)"`), or type
+`@agent-<name>` by hand. Claude can also delegate to it on its own,
+based on its `description`. A skill is invoked as `/<name>`. Both use
+the blueprint's kebab-case name, so no translation step is needed.
+
+A subagent can also run as the **main thread** of a session, via the
+CLI flag `--agent <name>` or `"agent": "<name>"` in
+`.claude/settings.json`. Its prompt then replaces the default system
+prompt, and the main thread takes on its `tools` and `model`. This is
+chosen when the session starts, not by a field in the subagent file.
+
+### Which way to open each agent
+
+The two ways behave differently. As a **subagent** (`@agent-<name>`),
+the agent works alone and returns one report to the session that called
+it; that session rewrites the request on the way in and summarizes the
+answer on the way out, and the agent cannot ask the person anything —
+Claude Code removes `AskUserQuestion` from every subagent. As the
+**main thread** (`claude --agent <name>`), the person talks to the
+agent directly, turn by turn, with nothing in between.
+
+So an agent that explains, asks, and waits belongs in the main thread;
+an agent that takes a request, produces a file, and finishes works well
+as a subagent:
+
+| Agent | Open it with | Why |
+| :--- | :--- | :--- |
+| `the-architect` | `claude --agent the-architect` | The entry point, and the one the person plans with. Tested 2026-10-05: it starts with only the tools in its `tools` list and follows the blueprint. |
+| `programmer` | `claude --agent programmer` | Teaches and asks while it implements. |
+| `tester` | `claude --agent tester` by default; `@agent-tester` only to judge an output that already exists | Its first pass explains and asks, which needs the main thread. A pass that only judges a finished output needs no dialogue. |
+| `researcher` | `@agent-researcher` | Takes a request, writes a file in `docs/research/`, finishes. |
+| `deneir` | `@agent-deneir` | Takes a request, writes a file in `docs/observations/`, finishes. |
+| `writer` | `@agent-writer` | Takes a request, writes a draft, finishes. |
+
+**Sessions do not share a conversation.** What passes from one session
+to the next is the message the person copies across, or whatever is
+already written in the repository. This is why `the-architect` hands
+over a ready-to-paste message with every recommendation.
+
+### Making a session behave as an agent by default
+
+Two documented ways, both chosen by the project, neither generated by
+`construct`:
+
+- **Per session**: `claude --agent <name>`.
+- **Project default**: `"agent": "<name>"` in `.claude/settings.json`.
+  Every session in that project then starts as that agent; `--agent`
+  overrides it for one session.
+
+How to open a plain, default session in a project that has `"agent"`
+set is **not documented** as of 2026-10-05: the docs say only that the
+key is unset by default and that `--agent` overrides it. Do not assume
+a built-in agent name that restores the default — test it, or leave
+`"agent"` unset and use `--agent` per session.
+
+`construct` writes only the files this adapter lists under "Outputs".
+It never deletes or changes anything else in `.claude/` — a project's
+own `settings.json`, `settings.local.json`, or extra agents and skills
+are left exactly as they are.
 
 ## Gitignore
 
@@ -201,20 +280,39 @@ of this choice.
 ## Known limits
 
 Claude Code's exact field set and validation rules may evolve. This
-adapter reflects the structure current as of **2026-09-15**, verified
-against `code.claude.com/docs/en/sub-agents` and
-`code.claude.com/docs/en/skills`. The following were verified:
+adapter reflects the structure current as of **2026-10-05** (Claude
+Code 2.1.289), verified against `code.claude.com/docs/en/sub-agents`,
+`code.claude.com/docs/en/skills`, `code.claude.com/docs/en/permissions`,
+`code.claude.com/docs/en/settings-reference`, and `claude --help`. The
+following were verified:
 
 - `name`, `description` — required fields, formats as documented.
 - `tools` — accepts comma-separated string and YAML array; omitting
   inherits all; unresolvable entries cause launch failure.
-- `model`, `disallowedTools`, `permissionMode`, `skills`,
-  `Agent(<agent_type>)` — exist as optional fields; exact accepted
-  values for `model` and `permissionMode` should be re-verified against
-  the current Claude Code docs before relying on a specific value.
+- `model`, `permissionMode` — accepted values as listed above.
+- `disallowedTools`, `skills`, `Agent(<agent_type>)` — exist as
+  optional fields; spawn depth defaults to three layers.
+- @-mention syntax and `--agent` / `"agent"` main-thread behavior —
+  as described in "Invocation".
 - `allowed-tools` in skills — accepts comma-separated string, space-
-  separated string, or YAML list; grants permission without prompting,
-  does not restrict.
+  separated string, or YAML list; grants permission without prompting
+  for the invoking turn only, does not restrict.
+- `AskUserQuestion` — removed from every subagent, even when listed in
+  `tools`.
+- Read-only forms of `git` — run without a permission prompt in every
+  mode; permission rules are per session, not per subagent.
+
+**Plan mode.** Two limits observed on 2026-10-05, not taken from the
+docs:
+
+- A subagent called from a session in plan mode could not write: a
+  `researcher` finished its research and was unable to save the file.
+  Leave plan mode before calling an agent that has to write.
+- An agent running as the main thread with a restricted `tools` list
+  has, in plan mode, neither the tool to write the plan nor the tool to
+  ask the person questions. Run `the-architect` in the default
+  permission mode; its own approval rule (see its blueprint) already
+  keeps it from writing before the person agrees.
 
 When Claude Code's conventions change, update *this adapter file* — not
 `CONSTRUCT.md`, and not `FOUNDATION.md`.
