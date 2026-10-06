@@ -105,9 +105,9 @@ whatever comes after it. Every project under this harness:
    [`loop-status`](hangar/blueprints/skills/loop-status.md).
    `construct` is not a skill — it is the bootstrapper at the root.
 
-   None of them is wired to any single project: each reads the target
-   project's own `FOUNDATION.md` first and follows *that* project's
-   conventions.
+   None of them is wired to any single project: each learns the target
+   project from the file compiled from that project's own
+   `FOUNDATION.md`, and follows *that* project's conventions.
 
    Three rules bind every agent — "know the project", "recognize and
    refer" and "show first, then write" — written once in
