@@ -1,5 +1,65 @@
 # Logbook — Free Wings
 
+## 2026-10-06 — The stamp was tested, and the open notes were closed
+
+The previous entry left three things open. They are closed now.
+
+- Shadow Glass was recompiled by a fresh run of `CONSTRUCT.md`: its
+  root file carries the stamp and its agents carry "Know the project".
+- A fresh session ran the stamp check in both directions. It matched
+  on an unchanged `FOUNDATION.md`, and it differed after an edit, until
+  `construct` ran again. Claude Code did not ask permission for
+  `git hash-object`.
+- Two text defects in `FOUNDATION.md` were fixed: a stray last line and
+  a missing blank line before a heading. Neither changes how the
+  harness works, so the cascade did not fire; only the stamp moved.
+
+**Honest note.** The compiled root file is about half the size of
+`FOUNDATION.md` here (11.9 KB against 25.7 KB) and almost the same size
+in Shadow Glass (15.9 KB against 16.6 KB): nearly everything in that
+project's foundation is something a session needs. There the saving is
+not reading both files, not a shorter file.
+
+## 2026-10-06 — The generated file is what a session reads
+
+Still the same day. With the copies gone, the person asked whether the
+harness saves tokens. The honest answer was "partly": every session
+loaded the generated root file and then, because five agent blueprints
+and two skills said so, read `FOUNDATION.md` as well. The same facts
+were paid for twice in every conversation, which defeats the reason
+for compiling.
+
+**What changed.**
+
+- The generated root file has to be sufficient on its own. A session
+  works from it and opens `FOUNDATION.md` only when that file is not in
+  context, reports itself out of date, or the full reasoning behind a
+  decision is needed. The rule for agents is "Know the project", the
+  third rule in `hangar/blueprints/shared/agent-rules.md`.
+- `construct` stamps the root file with `git hash-object FOUNDATION.md`
+  and writes a header telling the session to run the same command
+  once, at its start, and compare.
+- Keeping the generated file current stays the person's
+  responsibility. The stamp reports a stale file; it does not replace
+  the recompile.
+
+**Honest notes.**
+
+- The person chose "a commit stamp". What was built is git's content
+  fingerprint instead, because a commit hash cannot describe text that
+  is not committed yet. Shown in the plan and approved.
+- The two skills do not receive the shared rules, so each carries half
+  a sentence of its own about where to learn the project. It is the
+  one repetition this change added.
+- No ADR: this refines the compile principle, it is not a new fork.
+- Free Wings was recompiled by the session, not by a fresh run of
+  `CONSTRUCT.md`. No fresh session has run the stamp check yet, and
+  whether Claude Code asks permission for that command is not tested.
+- Shadow Glass is still to be recompiled: its root file has no stamp
+  and its compiled agents still say to read `FOUNDATION.md`.
+- No `docs/learning-*.html` page exists, so that step had nothing to
+  update.
+
 ## 2026-10-06 — One home for each fact
 
 The same day as the entry below, and because of it. After the three
