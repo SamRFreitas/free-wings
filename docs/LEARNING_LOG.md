@@ -1,5 +1,70 @@
 # Logbook — Free Wings
 
+## 2026-10-06 — One home for each fact
+
+The same day as the entry below, and because of it. After the three
+guards were added and committed, Shadow Glass was recompiled and
+`construct`'s new check reported two disagreements. One was old:
+`grilling` was called a skill, with no blueprint behind it. The other
+was hours old: the third guard had been written as "`construct` checks"
+in `FOUNDATION.md` and as "adapters follow" in `the-architect`'s
+blueprint.
+
+That was the point where the person stopped the work. Every question
+"is it consistent now?" had been answered with a new inconsistency,
+right after a round of fixes. The assistant had been checking piece by
+piece, with a grep for old wording, and repairing each divergence by
+writing the same rule out by hand in one more file.
+
+**The cause was the copies, not the checking.** What `the-architect`
+does was described in five files. Foundation Sync was defined twice.
+`construct`'s invocation contract appeared four times in its own file.
+A twenty-line block was pasted into six blueprints. The person named
+the rule every programmer knows: do not write the same function twice.
+It also costs tokens every time a model loads a copy.
+
+**What changed** (ADR 0003):
+
+- Each fact has one home, and every other file points to it.
+  `FOUNDATION.md` and `README.md` keep one line per agent and a link;
+  the blueprint is the description.
+- Foundation Sync is defined once, in `FOUNDATION.md`, with four rules
+  protecting it. `the-architect`'s blueprint says it owns the cascade
+  and where to read it.
+- The rules common to all agents moved to a new file,
+  `hangar/blueprints/shared/agent-rules.md`, which `construct` appends
+  to each compiled agent.
+- `CONSTRUCT.md` states its contract once.
+- `grilling` is called a practice.
+
+Also corrected along the way: `hangar/docs/learnings/` (the folder is
+`hangar/docs/`), a reference to a "Loop engineering" section that does
+not exist, `construct` used as an example of a skill, the word
+"subagent" in `researcher`'s blueprint, `write-article` writing before
+showing, and `deneir` without `bash` in the OpenCode adapter although
+it reads git history.
+
+**Honest notes.**
+
+- The order rule was followed this time: `FOUNDATION.md` was edited
+  first.
+- The web research behind ADR 0003 went no further than search
+  summaries. It was not done by `researcher` and nothing was saved in
+  `docs/research/`.
+- Free Wings was recompiled for Claude Code by the session, not by a
+  fresh run of `CONSTRUCT.md`. The rewritten bootstrapper and the
+  shared-file step were first exercised right after, by a fresh run
+  against Shadow Glass: six agents with the shared rules appended, and
+  no disagreement named by the check. The OpenCode outputs are still
+  to be recompiled; not a concern for now.
+- A cross-read after that run showed a pillar had been left behind:
+  `HARI-SELDON.md`'s orientation note listed its sibling folders
+  without `shared/`, and its Loop Status line named fields the block
+  does not have. Corrected.
+- No `docs/learning-*.html` page exists, so that step had nothing to
+  update.
+- The entry below says "three guards". It is left as written.
+
 ## 2026-10-06 — Foundation Sync was skipped, so it got three guards
 
 The changes of 2026-10-05 went further than ADR 0001 recorded.
@@ -716,3 +781,13 @@ AI-Assisted Tool detected: OpenCode. Target: Free Wings itself (bare @CONSTRUCT)
 Rerun of `@CONSTRUCT` (bare — target Free Wings itself, mode: recompile). AI-Assisted Tool detected: OpenCode, from the runtime environment (`OPENCODE=1` env var), not from directory presence. Action: regenerated `AGENTS.md` (project root) and `.opencode/agents/` (programmer, tester, deneir, researcher, writer, the-architect) and `.opencode/skills/` (`loop-status`, `write-article`, `write-diary`) from `FOUNDATION.md` + `hangar/blueprints/` via the OpenCode adapter.
 
 Followed the adapter's fixed mappings for agent frontmatter rather than guessing: `mode` (the-architect → primary, the rest → all) and the boolean `tools` record (researcher got `webfetch`/`websearch: true` since this OpenCode version exposes those named tools; no `Agent(...)`-style chaining entries for the-architect). Skills were compiled to folder-per-skill `SKILL.md` with `name`+`description` only — no `tools` field, since the OpenCode skill schema doesn't validate it. Confirmed `.gitignore` already covers `.opencode/` and `AGENTS.md`. No issues.
+
+## 2026-10-06 — construct compiled for Claude Code, first run with the shared rules file
+
+Run of `@CONSTRUCT` (bare — target Free Wings itself, mode: recompile). AI-Assisted Tool detected: Claude Code, from the runtime environment (`CLAUDECODE` and `CLAUDE_CODE_ENTRYPOINT` env vars), not from directory presence — `.claude/` did not exist yet. Action: generated `CLAUDE.md` (project root), `.claude/agents/` (deneir, programmer, researcher, tester, the-architect, writer) and `.claude/skills/` (`loop-status`, `write-article`, `write-diary`, each as `<name>/SKILL.md`) from `FOUNDATION.md` + `hangar/blueprints/` via the `claudecode.md` adapter. Each compiled agent ends with the content of `hangar/blueprints/shared/agent-rules.md`.
+
+`tools` taken verbatim from the adapter's table: listed for `deneir`, `researcher` and `writer`, omitted for the other three. The session was in plan mode, so the run was presented as one plan and written after its approval.
+
+Consistency check (`FOUNDATION.md` against the blueprints): agents and skills agree — same six, same three, same names and roles. Named, not corrected: a stray fragment `generated from it.` on the last line of `FOUNDATION.md`, and a missing blank line before its `## Modular & Self-Sufficient Documentation` heading.
+
+Deviations: (1) the adapter says to strip the HTML orientation note from agents and is silent for skills; it was stripped from skills too, since "Lives in `hangar/blueprints/skills/`" is false in a compiled file. (2) In `programmer`, the example list of generated files was cut to `CLAUDE.md` alone, per the rule that a compiled output speaks only of the detected tool.
