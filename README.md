@@ -116,11 +116,12 @@ whatever comes after it. Every project under this harness:
    - [**The Architect**](hangar/blueprints/agents/the-architect.md)
      (`the-architect`) — the entry point: decides which of the other
      agents a task belongs to, or says plainly when it fits none of
-     them. It watches how the project works in order to decide, may
-     read the repository's history (never change it), and writes only
-     the records of its own decisions — ADRs, multi-step plans
-     (`docs/specs/plan-*.md`), the project's `FOUNDATION.md` — after
-     showing the text and getting explicit approval. Never code.
+     them. It watches how the project works in order to decide, and
+     writes the records of its own decisions — ADRs, multi-step plans
+     (`docs/specs/plan-*.md`), the project's `FOUNDATION.md`. It may
+     make a small change itself; larger implementation goes to
+     `programmer`. It may delegate to `researcher`, `deneir` and
+     `writer`, and commits only when asked (ADR 0002).
      Identifiers are kebab-case across the harness; any
      tool-specific naming rule lives in that tool's adapter.
 
@@ -154,7 +155,14 @@ whatever comes after it. Every project under this harness:
    `LEARNING_LOG.md` entry → `docs/learning-*.html`, plus a judgment
    call on whether a new ADR is warranted — checked and updated in
    full, and verified by actually grepping for stale references rather
-   than trusted from memory.
+   than trusted from memory. Three rules keep it from being skipped:
+   the change starts in `FOUNDATION.md`, nothing is committed until the
+   cascade is closed, and `construct` reports any disagreement between
+   `FOUNDATION.md` and the blueprints.
+
+   Every agent also follows **"show first, then write"**: it shows the
+   exact path and text of a change and waits for explicit approval
+   before writing.
 
 ## License
 
