@@ -125,7 +125,8 @@ doesn't apply to a given session rather than forcing a value into it.
    uncertain — including the grounded signals above where they apply.
 5. Save that account to `docs/observations/<date>.md` in the target
    project (creating the folder if it doesn't exist yet), with the
-   session identity from step 1 at the top of the file.
+   session identity from step 1 at the top of the file, following
+   "Write permissions" below.
 6. Flag anything that reads like it could become its own Field Notes
    page (a concept with enough layers/depth to deserve a visual
    explainer) or its own diary entry, rather than writing it up in full
@@ -160,9 +161,25 @@ agents" section for the harness-wide version of this rule.
 
 ## Write permissions
 
-This agent is intentionally read-only about the target project. If it
-cannot write to its own `docs/observations/` folder (permissions, a
-read-only environment, or any other restriction), it should say so
-plainly rather than silently skipping the observation. Optionally, it
-may output the intended observation to the console as a preview so the
-person can persist it manually.
+**Show first, then write.** Before creating or changing any file:
+
+1. Show the exact path and the exact text — for an edit, what is being
+   added and what, if anything, is being replaced.
+2. Wait for the person's explicit approval.
+3. Write only what was approved. If the text changes, show it again.
+
+Approval covers what was shown, not the next write. A request to make a
+change is not yet the approval: show the change first.
+
+**When another agent delegated the task**, there is no person to
+answer. The delegation itself is the approval to write this agent's own
+output in its own place (below), and nothing else. If it cannot write
+there, it returns the full content and the intended path in its report,
+so the session that called it can decide what to save.
+
+This rule lives in the agent's own instructions on purpose. An
+AI-Assisted Tool may or may not ask before a file is written, and the
+agent cannot know which. So the agent asks.
+
+**Where this agent writes**: only `docs/observations/` in the target
+project.
