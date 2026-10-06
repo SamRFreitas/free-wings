@@ -75,11 +75,11 @@ verbatim:**
 | Agent | `mode` | Why |
 | :--- | :--- | :--- |
 | `the-architect` | `primary` | Entry point of the harness. The first agent the person reaches for when they don't know which agent fits. Belongs in the Tab cycle as the starting mode. |
-| `programmer` | `all` | Invoked directly as the main task, or delegated to by `the-architect` / `researcher`. Both ways are normal. |
-| `tester` | `all` | Invoked directly after `programmer` just built something, or delegated to by `programmer`. Both ways are normal. |
-| `deneir` | `all` | Invoked directly to watch a project, or delegated to by `writer`. Both ways are normal. |
-| `writer` | `all` | Invoked directly to shape material, or delegated to by `deneir`. Both ways are normal. |
-| `researcher` | `all` | Invoked directly to verify a claim, or delegated to by `programmer` / `the-architect`. Both ways are normal. |
+| `programmer` | `all` | Invoked directly as the main task. It explains and asks, so it needs the person in the conversation; `the-architect` recommends it rather than delegating to it. |
+| `tester` | `all` | Invoked directly after `programmer` just built something. Like `programmer`, it is recommended by `the-architect` rather than delegated to. |
+| `deneir` | `all` | Invoked directly to watch a project, or delegated to by `the-architect`. Both ways are normal. |
+| `writer` | `all` | Invoked directly to shape material, or delegated to by `the-architect`. Both ways are normal. |
+| `researcher` | `all` | Invoked directly to verify a claim, or delegated to by `the-architect`. Both ways are normal. |
 
 **Take `mode` only from the table above** — never infer it from the
 wording of a blueprint or of `FOUNDATION.md`. In OpenCode, `subagent`
@@ -104,7 +104,7 @@ verbatim:**
 | `deneir` | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Read-only about the project; writes only to `docs/observations/`. Needs `write` (new dated files), not `edit` (never modifies existing files), not `bash`. |
 | `researcher` | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Reads, uses web search/fetch (see below), writes only to `docs/research/`. Needs `write`, not `edit`, not `bash`. |
 | `writer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | Shapes material into diary entries / articles. Needs `edit` (revising drafts), not `bash`. |
-| `the-architect` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Decides, doesn't implement. `write`/`edit` record its own decisions (`docs/decisions/`, `docs/specs/plan-*.md`, `FOUNDATION.md`), only after explicit approval; `bash` is for read-only git. Both limits are enforced by the blueprint, not by this map (a key is boolean per tool, not per path or command). |
+| `the-architect` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | The entry point; works as a normal session. What it writes, and when, is set by the blueprint's "Write permissions" rule, not by this map (a key is boolean per tool, not per path or command). |
 
 For `researcher`, if the target OpenCode version supports `webfetch`
 and/or `websearch` as named tools, add them as `true`. If the exact
