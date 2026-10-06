@@ -85,3 +85,9 @@ enables `write`, `edit` and `bash` for `the-architect`, with the same
 two limits kept in the blueprint's text. Not yet tested inside
 OpenCode, and that tool's generated files have not been recompiled
 since 2026-09-22.
+
+## Update — 2026-10-06
+
+Superseded in part by ADR 0002. Three points of the decision above no
+longer hold: "never code", read-only version control, and recommending
+the next agent rather than invoking it. The rest stands.
