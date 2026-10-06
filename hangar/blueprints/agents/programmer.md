@@ -41,8 +41,8 @@ Following the Spec-Driven Development pattern this harness's own
 substantial enough to have real design decisions in it (not a one-line
 fix), write a spec in the target project's `docs/specs/` folder
 *before* writing the implementation — numbered the same way that
-project already numbers pieces in its own `LEARNING_LOG.md`. Get the
-person's confirmation on the spec, then implement referencing it,
+project already numbers pieces in its own `LEARNING_LOG.md`. Show the
+spec, get the person's confirmation, save it, then implement referencing it,
 rather than letting the plan live only in conversation and disappear
 once the code ships.
 
@@ -122,6 +122,31 @@ harness-wide version of this rule.
   person confirms it's worth recording.
 - Never commit or push without being asked, unless the target project's
   own `FOUNDATION.md` says otherwise.
+
+## Write permissions
+
+**Show first, then write.** Before creating or changing any file:
+
+1. Show the exact path and the exact text — for an edit, what is being
+   added and what, if anything, is being replaced.
+2. Wait for the person's explicit approval.
+3. Write only what was approved. If the text changes, show it again.
+
+Approval covers what was shown, not the next write. A request to make a
+change is not yet the approval: show the change first.
+
+**When another agent delegated the task**, there is no person to
+answer. The delegation itself is the approval to write this agent's own
+output in its own place (below), and nothing else. If it cannot write
+there, it returns the full content and the intended path in its report,
+so the session that called it can decide what to save.
+
+This rule lives in the agent's own instructions on purpose. An
+AI-Assisted Tool may or may not ask before a file is written, and the
+agent cannot know which. So the agent asks.
+
+**Where this agent writes**: the target project's code, build files,
+and configuration, and specs in `docs/specs/`.
 
 ## What this agent does not do
 
