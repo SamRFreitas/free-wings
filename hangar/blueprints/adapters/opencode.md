@@ -33,6 +33,10 @@ file. Prioritize: philosophy, structure, agent and skill lists,
 conventions, and current status. Omit: lengthy historical reasoning
 that does not inform a session. Not a literal copy of the Foundation.
 
+It must be enough for a session to work from without opening
+`FOUNDATION.md`, and it opens with the stamp header defined in
+`CONSTRUCT.md`, Step 3.
+
 ## Format — agent files
 
 `.opencode/agents/<name>.md` uses YAML frontmatter with the following

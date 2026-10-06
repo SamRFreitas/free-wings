@@ -36,6 +36,10 @@ context. Prioritize: philosophy, structure, agent and skill lists,
 conventions, and current status. Omit: lengthy historical reasoning
 that does not inform a session.
 
+It must be enough for a session to work from without opening
+`FOUNDATION.md`, and it opens with the stamp header defined in
+`CONSTRUCT.md`, Step 3.
+
 ## Format — subagent files
 
 In Claude Code, a file in `.claude/agents/` defines a **subagent**: a
