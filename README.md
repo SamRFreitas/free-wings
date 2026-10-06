@@ -109,8 +109,8 @@ whatever comes after it. Every project under this harness:
    project's own `FOUNDATION.md` first and follows *that* project's
    conventions.
 
-   Two rules bind every agent — "recognize and refer" and "show first,
-   then write" — written once in
+   Three rules bind every agent — "know the project", "recognize and
+   refer" and "show first, then write" — written once in
    [`hangar/blueprints/shared/agent-rules.md`](hangar/blueprints/shared/agent-rules.md).
    How a change to the harness itself is kept consistent across its
    files is **Foundation Sync**, defined in
