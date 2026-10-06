@@ -3,10 +3,10 @@
 > This is a blueprint, not the Foundation itself. It is passed as an optional parameter to `construct` — `@CONSTRUCT @HARI-SELDON` — when the target is another project rather than Free Wings itself. In that mode, `construct` reads this blueprint and walks the person through a dialogue that fills each section, producing the target project's real `FOUNDATION.md`. All content below must come from a real conversation between the person and their AI assistant — never filled in by guessing.
 
 <!--
-Orientation — where you are: this file lives inside `hangar/blueprints/`, alongside its siblings `agents/`, `skills/`, and `adapters/`. None of them execute on their own; they exist to be read by `construct`.
+Orientation — where you are: this file lives inside `hangar/blueprints/`, alongside its siblings `agents/`, `shared/`, `skills/`, and `adapters/`. None of them execute on their own; they exist to be read by `construct`.
 What this file does: it provides the section skeleton for a new project's `FOUNDATION.md`. It is the parameter that tells `construct` the target is another project — when `construct` is invoked with `@CONSTRUCT @HARI-SELDON`, it reads this blueprint and walks the person through a dialogue that fills each section with real content.
 How it connects: passed as a parameter to `construct`. Together, `construct` + `HARI-SELDON` scaffold a new project's `FOUNDATION.md`. Without HARI-SELDON as the parameter, `construct` operates on Free Wings itself and does not read this file. Named after Hari Seldon, the fictional creator of the Foundation in Asimov's novels — the blueprint that generates foundations.
-A note on scope: this blueprint deliberately does not carry Free Wings' own identity-level content (its name, its Freire/Dumont philosophy, its bilingual-by-design commitment). Those belong to Free Wings itself. What this blueprint does offer is the harness's standing rules as optional inheritance — see "Harness conventions" below.
+A note on scope: this blueprint deliberately does not carry Free Wings' own identity-level content (its name, its Freire/Dumont philosophy, its bilingual-by-design commitment). Those belong to Free Wings itself. What this blueprint does offer is the harness's standing rules as optional inheritance — see "Harness conventions" below. Also not on the list below: the rules every agent follows (`shared/agent-rules.md`). They are not optional inheritance — `construct` appends them to every compiled agent, in every project.
 
 Relationship to the other two pillars:
 - `FOUNDATION.md` — the source of truth of whichever project I help scaffold. My job is to produce the target project's own `FOUNDATION.md`; I do not produce Free Wings' own.
@@ -50,7 +50,7 @@ This is a blueprint, not a file to copy by hand. The actual content in each sect
 
 - **Foundation Sync** — [default: a cascade runs when the harness itself changes (FOUNDATION.md → construct → README → LEARNING_LOG → learning pages → optional ADR). Adopt, adapt, or replace?]
 
-- **Loop Status** — [default: a short, honest readout of mid-loop state (trigger, topology, k-of-n, context, stop rule) is available on demand. Adopt, adapt, or replace?]
+- **Loop Status** — [default: a short, honest readout of where the work stands is available on demand, and proactively only at real checkpoints. Adopt, adapt, or replace?]
 
 ## Status
 
