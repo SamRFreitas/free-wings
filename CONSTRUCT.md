@@ -119,6 +119,21 @@ which I follow literally. I hardcode no per-tool logic.
 
 Rules for what I write:
 
+- **The root configuration file is sufficient on its own, and
+  stamped.** A session works from it without opening `FOUNDATION.md`
+  (see `FOUNDATION.md`, "The generated file is what a session reads").
+  Right after its title I write this header, filling in the two
+  values:
+
+  > Compiled by `construct` from `FOUNDATION.md` on <date>. Stamp:
+  > `<output of git hash-object FOUNDATION.md>`. Never hand-edit.
+  >
+  > Once, at the start of a session, run `git hash-object
+  > FOUNDATION.md`. If the result is this stamp, work from this file
+  > and open `FOUNDATION.md` only for the full reasoning behind
+  > something. If it differs, say so, read `FOUNDATION.md` for this
+  > session, and recommend running `construct`. A delegated agent does
+  > not repeat the check.
 - **Only the tool's own directory and root configuration file.** No
   `docs/` directory and no file inside it: those appear later, as the
   project's own work requires them.
