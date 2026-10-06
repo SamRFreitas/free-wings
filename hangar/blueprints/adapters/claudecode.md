@@ -92,18 +92,7 @@ this table verbatim:
 | `deneir` | `Read, Grep, Glob, Bash, Write` | Read-only about the project; only writes to `docs/observations/`. The behavioral constraint is enforced by the blueprint, not the tool list (Claude Code's `tools` is boolean per tool, not per path). |
 | `researcher` | `Read, Grep, Glob, WebSearch, WebFetch, Write` | Reads, uses web search/fetch, writes only to `docs/research/`. |
 | `writer` | `Read, Grep, Glob, Write, Edit` | Shapes material into diary entries / articles; edits drafts. |
-| `the-architect` | `Read, Grep, Glob, Bash, Write, Edit` | Decides, doesn't implement. `Write`/`Edit` record its own decisions (`docs/decisions/`, `docs/specs/plan-*.md`, `FOUNDATION.md`), only after explicit approval; `Bash` is for read-only git. Both limits are enforced by the blueprint, not the tool list (`tools` is boolean per tool, not per path or command). No `Agent`: it recommends, it does not spawn. |
-
-**Why no permission rule narrows `Bash` for `the-architect`.** Claude
-Code already runs the read-only forms of `git` without a permission
-prompt in every mode, and any other shell command goes through the
-normal permission flow. An `allow` rule in `.claude/settings.json`
-would therefore add nothing, and only a `deny` rule restricts — but
-permission rules apply to the whole session, not to one subagent, so
-denying `git commit` for `the-architect` would deny it for `programmer`
-and for the person too. The restriction stays in the blueprint's text.
-A project that wants a `deny` rule anyway adds it to its own
-`.claude/settings.json`; `construct` does not generate one.
+| `the-architect` | *(omit — inherits all)* | The entry point; works as a normal session. What it writes, and when, is set by the blueprint's "Write permissions" rule, not by a tool list. Inheriting every tool includes `Agent`, so it can delegate. |
 
 **If the mapping is unclear for a specific agent, ask the user rather
 than guessing.** **Safety rule:** an entry in `tools` that does not
@@ -157,14 +146,12 @@ By default, nesting goes up to three layers below the main
 conversation; `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` in `settings.json`
 lowers it (`1` disables nesting).
 
-**Note on `the-architect` and subagent spawning.** The blueprint says
-`the-architect` recommends the next agent and does not invoke it. In
-Claude Code this holds by construction: its `tools` list has no `Agent`
-entry, so it cannot spawn a subagent — neither when delegated to as a
-subagent nor when running as the main thread (observed 2026-10-05). Do
-**not** add `Agent` or `Agent(...)` to its `tools`. If the person later
-wants direct chaining, that is a change to the blueprint first, and to
-this table second.
+**Note on `the-architect` and delegation.** The blueprint lets
+`the-architect` delegate to `researcher`, `deneir`, and `writer`. In
+Claude Code that takes the `Agent` tool, which it has because its
+`tools` field is omitted. `programmer` and `tester` are not delegated
+to: they are opened as their own sessions (see "Which way to open each
+agent").
 
 ## Format — skill files
 
@@ -235,12 +222,12 @@ as a subagent:
 
 | Agent | Open it with | Why |
 | :--- | :--- | :--- |
-| `the-architect` | `claude --agent the-architect` | The entry point, and the one the person plans with. Tested 2026-10-05: it starts with only the tools in its `tools` list and follows the blueprint. |
+| `the-architect` | `claude --agent the-architect` | The entry point, and the one the person plans with. |
 | `programmer` | `claude --agent programmer` | Teaches and asks while it implements. |
 | `tester` | `claude --agent tester` by default; `@agent-tester` only to judge an output that already exists | Its first pass explains and asks, which needs the main thread. A pass that only judges a finished output needs no dialogue. |
-| `researcher` | `@agent-researcher` | Takes a request, writes a file in `docs/research/`, finishes. |
-| `deneir` | `@agent-deneir` | Takes a request, writes a file in `docs/observations/`, finishes. |
-| `writer` | `@agent-writer` | Takes a request, writes a draft, finishes. |
+| `researcher` | `@agent-researcher`, or delegated by `the-architect` | Takes a request, writes a file in `docs/research/`, finishes. |
+| `deneir` | `@agent-deneir`, or delegated by `the-architect` | Takes a request, writes a file in `docs/observations/`, finishes. |
+| `writer` | `@agent-writer`, or delegated by `the-architect` | Takes a request, writes a draft, finishes. |
 
 **Sessions do not share a conversation.** What passes from one session
 to the next is the message the person copies across, or whatever is
@@ -302,17 +289,28 @@ following were verified:
 - Read-only forms of `git` — run without a permission prompt in every
   mode; permission rules are per session, not per subagent.
 
-**Plan mode.** Two limits observed on 2026-10-05, not taken from the
-docs:
+**Plan mode.** A Claude Code permission mode (`plan`): Claude reads and
+explores but does not edit files, then presents one plan for one
+approval. It is not the mode that asks file by file — that is the
+default (manual) mode.
 
-- A subagent called from a session in plan mode could not write: a
-  `researcher` finished its research and was unable to save the file.
-  Leave plan mode before calling an agent that has to write.
-- An agent running as the main thread with a restricted `tools` list
-  has, in plan mode, neither the tool to write the plan nor the tool to
-  ask the person questions. Run `the-architect` in the default
-  permission mode; its own approval rule (see its blueprint) already
-  keeps it from writing before the person agrees.
+- **How it meets the blueprints' "show first, then write" rule**: an
+  approved plan that showed the exact path and text of a change is the
+  approval for exactly that change. Anything the plan only described is
+  still shown before it is written.
+- **Starting every session in a mode** is a project choice:
+  `defaultMode` in the project's settings file. `construct` does not
+  generate it.
+- **Delegating from a plan-mode session**: observed on 2026-10-05, a
+  `researcher` called this way could not save its file. Per its
+  blueprint it then returns the full content and path. The docs say a
+  subagent runs in the `permissionMode` set in its own file when the
+  main conversation is in plan mode; the harness sets none. Whether
+  setting one changes this is not tested.
+- **Not yet tested**: `the-architect` running as the main thread in
+  plan mode with inherited tools. The earlier limit (no tool to write
+  the plan or ask questions) was observed with a restricted `tools`
+  list.
 
 When Claude Code's conventions change, update *this adapter file* — not
 `CONSTRUCT.md`, and not `FOUNDATION.md`.
