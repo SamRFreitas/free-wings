@@ -1,5 +1,59 @@
 # Logbook — Free Wings
 
+## 2026-10-06 — Foundation Sync was skipped, so it got three guards
+
+The changes of 2026-10-05 went further than ADR 0001 recorded.
+`the-architect` stopped being "decides, never implements": its blueprint
+now lets it make a small change itself, use the shell and version
+control as any session does (committing only when asked), and delegate
+to `researcher`, `deneir` and `writer`. All six agents also got the same
+"show first, then write" rule in their "Write permissions" section.
+
+**What went wrong.** Those edits were made in the blueprints and the
+Claude Code adapter first. `FOUNDATION.md`, `README.md`, ADR 0001 and
+the OpenCode adapter kept describing the old agent. Nobody noticed
+until Shadow Glass was recompiled from the changed blueprints and the
+person asked whether the harness still agreed with its own philosophy.
+The philosophy did hold. The process did not: the cascade ran in the
+wrong order, and most of it had not run at all.
+
+**Why it could happen.** Foundation Sync was a rule in one agent's
+blueprint. A session that was not that agent could edit a blueprint
+without ever meeting it.
+
+**What changed** (ADR 0002):
+
+- **Order.** A change that fires the cascade starts in `FOUNDATION.md`,
+  for every agent and every session.
+- **Commit gate.** Nothing from such a change is committed until the
+  cascade is closed.
+- **`construct` checks.** It compares `FOUNDATION.md` with the
+  blueprints before compiling and names any disagreement in its report.
+- An adapter's own format detail does not fire the cascade; a change in
+  `FOUNDATION.md` does require checking every adapter.
+
+Files updated in this pass: `FOUNDATION.md`, `CONSTRUCT.md`, the
+`the-architect` blueprint, the OpenCode adapter, `README.md`, ADR 0002
+(new) and a dated note on ADR 0001.
+
+**Honest notes.**
+
+- The first step of this very cascade, the `FOUNDATION.md` edit, was
+  written while the session was still in plan mode. The text was the
+  approved one, but the write should have waited.
+- No `docs/learning-*.html` page exists, so that step had nothing to
+  update. `docs/project-snapshot-2026-09-06.html` is a dated record and
+  was left as it is.
+- The verifier's grep for stale wording was run on 2026-10-06 and came
+  back clean in `FOUNDATION.md`, `README.md`, `CONSTRUCT.md` and
+  `hangar/`. It did surface one more thing: the OpenCode adapter's
+  `mode` table said `programmer` could be delegated to by
+  `the-architect`, which the blueprint denies. Corrected.
+- Free Wings was recompiled for Claude Code to close the cascade, and
+  only then was this change committed. Shadow Glass is still to be
+  recompiled; `construct`'s new check has not been exercised by a real
+  run yet.
+
 ## 2026-10-05 — The Architect records its own decisions, and each tool's terms stay in its adapter
 
 The first product session in Shadow Glass since the harness was set up
