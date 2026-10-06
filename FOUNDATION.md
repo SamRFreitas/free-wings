@@ -35,11 +35,11 @@ This repository itself is not software with a runtime. It is the
 **general layer** — philosophy, formats, naming conventions, reusable
 blueprints for agents and skills — that any target project (Shadow
 Glass first) can sit underneath. A general-purpose agent working inside
-this harness (a "programmer," a "deneir") reads a target project's
-own `FOUNDATION.md` directly, by absolute path, to understand that
-project — no bespoke per-project adapter file needs to be hand-written
-and kept in sync; every project having its own `FOUNDATION.md` already
-*is* the adapter.
+this harness (a "programmer," a "deneir") learns a target project from
+the file that project's own `FOUNDATION.md` was compiled into — see
+"The generated file is what a session reads". No bespoke per-project
+adapter file needs to be hand-written and kept in sync; every project
+having its own `FOUNDATION.md` already *is* the adapter.
 
 The analogy worth keeping in mind whenever this pattern feels
 over-engineered: a compiler has one front-end (the part that understands
@@ -172,9 +172,9 @@ full below. None assumes a specific AI-Assisted Tool.
       designer are still planned for later.
 
     - `hangar/blueprints/shared/agent-rules.md` — the rules every
-      agent follows, written once: "recognize and refer" and "show
-      first, then write". `construct` appends this file to each
-      compiled agent, so no agent blueprint repeats it.
+      agent follows, written once: "know the project", "recognize and
+      refer" and "show first, then write". `construct` appends this
+      file to each compiled agent, so no agent blueprint repeats it.
 
     - `hangar/blueprints/skills/` — one blueprint per skill:
       `write-diary.md`, `write-article.md` and `loop-status.md`. These
@@ -191,6 +191,28 @@ full below. None assumes a specific AI-Assisted Tool.
   - `hangar/docs/` — records about the blueprints themselves and the
     harness-engineering process, kept apart from `docs/` at the
     project root, which holds the records of the Free Wings project.
+
+## The generated file is what a session reads
+
+`FOUNDATION.md` exists to be compiled, not to be re-read. The root file
+`construct` generates from it is loaded by the AI-Assisted Tool in
+every session, so it has to be **sufficient on its own**: a session
+works from it and does not open `FOUNDATION.md` as routine. Reading
+both in every conversation pays twice for the same facts and defeats
+the reason for compiling.
+
+So that a forgotten recompile is noticed, `construct` stamps the root
+file with the fingerprint of the `FOUNDATION.md` it compiled — the
+output of `git hash-object FOUNDATION.md` — and the file tells the
+session to run the same command once, at its start, and compare. The
+exact header is in `CONSTRUCT.md`.
+
+Keeping the generated file current is the person's responsibility:
+after `FOUNDATION.md` changes, run `construct`. The stamp reports a
+stale file; it does not replace the recompile.
+
+When an agent does open `FOUNDATION.md` is the rule "Know the project",
+in `hangar/blueprints/shared/agent-rules.md`.
 
 ## Specs, and how `grilling` feeds them
 
@@ -316,6 +338,7 @@ a fixed cascade and an honest qualitative sense otherwise, never a
 fabricated number. Target projects may adopt, adapt, or replace it. The
 block's format and its reasoning live in
 `hangar/blueprints/skills/loop-status.md`.
+
 ## Modular & Self-Sufficient Documentation
 
 A permanent, standing requirement for every file this harness produces
@@ -452,4 +475,3 @@ compiles them. Shadow Glass is the first project sitting under this
 harness, with its own `FOUNDATION.md` and generated files. Since
 2026-10-06 each fact has one home and the other files point to it
 (ADR 0003).
-generated from it.
