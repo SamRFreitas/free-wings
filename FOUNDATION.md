@@ -96,16 +96,11 @@ full below. None assumes a specific AI-Assisted Tool.
 - `FOUNDATION.md` (this file) — the one source of truth, AI-Assisted-
   Tool-agnostic, as dense and complete as it needs to be. Never
   generated; always hand-written and hand-edited directly.
-- `CONSTRUCT.md` — the bootstrapper itself. Reads this `FOUNDATION.md`
-  and the `hangar/blueprints/`, then generates/updates the AI-Assisted-
-  Tool-specific files for the environment it detects. This file is the
-  orchestrator — not a skill, not a script — and lives at the project
-  root. It does not hardcode per-AI-Assisted-Tool logic; that logic
-  lives in `hangar/blueprints/adapters/`. Invoked as `@CONSTRUCT` alone,
-  it bootstraps Free Wings itself; invoked as `@CONSTRUCT @HARI-SELDON`,
-  it scaffolds another project's `FOUNDATION.md` first and then
-  bootstraps that project. See `CONSTRUCT.md` for the full invocation
-  contract.
+- `CONSTRUCT.md` — the bootstrapper: reads this file and
+  `hangar/blueprints/`, then generates the AI-Assisted-Tool-specific
+  files for the tool it detects. Not a skill, not a script. How it is
+  invoked, and everything else about it, is defined in `CONSTRUCT.md`
+  itself.
 - AI-Assisted-Tool-specific configuration files — generated from this
   Foundation by the `construct` bootstrapper. `CLAUDE.md` (for Claude
   Code) and `AGENTS.md` (for OpenCode and similar AI-Assisted Tools)
@@ -138,7 +133,7 @@ full below. None assumes a specific AI-Assisted Tool.
   the blueprint ideas, never the other way around.
 
   - `hangar/blueprints/` — the schemas and rules that `construct`
-    reads. It contains blueprints (`agents/`, `skills/`, and
+    reads. It contains blueprints (`agents/`, `shared/`, `skills/`, and
     `HARI-SELDON.md`) plus `adapters/` (read as compilation rules).
     Most blueprints are compiled into AI-Assisted-Tool-specific outputs;
     `HARI-SELDON.md` is read during scaffolding instead. Each entry
@@ -153,144 +148,49 @@ full below. None assumes a specific AI-Assisted Tool.
       Named after Hari Seldon, the fictional creator of the Foundation
       in Asimov's novels: the blueprint that generates foundations.
 
-    - `hangar/blueprints/agents/` — one markdown file per agent
-      (`programmer.md`, `tester.md`, `deneir.md`, `writer.md`,
-      `researcher.md`, `the-architect.md`). These are the canonical,
-      AI-Assisted-Tool-agnostic descriptions; `construct` compiles each
-      into the format the detected AI-Assisted Tool expects, guided by
-      that AI-Assisted Tool's adapter in `hangar/blueprints/adapters/`.
-      The agents, described in full:
+    - `hangar/blueprints/agents/` — one blueprint per agent. Each file
+      is the only full description of its agent; `construct` compiles
+      it into the format the detected AI-Assisted Tool expects. One
+      line each here, the rest is in the file:
 
-      **programmer** — explains and shows reasoning first, then
-      implements while still teaching — divided into small pieces,
-      one function or one command at a time, splitting anything
-      complex further, checking the person's own understanding along
-      the way and sometimes letting them attempt a piece first.
+      - `the-architect.md` — **The Architect**, the entry point:
+        decides which agent a task belongs to, and owns Foundation
+        Sync (below). Its current role is recorded in ADR 0002.
+      - `programmer.md` — explains first, then implements in small
+        pieces.
+      - `tester.md` — verifies what `programmer` just built
+        (provisional name).
+      - `deneir.md` — watches a project's evolution and writes
+        observations. Named after the god of writing and
+        record-keeping in Forgotten Realms.
+      - `writer.md` — shapes raw material into diary entries or
+        articles.
+      - `researcher.md` — grounds a claim in real, checked sources
+        before it is trusted.
 
-      **tester** — tests what `programmer` just built, same
-      explain-first and divide-and-conquer style — what will be
-      tested, why, how, shown transparently while it runs;
-      provisional name, may become a shorter combined
-      "reviewer+tester" name later.
+      Identifiers are kebab-case (`the-architect`). A teacher and a
+      designer are still planned for later.
 
-      **deneir** — read-only about a target project, watches its
-      evolution, writes only to its own `docs/observations/`;
-      captures session identity first — which model, from a reliable
-      source only, never by asking the model to self-report — plus a
-      quick harness-state note, then a small set of
-      research-grounded signals: task shipped, time vs. estimate,
-      whether context needed a manual mid-task correction, which
-      agents/skills were used and how each went, a subjective note —
-      never a scored formula, see its own file's "Session identity"
-      and "Grounded signals". Named after Deneir, the god of writing
-      and record-keeping in Forgotten Realms, whose central tenet —
-      "information that is not recorded and preserved is information
-      lost" — is the agent's own functional reason to exist.
+    - `hangar/blueprints/shared/agent-rules.md` — the rules every
+      agent follows, written once: "recognize and refer" and "show
+      first, then write". `construct` appends this file to each
+      compiled agent, so no agent blueprint repeats it.
 
-      **writer** — shapes raw material into diary entries or
-      articles, general themes kept separate from
-      explicitly-labeled project/person-specific parallels.
+    - `hangar/blueprints/skills/` — one blueprint per skill:
+      `write-diary.md`, `write-article.md` and `loop-status.md`. These
+      are the only skills this harness provides; `construct` is not
+      one of them.
 
-      **researcher** — grounds a claim in real, checked sources
-      before it's trusted — exists directly because of a real
-      mistake: asserting SDD's fit before verifying its actual
-      definition; when validating or comparing data/metrics
-      specifically, it stops at a comprehension check instead of
-      recommending a next step, and only proceeds once the person's
-      understanding is actually confirmed — see its own file's
-      "Validation checkpoint" section.
-
-      **The Architect** — file and invocation identifier both
-      `the-architect` (this harness keeps identifiers kebab-case, a
-      convention that happens to match what some AI-Assisted Tools
-      require for an agent's identifier; the exact AI-Assisted-
-      Tool-specific validation rule lives in the tool's adapter under
-      `hangar/blueprints/adapters/`, not here. "The Architect" itself
-      isn't a valid identifier because of the space and capitals, but
-      the hyphenated `the-architect` is, so file and identifier
-      match) — the entry point: decides which agent a task belongs
-      to, or says plainly when it fits none of them, and also owns
-      Foundation Sync, see below. It follows a project's evolution as
-      `deneir` does, with a different eye: `deneir` watches to tell
-      the story, The Architect watches the project and how it works,
-      in order to decide. It writes the records of its own decisions
-      — ADRs and dated notes on existing ADRs, multi-step plans, and
-      the target project's `FOUNDATION.md` — and may make a small
-      change itself, code or configuration included, when one is
-      needed; larger implementation still goes to `programmer`. It
-      uses version control and the shell as any session does, and
-      commits or pushes only when the person asks. It may delegate to
-      `researcher`, `deneir`, and `writer` where the AI-Assisted Tool
-      lets one agent call another; `programmer` and `tester` it
-      recommends, with a ready-to-paste message, for the person to
-      open. See ADR 0002, which supersedes ADR 0001 on these points.
-
-      A teacher and a designer are still planned for later.
-
-      Every agent above follows one added standing rule, "recognize
-      and refer": when a request falls outside an agent's own scope,
-      say so and name which other agent fits better, instead of
-      attempting the work anyway or staying silent about the
-      mismatch. This isn't a flat list of equally-distant roles,
-      though — the same way a front-end engineer and a back-end
-      engineer share far more tools, process, and vocabulary than
-      either shares with a designer, some pairs here are genuinely
-      closer to each other than to the rest: **deneir ↔ writer**
-      (deneir's output already exists specifically to become
-      writer's raw material), and a three-agent chain
-      **researcher → programmer → tester** (grounding a decision is
-      where researcher hands off to programmer, before implementing;
-      verifying it worked is where programmer hands off to tester,
-      right after — programmer has two nearest neighbors, one on each
-      side). A referral should go straight to the nearest neighbor
-      when it can resolve the request alone, rather than looping back
-      through `the-architect` by default — `the-architect` is for the
-      genuinely unclear cases and the ones spanning more than one
-      hop, not every mismatch. See `the-architect.md`'s "Proximity
-      between agents" for the full reasoning.
-
-      Every agent above also follows **"show first, then write"**:
-      before creating or changing any file, it shows the exact path
-      and the exact text, waits for the person's explicit approval,
-      and writes only what was approved. When another agent delegated
-      the task, the delegation is the approval to write that agent's
-      own output in its own place, and nothing else. The rule lives
-      in each blueprint's "Write permissions" section, because an
-      agent cannot know whether the AI-Assisted Tool it runs in will
-      ask.
-
-    - `hangar/blueprints/skills/` — one `.md` file per skill, each
-      defining a repeatable, on-demand procedure. Currently:
-      `write-diary.md` (reuses the `writer` agent's own file rather
-      than duplicating its themes), `write-article.md` (same reuse),
-      and `loop-status.md` (see "Loop Status" above). These are the
-      only skills this harness provides. (The `construct` is **not**
-      a skill — it is the bootstrapper, located at the root as
-      `CONSTRUCT.md`.)
-
-    - `hangar/blueprints/adapters/` — one file per supported
-      AI-Assisted Tool, each one an **adapter**: a description of how
-      `construct` adapts the harness's AI-Assisted-Tool-agnostic
-      blueprints to that specific AI-Assisted Tool — where the
-      compiled outputs go, what file names that AI-Assisted Tool
-      expects, and any format quirks. Two are provided by default —
-      `claudecode.md` (for Claude Code) and `opencode.md` (for OpenCode)
-      — both already part of the repository, serving double duty: as
-      active adapters *and* as working demonstrations of how easily a
-      new AI-Assisted Tool can be supported. Adding a new adapter is
-      a single file, not a change to `CONSTRUCT.md` or to the
-      Foundation. This is where AI-Assisted-Tool-specific compilation
-      logic lives, deliberately kept out of those two files.
-      Each adapter uses its own tool's terminology and describes only
-      that tool — no adapter refers to another. Likewise, everything
+    - `hangar/blueprints/adapters/` — one adapter per supported
+      AI-Assisted Tool (see "Terminology"): `claudecode.md` and
+      `opencode.md`. Each describes only its own tool, and everything
       `construct` compiles for one tool speaks only of that tool:
       other AI-Assisted Tools may appear in the harness's own files as
       examples, never in a compiled output.
 
-  - `hangar/docs/learnings/` — learnings about the blueprints
-    themselves and the harness-engineering process — distinct from
-    `docs/LEARNING_LOG.md` at the project root, which is the session
-    diary of the Free Wings project.
+  - `hangar/docs/` — records about the blueprints themselves and the
+    harness-engineering process, kept apart from `docs/` at the
+    project root, which holds the records of the Free Wings project.
 
 ## Specs, and how `grilling` feeds them
 
@@ -325,10 +225,12 @@ by The Architect as `docs/specs/plan-<short-name>.md`. Same folder as
 the specs, told apart by the `plan-` prefix and by having no number —
 a plan spans several numbered pieces instead of being one of them.
 
-`grilling` (the skill that stress-tests a decision through numbered,
-recommendation-attached question rounds until nothing is left open) is
-the shared mechanism feeding both ADRs and specs — same process, two
-different destinations depending on scale:
+`grilling` — stress-testing a decision through numbered question
+rounds, each with a recommended answer, until nothing is left open — is
+the shared mechanism feeding both ADRs and specs. It is a practice, not
+one of this harness's skills: there is no blueprint for it, though a
+person's AI-Assisted Tool may offer a skill by that name. Same process,
+two destinations depending on scale:
 
 - A big, cross-cutting architecture decision → `grilling` → an ADR.
 - A specific piece's implementation approach → `grilling` → a spec.
@@ -340,94 +242,80 @@ round of its own. `grilling` earns its place when a spec has genuine
 open decisions in it, not as a mandatory ritual for every piece of work
 regardless of size.
 
-By default, the `programmer` agent blueprint (see
-`hangar/blueprints/agents/` above) writes a spec before implementing
-any non-trivial piece of work, and references that spec while
-implementing — formalizing what was, until now, a decision that only
-ever lived in conversation and then disappeared once the implementation
-shipped. A downstream project may adapt or replace this behavior, along
-with the rest of the pattern.
+The `programmer` blueprint is where this is applied: a spec before any
+non-trivial piece of work. A downstream project may adapt or replace
+it, along with the rest of the pattern.
 
 ## Foundation Sync — keeping the harness itself from drifting
 
-The same drift problem `FOUNDATION.md` exists to solve at the content
-level — AI-Assisted-Tool-specific files slowly disagreeing with each
-other, the way Shadow Glass's own pair did by hand — can also happen at
-the *process* level: an agent's behavior changes, a new one gets added,
-a new standing rule gets adopted, and only one of the files describing
-it actually gets updated in the moment. **Foundation Sync**, owned by
-**The Architect** (`the-architect.md`), is the trigger for catching that
-before it happens: any dialogue that changes how this harness itself
-works — a new/renamed/retooled agent, a new skill, a new standing rule
-— fires a fixed cascade, walked in order, not chosen freely:
-`FOUNDATION.md` first (the source), then `construct` (regenerating the
-AI-Assisted-Tool-specific configuration files — for example `CLAUDE.md`,
-`AGENTS.md`), then `README.md` (the human-facing onboarding doc), then
-a `docs/LEARNING_LOG.md` entry, then any `docs/learning-*.html` page
-(updated, or created new if the change deserves its own explanation and
-none exists yet). The cascade isn't done at the first file — it's done
-once every file in it has actually been checked, verified with a real
-grep for the old name/count/path rather than trusted from memory, and
-updated or explicitly confirmed as not needing a change. A sixth,
-judgment-based step sits alongside the fixed five: **The Architect**
-also decides whether the change is significant enough — a real
-architectural fork, not every small addition — to also deserve its own
-new entry in `docs/decisions/`, following this harness's existing "rare,
-roughly one per genuine fork" ADR standard (see "Specs, and how
-`grilling` feeds them" above). A smaller change doesn't need one; the
-`LEARNING_LOG.md` entry already covers it. The cascade belongs to
-Free Wings: a target project regulates itself, runs it only if its own
-`FOUNDATION.md` adopted it, and keeps that `FOUNDATION.md` as the
-record that survives a change of AI-Assisted Tool.
+The drift `FOUNDATION.md` exists to prevent in content — tool-specific
+files slowly disagreeing, the way Shadow Glass's hand-maintained pair
+did — can also happen in the *process*: an agent's behavior changes and
+only one of the files describing it gets updated. **Foundation Sync** is
+the cascade that prevents it. This section is its only full definition;
+The Architect owns running it.
 
-Three rules keep the cascade from being skipped. They were added on
-2026-10-06, after a change to The Architect reached its blueprint and
-a compiled output before it reached this file:
+**Scope.** Free Wings itself. A target project regulates itself, runs
+the cascade only if its own `FOUNDATION.md` adopted it, and keeps that
+`FOUNDATION.md` as the record that survives a change of AI-Assisted
+Tool.
 
-- **Order, for every agent and every session.** A change that fires
-  the cascade starts in `FOUNDATION.md`. No blueprint, adapter, or
-  `CONSTRUCT.md` is edited for it before this file says what is
-  changing. Whoever is asked for such a change — any agent, not only
-  The Architect — stops, says the cascade applies, and starts it at
-  step 1 or refers to The Architect.
-- **Commit gate.** Such a change is committed only once the cascade is
-  closed: every step checked, the verifier's grep actually run. Until
-  then it stays uncommitted.
-- **`construct` checks before it compiles.** `construct` compares what
-  this file says about each agent and skill with the blueprints, and
-  names any disagreement in its report instead of compiling it
-  silently. It does not correct it: the correction goes through the
-  cascade.
+**Trigger.** Any dialogue that changes how the harness works: a new,
+renamed or retooled agent, a change in what an agent does or may do, a
+new skill, a new standing rule. Not triggered by work specific to a
+target project, nor by a format detail of one AI-Assisted Tool, which
+is fixed in that tool's adapter alone.
 
-Full detail in `the-architect.md`'s own "Foundation Sync" section.
+**The cascade**, walked in this order:
+
+1. `FOUNDATION.md` — the source. Then whatever the change touches among
+   the blueprints, `CONSTRUCT.md` and the adapters; every adapter is
+   checked against it.
+2. `construct` — regenerate the AI-Assisted-Tool-specific files.
+3. `README.md` — the human-facing onboarding document.
+4. `docs/LEARNING_LOG.md` — one entry: what changed and why.
+5. `docs/learning-*.html` — update a page that covers the change, or
+   create one if the change deserves its own explanation.
+
+Alongside the five, a judgment call: The Architect decides whether the
+change is a real architectural fork that deserves an ADR (rare — see
+"Specs, and how `grilling` feeds them"). A smaller change does not; the
+diary entry covers it.
+
+**Verifier.** Grep the repository for the old name, count or path —
+never trust memory — and confirm every blueprint still carries its
+orientation note.
+
+**Stop rule.** Done when every step has been checked and either updated
+or explicitly confirmed as needing no change, and the ADR call has been
+made — not when the first file is done.
+
+**Four rules keep the cascade from being skipped** (ADR 0002, restated
+in ADR 0003). They bind every agent and every session:
+
+- **Order.** A change that fires the cascade starts in this file. No
+  blueprint, adapter or `CONSTRUCT.md` is edited for it first. Whoever
+  is asked for such a change stops, says the cascade applies, and
+  starts at step 1 or refers to The Architect.
+- **Adapters follow, they do not lead.** An adapter's own format detail
+  does not fire the cascade; a change here does require checking every
+  adapter.
+- **Commit gate.** Such a change is committed only once the stop rule
+  is met.
+- **`construct` checks.** Before compiling, `construct` compares this
+  file with the blueprints and names any disagreement in its report,
+  without correcting it.
 
 ## Loop Status — a visible readout of where a loop actually is
 
-Free Wings itself uses this readout in any session — not one specific
-agent's job — and target projects scaffolded by the harness may adopt,
-adapt, or replace it. Whenever work is genuinely mid-loop (a Foundation
-Sync cascade running, a spec-driven implementation broken into several
-pieces, any multi-step process with real state), the person should be
-able to get a short, honest readout of: what triggered
-this (**trigger**), who/what is acting right now and which agents/skills
-were already used (**topology** in progress), which step this is — an
-exact "k of n" for a real fixed cascade, an honest qualitative sense for
-open-ended dialogic work, never a fabricated number — plain-language
-context for what this part is actually about, and what happens next
-(the **stop rule** still pending). These map directly onto loop
-engineering's own four structural pieces (see "Loop engineering" and
-`docs/reading-list.md`) — this is that same anatomy, made visible on
-request, not a separate invention.
-
-This is available on demand, always — asking "where are we," "status,"
-or invoking the `loop-status` skill directly gets this readout in any
-session. It's also shown proactively, but only at real checkpoints (the
-start and end of a multi-step cascade or a multi-piece implementation),
-not on every message — a status block on every turn would be exactly
-the kind of context bloat `deneir`'s own grounded signals exist to
-watch for. See `hangar/blueprints/skills/loop-status.md` for the
-exact block format and the full reasoning.
-
+Whenever work is genuinely mid-loop, the person can get a short, honest
+readout of where it stands: on demand in any session ("where are we",
+"status", or the `loop-status` skill), and proactively only at real
+checkpoints — never on every message. The step is an exact "k of n" for
+a fixed cascade and an honest qualitative sense otherwise, never a
+fabricated number. Target projects may adopt, adapt, or replace it. The
+block's format and its reasoning live in
+`hangar/blueprints/skills/loop-status.md`.
 ## Modular & Self-Sufficient Documentation
 
 A permanent, standing requirement for every file this harness produces
@@ -467,11 +355,10 @@ cascade as complete.
   When this document says "AI-Assisted Tool", it means the coding
   environment.
 - **Skill**: a repeatable, on-demand procedure. No persistent
-  reasoning or memory of its own between separate invocations — one mechanical job, then done. (Note: "no
-  persistent memory between invocations" doesn't mean "no reasoning at
-  all" — a skill still has the full model's judgment available for the
-  turn it runs in; `construct` genuinely rewrites/optimizes text, it
-  just doesn't carry a separate ongoing context the way an agent does.)
+  reasoning or memory of its own between separate invocations — one
+  job, then done. It still has the full model's judgment for the turn
+  it runs in; it just doesn't carry an ongoing context the way an
+  agent does.
 - **Agent**: a delegated worker with its own reasoning and context,
   suited to open-ended or interpretive work, not just mechanical,
   repeatable procedures. Each agent has a blueprint in
@@ -559,13 +446,10 @@ commits that are easy to review and understand.
 ## Current status
 
 Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
-Six agent blueprints (`programmer`, `tester`, `deneir`, `writer`,
-`researcher`, `The Architect`), three skill blueprints (`write-diary`,
-`write-article`, `loop-status`), and two adapters (`claudecode.md`,
-`opencode.md`) are built and tested live. The `construct` bootstrapper
-(`CONSTRUCT.md`) reads `hangar/blueprints/` and compiles AI-Assisted-
-Tool-specific outputs, following the per-AI-Assisted-Tool compilation
-logic in `hangar/blueprints/adapters/`. Shadow Glass is the first
-project sitting under this harness, and now has its own real
-`FOUNDATION.md`, with AI-Assisted-Tool-specific configuration files
+Six agent blueprints, one shared rules file, three skill blueprints and
+two adapters (`claudecode.md`, `opencode.md`) are built; `construct`
+compiles them. Shadow Glass is the first project sitting under this
+harness, with its own `FOUNDATION.md` and generated files. Since
+2026-10-06 each fact has one home and the other files point to it
+(ADR 0003).
 generated from it.
