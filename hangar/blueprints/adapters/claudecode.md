@@ -59,8 +59,10 @@ tools: Read, Grep, Glob
 ```
 
 Then the agent body — the blueprint's content, minus the HTML
-orientation comment (that comment is harness-internal and does not
-travel into the compiled output).
+orientation comment (harness-internal, it does not travel into the
+compiled output) — followed by the content of
+`hangar/blueprints/shared/agent-rules.md`, minus its title and its
+orientation comment.
 
 ### Field details
 
@@ -79,20 +81,19 @@ sentence plus the "Use this agent to" line.
 Glob]`) is also accepted. **If omitted, the subagent inherits every
 tool available to subagents.**
 
-**Deriving `tools:` from the blueprint.** The blueprint's
-`## Write permissions` section, when present, tells you what the agent
-may write to; combined with the agent's described read behavior, that
-informs the list. Mapping for the Free Wings agents — do not guess, use
-this table verbatim:
+**`tools` for the Free Wings agents** — do not guess, use this table
+verbatim. Where an agent may write is the blueprint's rule ("Where this
+agent writes"), not this list: `tools` is boolean per tool, not per
+path or command.
 
-| Agent | `tools` string | Rationale |
+| Agent | `tools` string | Why |
 | :--- | :--- | :--- |
-| `programmer` | *(omit — inherits all)* | Broad read/write/execute — no restriction in the blueprint. |
+| `programmer` | *(omit — inherits all)* | No restriction. |
 | `tester` | *(omit — inherits all)* | Creates test files and runs them. |
-| `deneir` | `Read, Grep, Glob, Bash, Write` | Read-only about the project; only writes to `docs/observations/`. The behavioral constraint is enforced by the blueprint, not the tool list (Claude Code's `tools` is boolean per tool, not per path). |
-| `researcher` | `Read, Grep, Glob, WebSearch, WebFetch, Write` | Reads, uses web search/fetch, writes only to `docs/research/`. |
-| `writer` | `Read, Grep, Glob, Write, Edit` | Shapes material into diary entries / articles; edits drafts. |
-| `the-architect` | *(omit — inherits all)* | The entry point; works as a normal session. What it writes, and when, is set by the blueprint's "Write permissions" rule, not by a tool list. Inheriting every tool includes `Agent`, so it can delegate. |
+| `deneir` | `Read, Grep, Glob, Bash, Write` | `Bash` to read git history, `Write` for new files. |
+| `researcher` | `Read, Grep, Glob, WebSearch, WebFetch, Write` | Web search and fetch, `Write` for new files. |
+| `writer` | `Read, Grep, Glob, Write, Edit` | `Edit` to revise drafts. |
+| `the-architect` | *(omit — inherits all)* | Works as a normal session. Inheriting includes `Agent`, so it can delegate. |
 
 **If the mapping is unclear for a specific agent, ask the user rather
 than guessing.** **Safety rule:** an entry in `tools` that does not
