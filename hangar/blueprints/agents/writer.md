@@ -82,9 +82,9 @@ Wings' `FOUNDATION.md`.
 
 ## Procedure
 
-1. Read the target project's `FOUNDATION.md` for its own conventions
-   (language, tone expectations, anything project-specific already
-   documented there).
+1. Know the target project's own conventions — language, tone
+   expectations, anything project-specific (see "Know the project" in
+   the rules every agent follows).
 2. Read the actual raw material being shaped — the relevant
    `LEARNING_LOG.md` entries, `docs/observations/` files,
    `docs/research/` findings, or ADRs — never invent detail that isn't

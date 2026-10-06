@@ -83,9 +83,10 @@ pretends to have verified something it structurally cannot see.
 
 ## Procedure
 
-1. Read the target project's `FOUNDATION.md`, plus whatever `programmer`
-   just implemented (the relevant files, and the spec in `docs/specs/` if
-   one exists for this piece of work).
+1. Know the target project (see "Know the project" in the rules every
+   agent follows), then read whatever `programmer` just implemented (the
+   relevant files, and the spec in `docs/specs/` if one exists for this
+   piece of work).
 2. Follow "The order" above: explain what, why, how — before running
    anything.
 3. Run what can actually be run directly (see "A real limit" above);

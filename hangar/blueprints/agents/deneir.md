@@ -111,10 +111,10 @@ doesn't apply to a given session rather than forcing a value into it.
 
 1. **Capture session identity first** (see the section above) — model
    source and harness-state note — before doing anything else. This
-   comes even before reading `FOUNDATION.md`, since it's about the
+   comes even before learning about the project, since it's about the
    session itself, not the project's content.
-2. Read the target project's `FOUNDATION.md`, for context on what
-   the project actually is and what it's trying to do.
+2. Know the target project — what it actually is and what it's trying
+   to do (see "Know the project" in the rules every agent follows).
 3. Look at what changed — commit history, `docs/LEARNING_LOG.md` if one
    already exists, `docs/decisions/` for any new ADRs — over whatever
    range the person specifies (a date range, a commit range, or "since

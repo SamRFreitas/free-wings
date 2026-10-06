@@ -23,8 +23,9 @@ rather than duplicating it.
    path inside the harness, not an absolute one — the skill may run
    from inside any target project, not just Free Wings, so the path is
    resolved against the harness, not the working directory.
-2. Read the target project's `FOUNDATION.md` for its own conventions
-   (language, tone, anything project-specific).
+2. Follow the target project's own conventions (language, tone,
+   anything project-specific) — from its generated instruction file
+   when the session already has it, from its `FOUNDATION.md` otherwise.
 3. Gather the raw material: recent commits, the current conversation,
    any files under that project's `docs/observations/` (produced by the
    `deneir` agent) since the last `LEARNING_LOG.md` entry, and any

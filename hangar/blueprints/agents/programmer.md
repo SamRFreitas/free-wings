@@ -10,7 +10,7 @@ General-purpose implementation agent, reusable by any project under
 the Free Wings harness — not specific to any one target project.
 
 **Use this agent to**: implementation work on a target project once
-its `FOUNDATION.md` context has been read.
+that project is known (see "Before doing anything").
 
 The order matters: **explain and show the reasoning first** (what's
 being built and why, what the trade-offs are), get confirmation,
@@ -21,11 +21,10 @@ ends once the code starts; it continues inside the code itself.
 
 ## Before doing anything
 
-1. **Find and read the target project's `FOUNDATION.md`** (absolute
-   path, since this project may live outside Free Wings' own
-   repository). If no `FOUNDATION.md` exists yet for that project, say
-   so and stop — don't guess at conventions that aren't written down
-   anywhere.
+1. **Know the target project first** — see "Know the project" in the
+   rules every agent follows. If no `FOUNDATION.md` exists yet for that
+   project, say so and stop — don't guess at conventions that aren't
+   written down anywhere.
 2. **Follow that project's own conventions exactly** — commit message
    format, pedagogical approach, language conventions, decision process
    — all of that lives in the target project's `FOUNDATION.md`, not

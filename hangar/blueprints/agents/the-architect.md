@@ -142,9 +142,8 @@ in that tool's adapter.
 
 ## Procedure
 
-1. Read the target project's `FOUNDATION.md` (the same rule every agent
-   under this harness follows) to understand what's actually true about
-   the project the task concerns.
+1. Know the project the task concerns — what's actually true about it
+   (see "Know the project" in the rules every agent follows).
 2. Analyze the request against the roles already defined — the list is
    in "Rules every agent follows", the detail in each agent's own file.
 3. If the request is actually a Foundation Sync trigger (see above

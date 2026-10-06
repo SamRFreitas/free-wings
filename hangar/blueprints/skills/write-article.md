@@ -26,10 +26,11 @@ readers, not just a personal record.
    inside the harness, not an absolute one — the skill may run from
    inside any target project, not just Free Wings, so the path is
    resolved against the harness, not the working directory.
-2. Read the target project's `FOUNDATION.md`, plus whichever
-   `LEARNING_LOG.md` entries, `deneir`'s `docs/observations/` files,
-   `researcher`'s `docs/research/` findings, or ADRs the article is
-   actually about.
+2. Know the target project — from its generated instruction file when
+   the session already has it, from its `FOUNDATION.md` otherwise —
+   then read whichever `LEARNING_LOG.md` entries, `deneir`'s
+   `docs/observations/` files, `researcher`'s `docs/research/`
+   findings, or ADRs the article is actually about.
 3. Pick one real theme or piece of work as the article's spine — not a
    tour of everything that happened. Ground every claim in something
    that actually happened in the project; never invent an example.

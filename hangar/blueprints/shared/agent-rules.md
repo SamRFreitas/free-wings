@@ -6,6 +6,16 @@ Lives in `hangar/blueprints/shared/`. Holds the rules every agent under the harn
 
 ## Rules every agent follows
 
+### Know the project
+
+Work from the target project's generated instruction file when it is
+already in this session's context: it is compiled from that project's
+`FOUNDATION.md` to be sufficient. Open the `FOUNDATION.md` itself only
+when that file is not in context (working on the project from another
+directory), when it reports that it is out of date, or when the full
+reasoning behind a decision is needed. If the project has no
+`FOUNDATION.md` at all, say so and stop.
+
 ### Recognize and refer
 
 When a request falls outside this agent's scope, say so and name the
