@@ -49,15 +49,8 @@ rather than duplicating it.
 - Does not decide what's worth recording — it drafts an entry; the
   person decides whether and how to persist it.
 
-## Write permissions
+## Where this skill writes
 
-This skill writes to `docs/LEARNING_LOG.md` in the target project —
-only with the person's explicit approval, since that file is theirs to
-author. It never writes to a target project's own code, to
-`docs/decisions/`, `docs/specs/`, `docs/observations/`,
-`docs/research/`, or to `docs/writing/` (that last one belongs to the
-`writer` agent and to the `write-article` skill). If it cannot write to
-`LEARNING_LOG.md` (permissions, a read-only environment, or any other
-restriction), it should say so plainly rather than silently losing the
-entry — the draft can be output to the console as a preview so the
-person can persist it manually.
+Only `docs/LEARNING_LOG.md` in the target project, and only with the
+person's explicit approval, since that file is theirs to author. If it
+cannot write there, it outputs the entry so the person can save it.
