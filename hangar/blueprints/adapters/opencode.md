@@ -50,6 +50,8 @@ tools:
 ```
 
 Then the agent body — the blueprint's content, minus the HTML
+orientation comment — followed by the content of
+`hangar/blueprints/shared/agent-rules.md`, minus its title and its
 orientation comment.
 
 ### Field details
@@ -74,18 +76,23 @@ verbatim:**
 
 | Agent | `mode` | Why |
 | :--- | :--- | :--- |
-| `the-architect` | `primary` | Entry point of the harness. The first agent the person reaches for when they don't know which agent fits. Belongs in the Tab cycle as the starting mode. |
-| `programmer` | `all` | Invoked directly as the main task. It explains and asks, so it needs the person in the conversation; `the-architect` recommends it rather than delegating to it. |
-| `tester` | `all` | Invoked directly after `programmer` just built something. Like `programmer`, it is recommended by `the-architect` rather than delegated to. |
-| `deneir` | `all` | Invoked directly to watch a project, or delegated to by `the-architect`. Both ways are normal. |
-| `writer` | `all` | Invoked directly to shape material, or delegated to by `the-architect`. Both ways are normal. |
-| `researcher` | `all` | Invoked directly to verify a claim, or delegated to by `the-architect`. Both ways are normal. |
+| `the-architect` | `primary` | Entry point; belongs in the Tab cycle as the starting mode. |
+| `programmer` | `all` | Needs the person in the conversation, so it is opened directly. |
+| `tester` | `all` | Same as `programmer`. |
+| `deneir` | `all` | Opened directly, or delegated to by `the-architect`. |
+| `writer` | `all` | Opened directly, or delegated to by `the-architect`. |
+| `researcher` | `all` | Opened directly, or delegated to by `the-architect`. |
 
 **Take `mode` only from the table above** — never infer it from the
 wording of a blueprint or of `FOUNDATION.md`. In OpenCode, `subagent`
 is a `mode` value: an agent reachable only via `@mention` or by
 delegation from a primary agent. The harness itself has no
 "subagent" concept; it only has agents.
+
+**Can one agent call another?** Per the docs consulted, a `primary`
+agent can delegate to an agent reachable by `@mention`. `the-architect`
+is `primary`, so it may delegate to `researcher`, `deneir` and
+`writer`. Not yet tested inside OpenCode.
 
 **`tools`** — the per-tool enable/disable map. **Format: an object
 (record) with tool names as keys and booleans as values.** Never a
@@ -95,16 +102,18 @@ with a hard crash at startup
 is `z.record(z.string(), z.boolean())`.
 
 **Mapping for the Free Wings agents — do not guess, use this table
-verbatim:**
+verbatim.** Where an agent may write is the blueprint's rule ("Where
+this agent writes"), not this map: a key is boolean per tool, not per
+path or command.
 
-| Agent | `read` | `grep` | `glob` | `write` | `edit` | `bash` | Rationale (from the blueprint's `## Write permissions`) |
+| Agent | `read` | `grep` | `glob` | `write` | `edit` | `bash` | Why |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `programmer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Broad read/write/execute — no restriction in the blueprint. |
-| `tester` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Creates test files **and** runs them — needs `write`, `edit`, `bash`. |
-| `deneir` | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Read-only about the project; writes only to `docs/observations/`. Needs `write` (new dated files), not `edit` (never modifies existing files), not `bash`. |
-| `researcher` | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | Reads, uses web search/fetch (see below), writes only to `docs/research/`. Needs `write`, not `edit`, not `bash`. |
-| `writer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | Shapes material into diary entries / articles. Needs `edit` (revising drafts), not `bash`. |
-| `the-architect` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | The entry point; works as a normal session. What it writes, and when, is set by the blueprint's "Write permissions" rule, not by this map (a key is boolean per tool, not per path or command). |
+| `programmer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | No restriction. |
+| `tester` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Creates test files and runs them. |
+| `deneir` | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | `write` for new dated files, never `edit`; `bash` to read git history. |
+| `researcher` | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | `write` for new files; web tools below. |
+| `writer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | `edit` to revise drafts. |
+| `the-architect` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Works as a normal session. |
 
 For `researcher`, if the target OpenCode version supports `webfetch`
 and/or `websearch` as named tools, add them as `true`. If the exact
