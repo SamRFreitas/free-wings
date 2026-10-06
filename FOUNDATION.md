@@ -213,14 +213,17 @@ full below. None assumes a specific AI-Assisted Tool.
       Foundation Sync, see below. It follows a project's evolution as
       `deneir` does, with a different eye: `deneir` watches to tell
       the story, The Architect watches the project and how it works,
-      in order to decide. It never writes code. It writes only the
-      records of its own decisions — ADRs and dated notes on existing
-      ADRs, multi-step plans, and the target project's
-      `FOUNDATION.md` — and only after showing the exact text and
-      path and getting the person's explicit approval. It may read
-      the repository's history (`git status`, `log`, `diff`, `show`,
-      `blame`) and never changes it. It recommends the next agent
-      with a ready-to-paste message; it does not invoke one itself.
+      in order to decide. It writes the records of its own decisions
+      — ADRs and dated notes on existing ADRs, multi-step plans, and
+      the target project's `FOUNDATION.md` — and may make a small
+      change itself, code or configuration included, when one is
+      needed; larger implementation still goes to `programmer`. It
+      uses version control and the shell as any session does, and
+      commits or pushes only when the person asks. It may delegate to
+      `researcher`, `deneir`, and `writer` where the AI-Assisted Tool
+      lets one agent call another; `programmer` and `tester` it
+      recommends, with a ready-to-paste message, for the person to
+      open. See ADR 0002, which supersedes ADR 0001 on these points.
 
       A teacher and a designer are still planned for later.
 
@@ -245,6 +248,16 @@ full below. None assumes a specific AI-Assisted Tool.
       genuinely unclear cases and the ones spanning more than one
       hop, not every mismatch. See `the-architect.md`'s "Proximity
       between agents" for the full reasoning.
+
+      Every agent above also follows **"show first, then write"**:
+      before creating or changing any file, it shows the exact path
+      and the exact text, waits for the person's explicit approval,
+      and writes only what was approved. When another agent delegated
+      the task, the delegation is the approval to write that agent's
+      own output in its own place, and nothing else. The rule lives
+      in each blueprint's "Write permissions" section, because an
+      agent cannot know whether the AI-Assisted Tool it runs in will
+      ask.
 
     - `hangar/blueprints/skills/` — one `.md` file per skill, each
       defining a repeatable, on-demand procedure. Currently:
@@ -365,8 +378,28 @@ roughly one per genuine fork" ADR standard (see "Specs, and how
 `LEARNING_LOG.md` entry already covers it. The cascade belongs to
 Free Wings: a target project regulates itself, runs it only if its own
 `FOUNDATION.md` adopted it, and keeps that `FOUNDATION.md` as the
-record that survives a change of AI-Assisted Tool. Full detail in
-`the-architect.md`'s own "Foundation Sync" section.
+record that survives a change of AI-Assisted Tool.
+
+Three rules keep the cascade from being skipped. They were added on
+2026-10-06, after a change to The Architect reached its blueprint and
+a compiled output before it reached this file:
+
+- **Order, for every agent and every session.** A change that fires
+  the cascade starts in `FOUNDATION.md`. No blueprint, adapter, or
+  `CONSTRUCT.md` is edited for it before this file says what is
+  changing. Whoever is asked for such a change — any agent, not only
+  The Architect — stops, says the cascade applies, and starts it at
+  step 1 or refers to The Architect.
+- **Commit gate.** Such a change is committed only once the cascade is
+  closed: every step checked, the verifier's grep actually run. Until
+  then it stays uncommitted.
+- **`construct` checks before it compiles.** `construct` compares what
+  this file says about each agent and skill with the blueprints, and
+  names any disagreement in its report instead of compiling it
+  silently. It does not correct it: the correction goes through the
+  cascade.
+
+Full detail in `the-architect.md`'s own "Foundation Sync" section.
 
 ## Loop Status — a visible readout of where a loop actually is
 
