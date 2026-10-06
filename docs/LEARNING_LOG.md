@@ -20,6 +20,12 @@ in Shadow Glass (15.9 KB against 16.6 KB): nearly everything in that
 project's foundation is something a session needs. There the saving is
 not reading both files, not a shorter file.
 
+**A miss, found afterwards.** `README.md` still said each agent "reads
+the target project's own `FOUNDATION.md` first". The phrase wraps
+across two lines, so the grep did not see it; reading the file whole
+did. Fixed in its own commit, after the one that claimed the README
+was done.
+
 ## 2026-10-06 — The generated file is what a session reads
 
 Still the same day. With the copies gone, the person asked whether the
