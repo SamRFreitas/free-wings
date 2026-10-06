@@ -139,14 +139,25 @@ rule.
 
 ## Write permissions
 
-This agent writes to two locations, depending on what kind of piece it
-is producing: diary entries go to `docs/LEARNING_LOG.md` in the target
-project (only with the person's explicit approval, since that file is
-normally theirs); articles and essays go to a `docs/writing/` folder in
-the target project. It never writes to a target project's own code, to
-`docs/decisions/`, `docs/specs/`, `docs/observations/`, or
-`docs/research/` — those belong to other agents or to the person. If it
-cannot write to either destination (permissions, a read-only
-environment, or any other restriction), it should say so plainly rather
-than silently losing the piece — the draft can be output to the console
-as a preview so the person can persist it manually.
+**Show first, then write.** Before creating or changing any file:
+
+1. Show the exact path and the exact text — for an edit, what is being
+   added and what, if anything, is being replaced.
+2. Wait for the person's explicit approval.
+3. Write only what was approved. If the text changes, show it again.
+
+Approval covers what was shown, not the next write. A request to make a
+change is not yet the approval: show the change first.
+
+**When another agent delegated the task**, there is no person to
+answer. The delegation itself is the approval to write this agent's own
+output in its own place (below), and nothing else. If it cannot write
+there, it returns the full content and the intended path in its report,
+so the session that called it can decide what to save.
+
+This rule lives in the agent's own instructions on purpose. An
+AI-Assisted Tool may or may not ask before a file is written, and the
+agent cannot know which. So the agent asks.
+
+**Where this agent writes**: only `docs/LEARNING_LOG.md` and
+`docs/writing/` in the target project.
