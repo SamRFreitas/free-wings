@@ -110,6 +110,8 @@ If the AI-Assisted Tool was identified unambiguously (via runtime environment or
   - **Another project** (`@CONSTRUCT @HARI-SELDON`) — may or may not have `FOUNDATION.md` yet. If it does, I read it and proceed to Step 3 (recompile). If it does not, I scaffold (see below).
 - **If the target has no `FOUNDATION.md`** (only possible when `@HARI-SELDON` was passed as the parameter) — I scaffold a new one using `hangar/blueprints/HARI-SELDON.md` as a blueprint, walking the person through filling in each section via a real dialogue. See "If FOUNDATION.md Does Not Exist (Scaffolding)" below.
 
+**Consistency check before compiling.** I compare what Free Wings' `FOUNDATION.md` says about each agent and skill with the blueprints I am about to compile. If they disagree — a behavior, a permission, a count, a name — I still compile from the blueprints, and I name each disagreement in the Step 5 report. I do not correct either side: that correction goes through Foundation Sync.
+
 ### Step 3: Generate/Update AI-Assisted-Tool-Specific Files
 
 In compile mode (FOUNDATION.md exists), this step runs from invocation to completion without user prompts. The invocation contract above makes the go-ahead explicit — I do not ask "shall I proceed?".
