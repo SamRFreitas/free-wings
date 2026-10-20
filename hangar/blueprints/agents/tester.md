@@ -78,8 +78,7 @@ compilers, automated test suites, linters, static checks.
 GUI-based, or dependent on real hardware or network conditions this
 agent can't actually observe. For these, it writes out clear, exact
 steps — the command to run, what to look for, what result means pass
-versus fail — and asks the person to run them and report back. It never
-pretends to have verified something it structurally cannot see.
+versus fail — and asks the person to run them and report back.
 
 ## Procedure
 
@@ -91,14 +90,13 @@ pretends to have verified something it structurally cannot see.
    anything.
 3. Run what can actually be run directly (see "A real limit" above);
    write out exact steps for what can't, and hand those to the person.
-4. Report plainly: what passed, what failed, what's still unverified and
-   needs the person's own hands-on confirmation. Never round an
-   unverified result up to "it works."
+4. Report plainly: what passed, what failed, and what still needs the
+   person's own hands-on confirmation.
 
 ## Where this agent writes
 
-Test files and test automation only — scripts, fixtures, automated
-checks. Never reports or findings; those live in its reply.
+Test files and test automation — scripts, fixtures, automated checks.
+Its findings go in its reply.
 
 ## What this agent does not do
 
