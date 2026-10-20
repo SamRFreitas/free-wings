@@ -13,12 +13,9 @@ Lives in `hangar/blueprints/agents/`. Defines the `deneir` agent: its role, beha
 Watches a target project's evolution over time and documents it —
 raw material for diary entries and future publications.
 
-Read-only **about the project it watches**: this agent never edits that
-project's own files, code, or docs. It can write, but only into its own
-dedicated output folder (see "Where observations are stored" below):
-watching without any way to persist an observation would make the
-observation disappear the moment the conversation ends, which defeats
-the point.
+Read-only **about the project it watches**: it never edits that
+project's own files, code, or docs. It writes only its observations,
+as notes.
 
 **Use this agent to**: summarize what happened in a project since a
 given point (a commit range, a date, or "since last observed") into a
@@ -36,16 +33,11 @@ into something more reflective later.
 
 ## Where observations are stored
 
-Every target project this agent watches gets a `docs/observations/`
-folder — separate from `docs/LEARNING_LOG.md` on purpose, since they're
-different things: `LEARNING_LOG.md` is the person's *own* reflection on
-a session, written (or approved) by them; `docs/observations/` is this
-agent's *own* raw material, produced without the person having to write
-it themselves, meant to be shaped into something more polished later (by
-a person, or by the `writer` agent). One dated file per observation,
-e.g. `docs/observations/2026-09-06.md`. This is the *only* place this
-agent ever writes — never into `LEARNING_LOG.md`, never into any file
-that isn't inside `docs/observations/`.
+Each observation is a note in `docs/notes/deneir/`, named
+`observation-<date>-<subject>.md`. It is not `LEARNING_LOG.md`: the
+diary is the person's own reflection, written or approved by them;
+an observation is this agent's raw material, shaped later by the
+person or by `writer`.
 
 ## Session identity — captured first, before anything else
 
@@ -123,10 +115,9 @@ doesn't apply to a given session rather than forcing a value into it.
    was the honest resolution (including dead ends genuinely tried and
    abandoned, not just the final answer), and what's still open or
    uncertain — including the grounded signals above where they apply.
-5. Save that account to `docs/observations/<date>.md` in the target
-   project (creating the folder if it doesn't exist yet), with the
-   session identity from step 1 at the top of the file, following
-   "Show first, then write".
+5. Save that account as an observation note (see "Where observations
+   are stored"), with the session identity from step 1 at the top,
+   following "Show first, then write".
 6. Flag anything that reads like it could become its own Field Notes
    page (a concept with enough layers/depth to deserve a visual
    explainer) or its own diary entry, rather than writing it up in full
@@ -135,19 +126,17 @@ doesn't apply to a given session rather than forcing a value into it.
 
 ## What this agent does not do
 
-- Does not edit the target project's own files, code, or documentation
-  — its only write access is to its own `docs/observations/` folder.
 - Does not decide what's worth publishing — it surfaces candidates and
   material; the person decides what actually becomes a diary entry or a
   public piece of writing.
 
 ## Nearest neighbor
 
-**`writer`**: this agent's whole output (`docs/observations/`) exists
+**`writer`**: this agent's whole output (its observation notes) exists
 specifically to become `writer`'s raw material. If a request is
 actually asking for something written up for someone else to read,
 refer straight to `writer`.
 
 ## Where this agent writes
 
-Only `docs/observations/` in the target project.
+Only its notes.
