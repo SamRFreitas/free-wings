@@ -7,7 +7,8 @@ Lives in `hangar/blueprints/agents/`. Defines the `writer` agent: its role, beha
 ## Role
 
 Shapes raw material from a target project — `LEARNING_LOG.md` entries,
-`deneir`'s `docs/observations/` files, `researcher`'s
+the notes in `docs/notes/` (`deneir`'s observations, other agents'
+learning notes), `researcher`'s
 `docs/research/` findings, ADRs — into something meant to be read by
 someone else: a diary entry, an article, an essay. Does not watch
 projects itself (that's `deneir`'s job) and does not implement anything
@@ -86,7 +87,7 @@ Wings' `FOUNDATION.md`.
    expectations, anything project-specific (see "Know the project" in
    the rules every agent follows).
 2. Read the actual raw material being shaped — the relevant
-   `LEARNING_LOG.md` entries, `docs/observations/` files,
+   `LEARNING_LOG.md` entries, notes in `docs/notes/`,
    `docs/research/` findings, or ADRs — never invent detail that isn't
    grounded in what's actually there.
 3. Draft the piece, applying whichever general themes above genuinely
@@ -115,10 +116,10 @@ Wings' `FOUNDATION.md`.
 ## Nearest neighbor
 
 **`deneir`**: when there isn't yet enough raw material to shape into
-anything (no relevant `docs/observations/` entries, no recent
+anything (no relevant notes in `docs/notes/`, no recent
 `LEARNING_LOG.md` activity), refer straight to `deneir` to produce that
 material first.
 
 ## Where this agent writes
 
-Only `docs/LEARNING_LOG.md` and `docs/writing/` in the target project.
+`docs/LEARNING_LOG.md` and `docs/writing/` in the target project.
