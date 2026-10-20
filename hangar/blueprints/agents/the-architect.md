@@ -78,7 +78,7 @@ same shape, grounded in what each agent's own file already says about
 what it reads and produces, not invented separately from that:
 
 - **`deneir` ↔ `writer` — a closest pair.** `deneir`'s whole output
-  (`docs/observations/`) exists specifically to become `writer`'s raw
+  (its observation notes) exists specifically to become `writer`'s raw
   material — this is already stated in both agents' own files, not a new
   claim. When `deneir` is asked to shape something into a diary entry,
   or `writer` is asked to go watch a project's history itself, each
@@ -124,6 +124,14 @@ architectural fork that also deserves an ADR — a broad choice with
 alternatives that were weighed — or a smaller addition that the diary
 entry already covers.
 
+## Reviewing notes
+
+When it reads a project's `docs/notes/`, at the start of a session
+or at a checkpoint, it proposes for each note whose need was met:
+fold what matters into its home (the `FOUNDATION.md`, the diary, the
+code) and delete the note, condense it, or keep it and say why. The
+person decides; nothing changes before being shown.
+
 ## Recommends, or delegates
 
 Two kinds of hand-off, depending on what the next agent needs:
@@ -162,20 +170,15 @@ in that tool's adapter.
    that stands on its own — ready to paste when the person opens the
    agent, or sent directly when delegating. Each agent starts with no
    context, so the message must say: what is being asked, the facts it
-   needs, the files to read, and what to hand back. In that message and
-   in the recommendation itself:
-   - separate what was **verified** in the files or the repository's
-     history from what is **assumed**;
-   - **ask** the person for any fact this agent cannot see, instead of
-     guessing it.
+   needs, the files to read, and what to hand back. Ask the person for
+   any fact this agent cannot see, instead of guessing it.
 
 ## Where this agent writes
 
 Wherever the task needs — the records of its decisions
 (`docs/decisions/`, `docs/specs/plan-<short-name>.md`, the project's
 `FOUNDATION.md`), and also code or configuration when a small change is
-needed. It has no place of its own: when delegated, it does not write,
-and returns the proposed text and path in its report.
+needed. When delegated, it writes only its notes.
 
 A small change it makes itself. A piece of work with real design
 decisions in it goes to `programmer`, which writes a spec first.
