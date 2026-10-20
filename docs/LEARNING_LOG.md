@@ -857,3 +857,13 @@ Run of `@CONSTRUCT` (bare — target Free Wings itself, mode: recompile). AI-Ass
 Consistency check (`FOUNDATION.md` against the blueprints): agents and skills agree — same six, same three, same names and roles. Named, not corrected: a stray fragment `generated from it.` on the last line of `FOUNDATION.md`, and a missing blank line before its `## Modular & Self-Sufficient Documentation` heading.
 
 Deviations: (1) the adapter says to strip the HTML orientation note from agents and is silent for skills; it was stripped from skills too, since "Lives in `hangar/blueprints/skills/`" is false in a compiled file. (2) In `programmer`, the example list of generated files was cut to `CLAUDE.md` alone, per the rule that a compiled output speaks only of the detected tool.
+
+## 2026-10-20 — construct recompiled for Claude Code, notes reach the compiled agents
+
+Run of `@CONSTRUCT` (bare — target Free Wings itself, mode: recompile). AI-Assisted Tool detected: Claude Code, from the runtime environment (`CLAUDECODE`, `CLAUDE_CODE_ENTRYPOINT`). The stamp in `CLAUDE.md` (`15b6654…`) no longer matched `git hash-object FOUNDATION.md` (`4538135…`): `FOUNDATION.md` had gained `docs/notes/` and the glossary, uncommitted. Compiled from the working tree as it stood.
+
+Generated: `CLAUDE.md` (new stamp; `docs/notes/` in the structure, a "Notes and glossary" convention, `deneir` now writing into `docs/notes/deneir/`, the shared rules no longer listed by name), the six `.claude/agents/` files (each ending with the shared rules, now including "Verified or assumed" and "Notes"), and the three `.claude/skills/<name>/SKILL.md`. `tools` verbatim from the adapter's table. The `description` of `writer` and `write-diary` changed with their blueprints: `docs/observations/` became `docs/notes/`.
+
+Consistency check (`FOUNDATION.md` against the blueprints): same six agents, same three skills, same names and one-line roles. No disagreement found. Verified by grep: no `docs/observations` left in any compiled output.
+
+Deviations, as on 2026-10-06: the orientation note was stripped from skills too, and `programmer`'s example list of generated files was cut to `CLAUDE.md` alone.
