@@ -14,7 +14,7 @@ it fully for an audience. Reuses the `writer` agent's own context
 rather than duplicating it.
 
 **Use this skill**: when there's enough raw material (a session's work,
-`deneir`'s `docs/observations/`) to turn into a proper diary entry.
+notes in `docs/notes/`) to turn into a proper diary entry.
 
 ## Procedure
 
@@ -27,8 +27,8 @@ rather than duplicating it.
    anything project-specific) — from its generated instruction file
    when the session already has it, from its `FOUNDATION.md` otherwise.
 3. Gather the raw material: recent commits, the current conversation,
-   any files under that project's `docs/observations/` (produced by the
-   `deneir` agent) since the last `LEARNING_LOG.md` entry, and any
+   any notes under that project's `docs/notes/` (observations, learning
+   notes) since the last `LEARNING_LOG.md` entry, and any
    relevant `docs/research/` findings (produced by the `researcher`
    agent) that belong in the reflection.
 4. Write one new entry, in the same format the project's existing
