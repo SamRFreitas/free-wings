@@ -125,6 +125,8 @@ full below. None assumes a specific AI-Assisted Tool.
 - `docs/LEARNING_LOG.md` — the diary: one entry per session, at the
   meta level of harness engineering and the learning process, not one
   project's narrow technical details.
+- `docs/notes/` — the notes agents leave while working, one folder per
+  agent; the rule is in `hangar/blueprints/shared/agent-rules.md`.
 - `hangar/` — the workshop. Named for where an aircraft is prepared
   before it flies; nothing inside `hangar/` executes directly. Every
   file here exists to be read by `construct`, which compiles the
@@ -172,9 +174,8 @@ full below. None assumes a specific AI-Assisted Tool.
       designer are still planned for later.
 
     - `hangar/blueprints/shared/agent-rules.md` — the rules every
-      agent follows, written once: "know the project", "recognize and
-      refer" and "show first, then write". `construct` appends this
-      file to each compiled agent, so no agent blueprint repeats it.
+      agent follows, written once. `construct` appends this file to
+      each compiled agent, so no agent blueprint repeats it.
 
     - `hangar/blueprints/skills/` — one blueprint per skill:
       `write-diary.md`, `write-article.md` and `loop-status.md`. These
@@ -240,6 +241,16 @@ distinct roles, deliberately not overlapping:
 - **`LEARNING_LOG.md`** — *what actually happened*, written after,
   including anywhere the implementation ended up deviating from its own
   spec, and why.
+
+Two more records sit beside these three, in every project under the
+harness:
+
+- **Notes** (`docs/notes/<agent>/`) — what an agent leaves while
+  working, for the diary or for whoever continues. Temporary: each
+  exists for a need and goes once that need is met. The rule is in
+  `hangar/blueprints/shared/agent-rules.md`; The Architect reviews them.
+- **Glossary** (`docs/GLOSSARY.md`) — the project's own vocabulary,
+  one entry per term.
 
 When a piece of work is too large for one spec, a **plan** sits above
 the specs: the ordered pieces and which agent takes each one, written
