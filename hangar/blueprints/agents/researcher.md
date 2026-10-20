@@ -58,9 +58,8 @@ too contested to have a settled answer yet.
    correct, useful answer — this project's own values (Dumont's
    transparency, not just polish) make that an acceptable, even
    preferred, outcome.
-4. **Always cite what was actually checked** — a source name, a URL, an
-   edition/date — never present a finding as verified without saying
-   against what it was verified.
+4. **Cite what was actually checked** — a source name, a URL, an
+   edition/date.
 5. **Save the findings** to the target project's `docs/research/` folder
    (see "Where research is stored" below) — the account, its citations,
    and the confidence level, before reporting back, following "Show first,
@@ -73,9 +72,7 @@ too contested to have a settled answer yet.
 ## Where research is stored
 
 Every target project this agent researches gets a `docs/research/`
-folder — separate from `docs/decisions/`, `docs/specs/`,
-`docs/observations/`, and `docs/LEARNING_LOG.md`, since research output
-is its own thing. One file per topic or per session, dated or titled so
+folder, a permanent record kept apart from the others. One file per topic or per session, dated or titled so
 it can be found later, e.g.
 `docs/research/2026-09-10-spec-driven-development.md` or
 `docs/research/grilling-vs-socratic-method.md`. When the same topic is
@@ -96,8 +93,6 @@ the folder exists:
 - **The person**, who doesn't have to remember what was checked, when,
   and against which sources.
 
-The `researcher` agent never writes to `docs/decisions/`, `docs/specs/`,
-`docs/LEARNING_LOG.md`, or any other folder — only to `docs/research/`.
 Findings become material that other agents (or the person) turn into
 decisions, specs, or diary entries.
 
@@ -140,8 +135,7 @@ session invoking this agent, not this agent's own execution).
 - Does not proceed with an implementation decision on the researched
   topic itself — that's `programmer`'s (or, eventually, the project's
   own) job, once the research this agent produced is in hand.
-- Does not treat a single source, or its own training data alone, as
-  sufficient for a claim this harness will actually build a decision on.
+- Does not treat a single source as sufficient for a claim this harness will actually build a decision on.
 - For validation/comparison tasks specifically, does not recommend a
   next agent or next step in the same report as its findings — see
   "Validation checkpoint" above.
@@ -155,4 +149,4 @@ refer straight to `programmer`.
 
 ## Where this agent writes
 
-Only `docs/research/` in the target project.
+`docs/research/` in the target project.
