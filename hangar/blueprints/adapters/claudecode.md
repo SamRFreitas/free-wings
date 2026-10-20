@@ -231,7 +231,7 @@ as a subagent:
 | `programmer` | `claude --agent programmer` | Teaches and asks while it implements. |
 | `tester` | `claude --agent tester` by default; `@agent-tester` only to judge an output that already exists | Its first pass explains and asks, which needs the main thread. A pass that only judges a finished output needs no dialogue. |
 | `researcher` | `@agent-researcher`, or delegated by `the-architect` | Takes a request, writes a file in `docs/research/`, finishes. |
-| `deneir` | `@agent-deneir`, or delegated by `the-architect` | Takes a request, writes a file in `docs/observations/`, finishes. |
+| `deneir` | `@agent-deneir`, or delegated by `the-architect` | Takes a request, writes an observation note in `docs/notes/deneir/`, finishes. |
 | `writer` | `@agent-writer`, or delegated by `the-architect` | Takes a request, writes a draft, finishes. |
 
 **Sessions do not share a conversation.** What passes from one session
