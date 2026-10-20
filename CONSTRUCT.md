@@ -157,8 +157,11 @@ first entry.
 
 ### Step 5: Report back
 
-One report, at the end, concise: which files were generated and where,
-any deviation from the adapter, any disagreement found in Step 2.
+One report, at the end, concise: which files were generated and where
+— in a recompile, which of them actually changed —, any compiled agent
+or skill left in the tool's directory with no blueprint behind it
+(renamed or removed: named, never deleted), any deviation from the
+adapter, any disagreement found in Step 2.
 
 > *"Bootstrapped for [AI-Assisted Tool]. Mode: [recompile|scaffold].
 > Generated [files]. No issues."*
