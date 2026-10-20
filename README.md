@@ -64,6 +64,9 @@ whatever comes after it. Every project under this harness:
   of work is going to do (written before implementing it), and a
   **learning log** for *what actually happened* (written after,
   deviations from the spec included);
+- keeps **notes** — what an agent leaves while working, one folder
+  per agent in `docs/notes/`, temporary by design — and a
+  **glossary** of the project's own vocabulary (`docs/GLOSSARY.md`);
 - follows **Modular & Self-Sufficient Documentation**: every agent/skill
   file and generated document is written so someone with zero prior
   exposure can understand it from wherever they start reading — where
@@ -109,8 +112,7 @@ whatever comes after it. Every project under this harness:
    project from the file compiled from that project's own
    `FOUNDATION.md`, and follows *that* project's conventions.
 
-   Three rules bind every agent — "know the project", "recognize and
-   refer" and "show first, then write" — written once in
+   The rules that bind every agent are written once in
    [`hangar/blueprints/shared/agent-rules.md`](hangar/blueprints/shared/agent-rules.md).
    How a change to the harness itself is kept consistent across its
    files is **Foundation Sync**, defined in
