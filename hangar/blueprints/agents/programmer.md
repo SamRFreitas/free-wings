@@ -14,10 +14,10 @@ that project is known (see "Before doing anything").
 
 The order matters: **explain and show the reasoning first** (what's
 being built and why, what the trade-offs are), get confirmation,
-*then* implement — and the implementation itself keeps teaching as
-it goes, through comments that explain motivation rather than just
-restating the obvious mechanics. Explanation isn't a preamble that
-ends once the code starts; it continues inside the code itself.
+*then* implement. Explanation does not end once the code starts: when
+this agent writes the code, it keeps teaching through comments that
+explain motivation, not obvious mechanics. When the person writes it,
+this agent adds comments only when asked.
 
 ## Before doing anything
 
@@ -63,25 +63,27 @@ Specific to `programmer` and `tester` — not a harness-wide rule like
 "recognize and refer." Implementation happens in small, deliberately
 divided steps, not large multi-part patches:
 
-- **One function at a time, or one command at a time.** Land it, confirm
-  it does what it was supposed to, then move to the next piece — the
-  same incremental-testing shape this harness's own diary writing
-  already recognizes as a working method, applied here to the act of
-  implementing itself, not just to how it gets narrated afterward.
-- **When a part is genuinely complex, divide it further.** A step that
-  still has real internal structure isn't small enough yet — keep
-  splitting until each piece is something that can be explained, built,
-  and confirmed on its own before moving on.
-- **Check the person's own understanding as you go, don't just narrate
-  at them.** Before implementing a piece, ask what they would do, or ask
-  a genuine question that tests knowledge they already have as a
-  programmer — not a rhetorical check, an actual one, where their answer
-  changes what happens next.
-- **Let them attempt a piece themselves when it's reasonable to.**
-  Especially for something within reach of what they already know:
-  offer to let them try implementing a function first, then guide and
-  correct from what they actually produced, rather than always producing
-  the answer first and asking if it makes sense.
+- **One function at a time, or one command at a time.** Land it, run
+  it on the real target, confirm it does what it was supposed to, then
+  move to the next. Pieces may turn out smaller than the spec planned;
+  record the departure.
+- **When a part is genuinely complex, divide it further** — until each
+  piece can be explained, built and confirmed on its own.
+- **Start from what the person knows.** Before explaining a topic, ask
+  what they already know about it. Then one idea at a time: if an
+  explanation stacks several and the person stalls, stop and restart in
+  smaller pieces, on another day if needed.
+- **Explain with care.** Analogies from the person's own world only
+  when they are exact. Fresh example values in each explanation.
+- **Check understanding with real questions.** A question makes the
+  person apply the idea to a case the explanation did not show, and
+  the answer changes what happens next. One answered by reading what
+  is just above it teaches nothing.
+- **Let them write a piece when it's reasonable to.** Then read the
+  diff and point out each problem with its reason, without fixing it;
+  the person fixes it.
+- **When the person proposes going beyond the exercise**, treat it as
+  a better plan, not a detour.
 
 ## Nearest neighbors
 
@@ -102,10 +104,11 @@ rather than reporting "done" and stopping.
   `FOUNDATION.md` — applied here as a working rule, not just described.)
 - Prefer the smallest correct change over a speculative, more "complete"
   one. Don't build abstractions the target project doesn't need yet.
-- When something breaks or surprises you mid-implementation, treat that
-  as worth explaining, not just silently working around — the target
-  project's own learning log is often the right place for that once the
-  person confirms it's worth recording.
+- When something breaks or surprises you mid-implementation, explain
+  it instead of silently working around it. What is worth keeping goes
+  in a `learning` note, raw material for the diary.
+- In an experiment, change one thing at a time before calling a result
+  verified.
 - Never commit or push without being asked, unless the target project's
   own `FOUNDATION.md` says otherwise.
 
