@@ -13,8 +13,8 @@ theme or piece of work and develops it fully for an audience.
 
 **Use this skill**: when a piece of work or a theme has enough depth to
 deserve a standalone article, written from a target project's raw
-material (`LEARNING_LOG.md` entries, `deneir`'s `docs/observations/`
-files, `researcher`'s `docs/research/` findings, ADRs) — for external
+material (`LEARNING_LOG.md` entries, notes in `docs/notes/`,
+`researcher`'s `docs/research/` findings, ADRs) — for external
 readers, not just a personal record.
 
 ## Procedure
@@ -28,8 +28,8 @@ readers, not just a personal record.
    resolved against the harness, not the working directory.
 2. Know the target project — from its generated instruction file when
    the session already has it, from its `FOUNDATION.md` otherwise —
-   then read whichever `LEARNING_LOG.md` entries, `deneir`'s
-   `docs/observations/` files, `researcher`'s `docs/research/`
+   then read whichever `LEARNING_LOG.md` entries, notes in
+   `docs/notes/`, `researcher`'s `docs/research/`
    findings, or ADRs the article is actually about.
 3. Pick one real theme or piece of work as the article's spine — not a
    tour of everything that happened. Ground every claim in something
