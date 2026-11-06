@@ -136,6 +136,7 @@ Founded 2026-09-05, named Free Wings on 2026-09-06. Seven agents, one
 shared rules file, three skills, and two adapters (`claudecode.md`, `opencode.md`) are
 built and tested live (see "Using this harness for a new project"
 above). Shadow Glass is the first project sitting under
-this harness — the second is whichever project you point `construct` at
+this harness; Chacal, an automated job search and application tool, is
+the second — the third is whichever project you point `construct` at
 next. See [`docs/LEARNING_LOG.md`](docs/LEARNING_LOG.md) for the full
 story, warts included.
