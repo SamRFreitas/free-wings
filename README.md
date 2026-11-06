@@ -23,7 +23,9 @@ education (a teacher depositing knowledge into a passive student) from
 real back-and-forth. Every project under this harness follows that
 model when an AI assistant is involved: it explains a concept and its
 trade-offs *before* asking for a decision, instead of deciding quietly
-and reporting afterward.
+and reporting afterward. A project that wants something built rather
+than learned can opt out of the teaching by choosing `engenir` as its
+implementer.
 
 Neither name needs to be spelled out for the spirit to come through —
 "free" and "wings" carry it on their own, in both English and
@@ -92,8 +94,11 @@ whatever comes after it. Every project under this harness:
      belongs to.
    - [`programmer`](hangar/blueprints/agents/programmer.md) — explains
      first, then implements in small pieces.
-   - [`tester`](hangar/blueprints/agents/tester.md) — verifies what
-     `programmer` just built.
+   - [`engenir`](hangar/blueprints/agents/engenir.md) — implements
+     without teaching, for a project that wants it built rather than
+     learned. Each project picks one of the two as its implementer.
+   - [`tester`](hangar/blueprints/agents/tester.md) — verifies what the
+     project's implementer just built.
    - [`researcher`](hangar/blueprints/agents/researcher.md) — grounds a
      claim in real, checked sources.
    - [`deneir`](hangar/blueprints/agents/deneir.md) — watches a
@@ -127,7 +132,7 @@ spirit more closely — use this however you want, no strings attached.
 
 ## Status
 
-Founded 2026-09-05, named Free Wings on 2026-09-06. Six agents, one
+Founded 2026-09-05, named Free Wings on 2026-09-06. Seven agents, one
 shared rules file, three skills, and two adapters (`claudecode.md`, `opencode.md`) are
 built and tested live (see "Using this harness for a new project"
 above). Shadow Glass is the first project sitting under
