@@ -907,3 +907,35 @@ submit; Playwright fits; Google forbids automated searches and its
 Custom Search API is closed to new users; Greenhouse uses invisible
 reCAPTCHA, and Ashby has its own spam protection plus application
 limits per email.
+
+## 2026-11-06 — `construct` scaffolded Chacal, the second project
+
+Run of `@CONSTRUCT @HARI-SELDON`, target `~/Lab/chacal` (new, no
+`FOUNDATION.md`), mode: scaffold. AI-Assisted Tool: Claude Code.
+
+The project's name came out of a long search: "seeker" was the working
+name; Argus, Ogum and Wepwawet were weighed; the owner chose **Chacal**
+(the jackal, Wepwawet's animal) for its opportunist tone, which matches
+what the project openly is: arrive first, use every advantage. Lower
+case for the directory.
+
+The scaffold dialogue settled, in the person's words: files in English
+and conversation in Portuguese; a private repository, with the owner's
+résumé and profile data as input data kept out of git; TypeScript and
+Playwright; every harness convention inherited, except the pedagogical
+approach, replaced by `engenir` as the implementer (the first project
+to use ADR 0005). Foundation Sync adapted: a change to its
+`FOUNDATION.md` runs `construct` and goes into its diary.
+
+Generated: `FOUNDATION.md` (approved as a per-file summary, the new
+form), `CLAUDE.md` with its stamp, `.claude/agents/` with six agents
+(no `programmer`), the three skills, `.claude/settings.json` (opens as
+`the-architect`, `defaultMode: default`, as in Free Wings),
+`.gitignore`. Deviation from `CONSTRUCT.md`: `docs/research/` was
+created to hold the two `researcher` reports written for the project
+before it existed. Chacal has no diary yet; its first entry is its own
+act. Nothing committed there.
+
+Open: Shadow Glass's `FOUNDATION.md` does not name its implementer
+explicitly, and its compiled agents predate `engenir`; to be handled
+in a Shadow Glass session.
