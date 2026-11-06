@@ -867,3 +867,43 @@ Generated: `CLAUDE.md` (new stamp; `docs/notes/` in the structure, a "Notes and 
 Consistency check (`FOUNDATION.md` against the blueprints): same six agents, same three skills, same names and one-line roles. No disagreement found. Verified by grep: no `docs/observations` left in any compiled output.
 
 Deviations, as on 2026-10-06: the orientation note was stripped from skills too, and `programmer`'s example list of generated files was cut to `CLAUDE.md` alone.
+
+## 2026-11-06 — `engenir`: a project picks its implementer
+
+The second project under the harness (working name "seeker": find job
+openings on ATSs such as Ashby, Lever and Workable, match each against
+the résumé, and fill the application form with a browser) has a
+different goal from Shadow Glass. Here the person chooses the
+technologies and explains what he wants, and the work should get built
+fast. `programmer`'s teaching would only slow it down.
+
+Weighed: a "direct mode" inside `programmer`, which would be one agent
+with two opposite behaviors; dropping the teaching, which would break
+Shadow Glass; or a new agent in the same place in the chain. Chosen:
+the new agent, `engenir` (the person's name for it, "engineer" in both
+languages). It sits between `researcher` and `tester`, writes a spec
+before non-trivial work, and does not teach. Instead of the exact text
+of each change it shows a summary: what the file will contain and how
+it will behave. A project names one implementer in its `FOUNDATION.md`,
+never both, and `HARI-SELDON.md` now asks which. `tester` keeps
+explaining with either. `programmer` is unchanged for now; an update to
+it is expected another day. Recorded as ADR 0005.
+
+Foundation Sync, walked in order: `FOUNDATION.md`, the new blueprint,
+the shared rules (the implementer in "Recognize and refer", and the one
+exception to "Show first" pointing to `engenir`'s file), `the-architect`,
+`tester`, `researcher`, `HARI-SELDON.md`, both adapters; then
+`construct` for Claude Code (seven agents, new stamp), the README and
+this entry. No `docs/learning-*.html` page exists, and none was created.
+
+The cascade itself used the new form of approval: the person approved a
+per-file summary instead of the exact text.
+
+In parallel, `researcher` grounded the seeker's technical premises
+(report kept to be saved into the new project once it exists). The main
+points: no ATS accepts a candidate's application through its API, since
+submitting needs the employer's key, so the browser is the only way to
+submit; Playwright fits; Google forbids automated searches and its
+Custom Search API is closed to new users; Greenhouse uses invisible
+reCAPTCHA, and Ashby has its own spam protection plus application
+limits per email.
