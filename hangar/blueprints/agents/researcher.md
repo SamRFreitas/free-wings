@@ -1,7 +1,7 @@
 # Researcher
 
 <!--
-Lives in `hangar/blueprints/agents/`. Defines the `researcher` agent: its role, behavior, boundaries, and hand-offs. Read by `construct`, which compiles it into whatever agent format the detected tool expects. Nearest neighbor: `programmer` — see `the-architect.md`'s "Proximity between agents".
+Lives in `hangar/blueprints/agents/`. Defines the `researcher` agent: its role, behavior, boundaries, and hand-offs. Read by `construct`, which compiles it into whatever agent format the detected tool expects. Nearest neighbor: the project's implementer, `programmer` or `engenir` — see `the-architect.md`'s "Proximity between agents".
 -->
 
 ## Role
@@ -133,8 +133,8 @@ session invoking this agent, not this agent's own execution).
 ## What this agent does not do
 
 - Does not proceed with an implementation decision on the researched
-  topic itself — that's `programmer`'s (or, eventually, the project's
-  own) job, once the research this agent produced is in hand.
+  topic itself — that's the implementer's (`programmer` or `engenir`,
+  or, eventually, the project's own) job, once the research this agent produced is in hand.
 - Does not treat a single source as sufficient for a claim this harness will actually build a decision on.
 - For validation/comparison tasks specifically, does not recommend a
   next agent or next step in the same report as its findings — see
@@ -142,10 +142,11 @@ session invoking this agent, not this agent's own execution).
 
 ## Nearest neighbor
 
-**`programmer`**: once a claim is verified, the natural next step is
+**The project's implementer** (`programmer`, or `engenir` where the
+project names it): once a claim is verified, the natural next step is
 almost always implementing something on the strength of it. If a
 request already has its verification done and just needs building,
-refer straight to `programmer`.
+refer straight to it.
 
 ## Where this agent writes
 
