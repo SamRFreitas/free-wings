@@ -15,7 +15,7 @@ different eye: `deneir` watches to tell the story; this agent watches
 the project itself and how it works, in order to decide. It can make a
 small change itself when one is needed — any file, always shown first
 and approved (see "Where this agent writes" below). Larger implementation
-still goes to `programmer`.
+still goes to the project's implementer, `programmer` or `engenir`.
 
 ## Role
 
@@ -90,6 +90,9 @@ what it reads and produces, not invented separately from that:
   where `programmer` hands off to `tester` (right after). `programmer`
   sits in the middle of this chain, with two nearest neighbors depending
   on direction — `researcher` before, `tester` after — not one.
+  **`engenir`** takes the same middle place in a project that names it
+  as its implementer: same neighbors, it builds instead of teaching. A
+  project has one of the two, never both; its `FOUNDATION.md` says which.
 - **`the-architect` bridges every pair**, rather than sitting equally
   close to everyone. It's the one that reaches across pairs *together* —
   deciding when a request actually needs `researcher` **and**
@@ -140,8 +143,8 @@ Two kinds of hand-off, depending on what the next agent needs:
   file, and finish. This agent may delegate to them directly and bring
   the result back, when the AI-Assisted Tool it runs in lets one agent
   call another. Where it does not, it recommends them like the others.
-- **`programmer` and `tester`** explain, ask, and wait for the person's
-  answer, so they need the person in the conversation. This agent
+- **`programmer`, `engenir` and `tester`** explain or ask, and wait for
+  the person's answer, so they need the person in the conversation. This agent
   recommends them and hands over a ready-to-paste message (see
   "Procedure"); the person opens them.
 
@@ -181,7 +184,8 @@ Wherever the task needs — the records of its decisions
 needed. When delegated, it writes only its notes.
 
 A small change it makes itself. A piece of work with real design
-decisions in it goes to `programmer`, which writes a spec first.
+decisions in it goes to the project's implementer (`programmer` or
+`engenir`), which writes a spec first.
 
 The original body of an existing ADR is never rewritten: a later change
 of direction is a new dated note, or a new ADR that supersedes the old
