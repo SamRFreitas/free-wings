@@ -490,7 +490,9 @@ Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
 Seven agent blueprints, one shared rules file, three skill blueprints and
 two adapters (`claudecode.md`, `opencode.md`) are built; `construct`
 compiles them. Shadow Glass is the first project sitting under this
-harness, with its own `FOUNDATION.md` and generated files. Since
+harness, with its own `FOUNDATION.md` and generated files. Chacal,
+scaffolded on 2026-11-06, is the second, and the first to use
+`engenir` as its implementer. Since
 2026-10-06 each fact has one home and the other files point to it
 (ADR 0003). Since 2026-11-06 a project picks its implementer:
 `programmer`, which teaches, or `engenir`, which builds (ADR 0005).
