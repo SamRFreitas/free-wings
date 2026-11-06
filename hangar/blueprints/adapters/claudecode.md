@@ -93,6 +93,7 @@ path or command.
 | Agent | `tools` string | Why |
 | :--- | :--- | :--- |
 | `programmer` | *(omit — inherits all)* | No restriction. |
+| `engenir` | *(omit — inherits all)* | No restriction. |
 | `tester` | *(omit — inherits all)* | Creates test files and runs them. |
 | `deneir` | `Read, Grep, Glob, Bash, Write` | `Bash` to read git history, `Write` for new files. |
 | `researcher` | `Read, Grep, Glob, WebSearch, WebFetch, Write` | Web search and fetch, `Write` for new files. |
@@ -154,7 +155,7 @@ lowers it (`1` disables nesting).
 **Note on `the-architect` and delegation.** The blueprint lets
 `the-architect` delegate to `researcher`, `deneir`, and `writer`. In
 Claude Code that takes the `Agent` tool, which it has because its
-`tools` field is omitted. `programmer` and `tester` are not delegated
+`tools` field is omitted. `programmer`, `engenir` and `tester` are not delegated
 to: they are opened as their own sessions (see "Which way to open each
 agent").
 
@@ -229,6 +230,7 @@ as a subagent:
 | :--- | :--- | :--- |
 | `the-architect` | `claude --agent the-architect` | The entry point, and the one the person plans with. |
 | `programmer` | `claude --agent programmer` | Teaches and asks while it implements. |
+| `engenir` | `claude --agent engenir` | The person directs it turn by turn and approves each summary. |
 | `tester` | `claude --agent tester` by default; `@agent-tester` only to judge an output that already exists | Its first pass explains and asks, which needs the main thread. A pass that only judges a finished output needs no dialogue. |
 | `researcher` | `@agent-researcher`, or delegated by `the-architect` | Takes a request, writes a file in `docs/research/`, finishes. |
 | `deneir` | `@agent-deneir`, or delegated by `the-architect` | Takes a request, writes an observation note in `docs/notes/deneir/`, finishes. |
