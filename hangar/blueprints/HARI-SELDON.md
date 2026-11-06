@@ -42,6 +42,8 @@ This is a blueprint, not a file to copy by hand. The actual content in each sect
 
 - **Pedagogical approach** — [default: explain a concept and its trade-offs before asking for a decision, unless the decision is low-risk and reversible. Adopt, adapt, or replace?]
 
+- **Implementer** — [which agent implements here: `programmer`, which teaches while it builds, or `engenir`, which builds while the person directs. One of the two, never both (ADR 0005). Ask whether the project's goal is to learn or to get it built.]
+
 - **Terminology** — [default: the harness's own vocabulary (not the project's `docs/GLOSSARY.md`) defines AI-Assisted Tool, Skill, Agent, Blueprint, Adapter, Field Notes, and Snapshot, and avoids the word "artifact". Adopt, adapt, or replace?]
 
 - **Modular & Self-Sufficient Documentation** — [default: every file orients the reader — where they are, what it does, how it connects to the rest. Adopt, adapt, or replace?]
