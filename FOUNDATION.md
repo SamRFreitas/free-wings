@@ -160,8 +160,12 @@ full below. None assumes a specific AI-Assisted Tool.
         Sync (below). Its current role is recorded in ADR 0002.
       - `programmer.md` — explains first, then implements in small
         pieces.
-      - `tester.md` — verifies what `programmer` just built
-        (provisional name).
+      - `engenir.md` — implements without teaching: the person
+        directs, it builds. Same place in the chain as `programmer`,
+        different intent; each project's `FOUNDATION.md` names which of
+        the two implements there (ADR 0005).
+      - `tester.md` — verifies what the project's implementer
+        (`programmer` or `engenir`) just built (provisional name).
       - `deneir.md` — watches a project's evolution and writes
         observations. Named after the god of writing and
         record-keeping in Forgotten Realms.
@@ -275,9 +279,10 @@ round of its own. `grilling` earns its place when a spec has genuine
 open decisions in it, not as a mandatory ritual for every piece of work
 regardless of size.
 
-The `programmer` blueprint is where this is applied: a spec before any
-non-trivial piece of work. A downstream project may adapt or replace
-it, along with the rest of the pattern.
+The implementer blueprints — `programmer` and `engenir` — are where
+this is applied: a spec before any non-trivial piece of work. A
+downstream project may adapt or replace it, along with the rest of the
+pattern.
 
 ## Foundation Sync — keeping the harness itself from drifting
 
@@ -448,7 +453,9 @@ veto, rather than blocking progress on an answer the person has no way
 to evaluate confidently yet. This is Freire's dialogic principle,
 applied literally to working with an AI instead of a classroom.
 Downstream projects scaffolded by this harness may adopt, adapt, or
-replace it — see `hangar/blueprints/HARI-SELDON.md`.
+replace it — see `hangar/blueprints/HARI-SELDON.md`. A project whose
+goal is to get something built, not to learn while building it, picks
+`engenir` as its implementer instead of `programmer` (ADR 0005).
 
 ## Bilingual by design
 
@@ -480,9 +487,10 @@ commits that are easy to review and understand.
 ## Current status
 
 Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
-Six agent blueprints, one shared rules file, three skill blueprints and
+Seven agent blueprints, one shared rules file, three skill blueprints and
 two adapters (`claudecode.md`, `opencode.md`) are built; `construct`
 compiles them. Shadow Glass is the first project sitting under this
 harness, with its own `FOUNDATION.md` and generated files. Since
 2026-10-06 each fact has one home and the other files point to it
-(ADR 0003).
+(ADR 0003). Since 2026-11-06 a project picks its implementer:
+`programmer`, which teaches, or `engenir`, which builds (ADR 0005).
