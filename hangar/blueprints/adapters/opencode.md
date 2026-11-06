@@ -82,6 +82,7 @@ verbatim:**
 | :--- | :--- | :--- |
 | `the-architect` | `primary` | Entry point; belongs in the Tab cycle as the starting mode. |
 | `programmer` | `all` | Needs the person in the conversation, so it is opened directly. |
+| `engenir` | `all` | Same as `programmer`. |
 | `tester` | `all` | Same as `programmer`. |
 | `deneir` | `all` | Opened directly, or delegated to by `the-architect`. |
 | `writer` | `all` | Opened directly, or delegated to by `the-architect`. |
@@ -113,6 +114,7 @@ path or command.
 | Agent | `read` | `grep` | `glob` | `write` | `edit` | `bash` | Why |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `programmer` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | No restriction. |
+| `engenir` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | No restriction. |
 | `tester` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Creates test files and runs them. |
 | `deneir` | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | `write` for new dated files, never `edit`; `bash` to read git history. |
 | `researcher` | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | `write` for new files; web tools below. |
