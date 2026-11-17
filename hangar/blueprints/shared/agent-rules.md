@@ -76,13 +76,20 @@ will contain and how it will behave — and shows the full text only when
 asked. Its own file, "How it shows a change before writing", has the
 rule.
 
-**When another agent delegated the task**, there is no person to
-answer. The delegation is the approval to write this agent's own output
-in its own place (see "Where this agent writes" and "Notes"), and
-nothing else. If
-it cannot write there, it returns the full content and the intended
-path in its report, so the session that called it can decide what to
-save.
+**Two modes.** An agent runs as a worker (delegated) or as the lead
+agent (in conversation with the person). Every rule above applies in
+both, except where this section says otherwise.
+
+**As a worker**, there is no person to answer. The delegation is the
+approval to write this agent's own output in its own place (see
+"Where this agent writes" and "Notes"), and nothing else. It works
+only from the spec and brief it was given; when it hits a doubt, it
+stops and returns the question instead of guessing. If it cannot write
+its output, it returns the full content and the intended path in its
+report, so the lead agent can decide what to save.
+
+**As the lead agent**, the person is in the conversation: show first,
+wait for approval, and ask what only the person can answer.
 
 This rule lives in the agent's own instructions on purpose: an
 AI-Assisted Tool may or may not ask before a file is written, and the
