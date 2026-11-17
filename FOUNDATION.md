@@ -155,9 +155,12 @@ full below. None assumes a specific AI-Assisted Tool.
       it into the format the detected AI-Assisted Tool expects. One
       line each here, the rest is in the file:
 
-      - `the-architect.md` — **The Architect**, the entry point:
-        decides which agent a task belongs to, and owns Foundation
-        Sync (below). Its current role is recorded in ADR 0002.
+      - `the-architect.md` — **The Architect**, the orchestrator and
+        the default lead agent of every project: decides which agent a
+        task belongs to, delegates only self-contained work to
+        workers (with a closed spec for implementing and verifying),
+        and owns Foundation Sync (below). Role recorded in ADR 0002,
+        revised by ADR 0006.
       - `programmer.md` — explains first, then implements in small
         pieces.
       - `engenir.md` — implements without teaching: the person
@@ -181,10 +184,14 @@ full below. None assumes a specific AI-Assisted Tool.
       agent follows, written once. `construct` appends this file to
       each compiled agent, so no agent blueprint repeats it.
 
+    - `hangar/blueprints/shared/spec-template.md` — the spec anatomy
+      (see "Specs", below). `construct` copies it to a new project's
+      `docs/specs/TEMPLATE.md`, which the project then owns.
+
     - `hangar/blueprints/skills/` — one blueprint per skill:
-      `write-diary.md`, `write-article.md` and `loop-status.md`. These
-      are the only skills this harness provides; `construct` is not
-      one of them.
+      `write-diary.md`, `write-article.md`, `write-spec.md` and
+      `loop-status.md`. These are the only skills this harness
+      provides; `construct` is not one of them.
 
     - `hangar/blueprints/adapters/` — one adapter per supported
       AI-Assisted Tool (see "Terminology"): `claudecode.md` and
@@ -279,6 +286,13 @@ round of its own. `grilling` earns its place when a spec has genuine
 open decisions in it, not as a mandatory ritual for every piece of work
 regardless of size.
 
+The spec's anatomy lives in `hangar/blueprints/shared/spec-template.md`
+and is not restated here. The lead agent writes the spec with the
+person (`/write-spec`); the worker only executes it, and `tester`
+reports each requirement against it. When the spec is done, the lead
+agent fills its run record: the agents that took part, their model and
+effort, tokens, time, and the task's size.
+
 The implementer blueprints — `programmer` and `engenir` — are where
 this is applied: a spec before any non-trivial piece of work. A
 downstream project may adapt or replace it, along with the rest of the
@@ -344,6 +358,29 @@ in ADR 0003). They bind every agent and every session:
   file with the blueprints and names any disagreement in its report,
   without correcting it.
 
+## Two modes per agent
+
+Every agent runs in one of two modes: as a worker, delegated, taking a
+request, working alone and returning; or as the lead agent, in
+conversation with the person. Each agent's rules say what applies in
+each mode. `the-architect` is the default lead agent of every project
+and delegates only self-contained work, and implementation or
+verification only with a closed spec; a worker that hits a doubt stops
+and returns the question. It does not choose a worker's
+model when delegating, except in a deliberate escalation it tells the
+person about. Where the AI-Assisted Tool allows it, the restriction on
+what it may delegate is enforced by its configuration, not by text
+alone (adapter).
+Each blueprint describes the kind of model its work needs (task type,
+complexity, cost sensitivity); the adapter maps that to concrete
+models and effort.
+
+## Traceability
+
+Every certainty a project adopts points to the research
+(`docs/research/`) and sources behind it, so a later problem can be
+checked against them.
+
 ## Loop Status — a visible readout of where a loop actually is
 
 Whenever work is genuinely mid-loop, the person can get a short, honest
@@ -404,9 +441,14 @@ cascade as complete.
   `hangar/blueprints/agents/`; `construct` compiles it into the
   agents directory of each AI-Assisted Tool, following that tool's own
   configuration as described in its adapter. (Note: "subagent" is
-  **not** part of this harness's vocabulary — it is a concept inside
-  specific AI-Assisted Tools, with a meaning defined by each tool, and
-  belongs only in that tool's adapter.)
+  **not** part of this harness's vocabulary; see "Worker" below.)
+- **Lead agent**: the agent running the session's conversation with
+  the person. **Worker**: an agent running delegated, usually in
+  parallel; it takes a closed spec or a self-contained brief, works
+  alone and returns.
+  **Orchestrator**: the pattern the lead agent follows when it
+  delegates to workers. "Subagent" is one AI-Assisted Tool's word for
+  a worker and belongs only in that tool's adapter.
 - **Blueprint**: an AI-Assisted-Tool-agnostic schema that `construct`
   reads. Most blueprints are *compiled* into AI-Assisted-Tool-specific
   outputs — every file in `hangar/blueprints/agents/` and
@@ -487,12 +529,15 @@ commits that are easy to review and understand.
 ## Current status
 
 Founded 2026-09-05, named **Free Wings** (*Asas Livres*) on 2026-09-06.
-Seven agent blueprints, one shared rules file, three skill blueprints and
-two adapters (`claudecode.md`, `opencode.md`) are built; `construct`
-compiles them. Shadow Glass is the first project sitting under this
-harness, with its own `FOUNDATION.md` and generated files. Chacal,
-scaffolded on 2026-11-06, is the second, and the first to use
-`engenir` as its implementer. Since
-2026-10-06 each fact has one home and the other files point to it
-(ADR 0003). Since 2026-11-06 a project picks its implementer:
-`programmer`, which teaches, or `engenir`, which builds (ADR 0005).
+Seven agent blueprints, one shared rules file, one spec template, four
+skill blueprints and two adapters (`claudecode.md`, `opencode.md`) are
+built; `construct` compiles them. Shadow Glass is the first project
+sitting under this harness, with its own `FOUNDATION.md` and generated
+files. Chacal, scaffolded on 2026-11-06, is the second, and the first
+to use `engenir` as its implementer. Since 2026-10-06 each fact has
+one home and the other files point to it (ADR 0003). Since 2026-11-06
+a project picks its implementer: `programmer`, which teaches, or
+`engenir`, which builds (ADR 0005). Since 2026-11-17 `the-architect`
+is the orchestrator and the default lead agent, specs have a template
+and `/write-spec`, and every certainty points to its research
+(ADR 0006).
