@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which Model a Worker Runs</title>
+<!--
+Field Notes page of Free Wings, in `docs/`. A standalone page opened from
+the local filesystem, explaining one concept: how Claude Code picks the
+model of a delegated worker, and why that made Chacal's cost invisible.
+Every claim carries a numbered reference to the file or source it comes
+from, listed under "Sources" at the end (the traceability rule, ADR 0006).
+-->
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f6f3ec; --panel: #ece4d3; --panel-line: #ddd2b8;
+    --ink: #1b2430; --ink-soft: #4a5468; --accent: #c9722c; --muted: #b9b0a0;
+    --hit: #2f7d5f; --miss: #b23b3b;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --sans: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #11151c; --panel: #1a2029; --panel-line: #2a3240;
+      --ink: #e8e3d6; --ink-soft: #a7b0c2; --accent: #e79350; --muted: #4a5568;
+      --hit: #5fbf95; --miss: #e0716f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.6; }
+  .page { max-width: 800px; margin: 0 auto; padding: 48px 16px 96px; }
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-family: var(--mono); font-size: clamp(24px, 5vw, 34px); font-weight: 600; margin: 8px 0 4px; text-wrap: balance; }
+  h2 { font-family: var(--mono); font-size: 19px; font-weight: 600; margin: 44px 0 10px; }
+  .subtitle { font-family: var(--mono); font-size: 14px; color: var(--ink-soft); margin: 0 0 28px; }
+  .headline { font-size: 16px; font-weight: 500; background: var(--panel); border-left: 4px solid var(--accent); padding: 16px 20px; border-radius: 6px; margin: 0 0 12px; }
+  code { font-family: var(--mono); font-size: 0.92em; background: var(--panel); padding: 1px 5px; border-radius: 4px; }
+  .ladder { list-style: none; padding: 0; margin: 16px 0; counter-reset: step; }
+  .ladder li { counter-increment: step; position: relative; background: var(--panel); border: 1px solid var(--panel-line); border-radius: 8px; padding: 12px 16px 12px 52px; margin: 0 0 8px; }
+  .ladder li::before { content: counter(step); position: absolute; left: 14px; top: 11px; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--bg); font-family: var(--mono); font-weight: 600; text-align: center; line-height: 26px; font-size: 14px; }
+  .ladder .what { font-weight: 600; }
+  .ladder .who { color: var(--ink-soft); font-size: 14px; }
+  .tag { font-family: var(--mono); font-size: 11.5px; padding: 1px 7px; border-radius: 10px; border: 1px solid; margin-left: 6px; white-space: nowrap; }
+  .tag.miss { color: var(--miss); border-color: var(--miss); }
+  .tag.hit { color: var(--hit); border-color: var(--hit); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .cols { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--panel-line); border-radius: 8px; padding: 14px 16px; }
+  .card h3 { font-family: var(--mono); font-size: 14px; margin: 0 0 6px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--panel-line); }
+  th { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em; }
+  .small { font-size: 13.5px; color: var(--ink-soft); }
+  .table-wrap { overflow-x: auto; }
+  .ref { font-family: var(--mono); font-size: 11px; margin-left: 2px; }
+  .ref a, .sources a { color: var(--accent); text-decoration: none; }
+  .sources { font-size: 13.5px; color: var(--ink-soft); padding-left: 22px; }
+  .sources li { margin: 0 0 6px; }
+</style>
+</head>
+<body>
+<main class="page">
+  <div class="kicker">Field Notes · Free Wings · 2026-11-17</div>
+  <h1>Which model does a worker run?</h1>
+  <p class="subtitle">How Claude Code picks a delegated agent's model, and why the cost hid in plain sight.</p>
+
+  <p class="headline">If nothing on the way down names a model, a worker silently runs the
+  same model as the conversation that called it. That is how a rule written only
+  in prose became a usage bill.<sup class="ref"><a href="#s2">[2]</a></sup><sup class="ref"><a href="#s4">[4]</a></sup></p>
+  <p class="small">Where you are: a standalone explanation page in <code>docs/</code>. The story
+  is in <code>docs/LEARNING_LOG.md</code> (2026-11-17), the decision in ADR 0006, the
+  rules in <code>hangar/blueprints/adapters/claudecode.md</code>.</p>
+
+  <h2>Two words first</h2>
+  <div class="cols">
+    <div class="card"><h3>Lead agent</h3>The agent in conversation with the person:
+      the session's main thread. In Free Wings, <code>the-architect</code> by default.<sup class="ref"><a href="#s1">[1]</a></sup></div>
+    <div class="card"><h3>Worker</h3>An agent the lead agent delegates to. It works
+      alone, in its own context, and returns one report. Claude Code calls it a
+      <em>subagent</em>.<sup class="ref"><a href="#s1">[1]</a></sup><sup class="ref"><a href="#s5">[5]</a></sup></div>
+  </div>
+
+  <h2>The order Claude Code follows</h2>
+  <p>When a worker starts, Claude Code looks for its model in this order and
+  <strong>stops at the first one it finds</strong> (Claude Code docs, verified 2026-11-17):<sup class="ref"><a href="#s2">[2]</a></sup></p>
+  <ol class="ladder">
+    <li><span class="what">The <code>model</code> passed on the call</span>
+      <div class="who">Chosen by the lead agent at the moment it delegates.</div></li>
+    <li><span class="what">The <code>model</code> in the agent's own file</span>
+      <div class="who">Frontmatter of <code>.claude/agents/&lt;name&gt;.md</code>, which <code>construct</code> generates.</div></li>
+    <li><span class="what">The variable <code>CLAUDE_CODE_SUBAGENT_MODEL</code></span>
+      <div class="who">An environment setting, if someone set it.</div></li>
+    <li><span class="what">The conversation's model</span>
+      <div class="who">The fallback: whatever the lead agent itself is running.</div></li>
+  </ol>
+  <p class="small">With <code>CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1</code>, step 1 is switched
+  off: the lead agent cannot pass a model at all.<sup class="ref"><a href="#s2">[2]</a></sup><sup class="ref"><a href="#s3">[3]</a></sup></p>
+
+  <h2>What happened on Chacal</h2>
+  <ol class="ladder">
+    <li><span class="what">Passed on the call</span><span class="tag miss">nothing</span>
+      <div class="who">The blueprint said "recommend, don't delegate", so nothing told the lead agent which model to pass, and it delegated anyway.<sup class="ref"><a href="#s4">[4]</a></sup></div></li>
+    <li><span class="what">Agent file</span><span class="tag miss">nothing</span>
+      <div class="who">No agent file had a <code>model</code> field yet.<sup class="ref"><a href="#s4">[4]</a></sup></div></li>
+    <li><span class="what">Environment variable</span><span class="tag miss">nothing</span>
+      <div class="who">Not set (inferred: the worker fell through to step 4).<sup class="ref"><a href="#s7">[7]</a></sup></div></li>
+    <li><span class="what">Conversation's model</span><span class="tag hit">used</span>
+      <div class="who">So <code>engenir</code> and <code>tester</code> ran on the session's own model, the same one chosen for judgment and conversation.<sup class="ref"><a href="#s4">[4]</a></sup><sup class="ref"><a href="#s7">[7]</a></sup></div></li>
+  </ol>
+  <p>Nothing on screen said so: a worker returns a summary to the conversation that called it, not its model.<sup class="ref"><a href="#s5">[5]</a></sup> The
+  cost only showed up afterward: 90% of the 5-hour limit, 65% of the weekly one,
+  and <code>/usage</code> putting 66% on <code>engenir</code> and 24% on <code>tester</code>
+  (not re-measured here).<sup class="ref"><a href="#s4">[4]</a></sup></p>
+
+  <h2>Prose versus configuration</h2>
+  <div class="cols">
+    <div class="card"><h3>A rule in prose</h3>"Recommend, don't delegate" was text inside
+      the blueprint. The model reads it, weighs it, and can still act otherwise.
+      Nothing stops it.<sup class="ref"><a href="#s4">[4]</a></sup></div>
+    <div class="card"><h3>A rule in configuration</h3>A <code>model</code> field, a
+      deny rule such as <code>Agent(programmer)</code>, a <code>tools</code> allowlist.
+      The tool applies these whether the model agrees or not.<sup class="ref"><a href="#s5">[5]</a></sup><sup class="ref"><a href="#s6">[6]</a></sup></div>
+  </div>
+
+  <h2>What Free Wings does now</h2>
+  <p>Each agent's file carries its own <code>model</code> and <code>effort</code> (step 2),
+  and <code>the-architect</code> does not pass a model when it delegates (step 1), except
+  in a deliberate escalation it tells the person about. The worker's own file decides.<sup class="ref"><a href="#s4">[4]</a></sup><sup class="ref"><a href="#s6">[6]</a></sup></p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Agent</th><th>model</th><th>effort</th></tr>
+    <tr><td><code>the-architect</code></td><td>opus</td><td>medium</td></tr>
+    <tr><td><code>programmer</code></td><td>opus</td><td>medium</td></tr>
+    <tr><td><code>engenir</code></td><td>sonnet</td><td>medium</td></tr>
+    <tr><td><code>tester</code></td><td>sonnet</td><td>high</td></tr>
+    <tr><td><code>researcher</code></td><td>sonnet</td><td>high</td></tr>
+    <tr><td><code>deneir</code></td><td>sonnet</td><td>medium</td></tr>
+    <tr><td><code>writer</code></td><td>sonnet</td><td>medium</td></tr>
+  </table>
+  </div>
+  <p class="small">Table: Claude Code adapter.<sup class="ref"><a href="#s6">[6]</a></sup></p>
+  <p class="small">These are starting points, grounded in
+  <code>docs/research/2026-11-17-model-choice-per-agent.md</code>. They change one agent
+  at a time, by measuring.<sup class="ref"><a href="#s6">[6]</a></sup><sup class="ref"><a href="#s7">[7]</a></sup> When to go up: if the agent had all the context and still
+  got it wrong, a larger model; if it skipped a step or a file, a higher effort (Anthropic's guidance, as recorded in the adapter).<sup class="ref"><a href="#s6">[6]</a></sup></p>
+
+  <h2>Still open</h2>
+  <ul>
+    <li>Whether <code>effort</code> in an agent file applies when that agent runs as the lead agent (<code>--agent</code>). Not documented, not tested.<sup class="ref"><a href="#s6">[6]</a></sup><sup class="ref"><a href="#s4">[4]</a></sup></li>
+    <li>A reliable per-agent cost measure. Without one, a model change cannot really be measured: <code>/usage</code> attributes by agent only approximately, and per-agent figures need OpenTelemetry.<sup class="ref"><a href="#s8">[8]</a></sup></li>
+  </ul>
+
+  <h2>Sources</h2>
+  <ol class="sources">
+    <li id="s1"><code>FOUNDATION.md</code>, "Terminology": lead agent, worker, orchestrator; "subagent" is one tool's word for a worker.</li>
+    <li id="s2">Claude Code docs, <code>code.claude.com/docs/en/sub-agents</code>, subagent model order. Quoted verbatim in <code>docs/research/2026-11-11-token-efficiency-claude-code.md</code>; re-verified 2026-11-17 in <code>hangar/blueprints/adapters/claudecode.md</code>, "Model and effort per agent".</li>
+    <li id="s3"><code>docs/research/2026-11-11-token-efficiency-claude-code.md</code>: <code>CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1</code> (Claude Code v2.1.257+).</li>
+    <li id="s4"><code>docs/decisions/0006-the-architect-orchestrates-workers.md</code>, "Context", "Decision" and "Consequences": the Chacal figures, the rule in text only, no <code>model</code> set, the lead agent not choosing a worker's model.</li>
+    <li id="s5"><code>hangar/blueprints/adapters/claudecode.md</code>, "Format — subagent files" and "Limiting whom <code>the-architect</code> delegates to": what a subagent returns, the deny rule.</li>
+    <li id="s6"><code>hangar/blueprints/adapters/claudecode.md</code>, "Model and effort per agent" and "<code>effort</code> — open": the table, when to go up, effort under <code>--agent</code> undocumented.</li>
+    <li id="s7"><code>docs/research/2026-11-17-model-choice-per-agent.md</code>, "Traps that matter here": with no <code>model</code> field a subagent runs on the main conversation's model; grounds the table's choices.</li>
+    <li id="s8"><code>docs/notes/the-architect/for-the-architect-2026-11-17-cost-tracking-research.md</code>: <code>/usage</code> is approximate per agent; OpenTelemetry for per-agent figures. A temporary note: if it is folded in elsewhere, this reference moves with it.</li>
+  </ol>
+</main>
+</body>
+</html>
