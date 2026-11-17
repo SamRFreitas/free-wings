@@ -28,8 +28,8 @@ not on every single message.
 ```
 Loop status
 - Trigger: <what actually started this piece of work>
-- Now: <who/what is acting right now — the main session, or a named
-  agent if one was spawned>
+- Now: <who/what is acting right now — the lead agent, or a named
+  worker if one was delegated>
 - Used so far: <agents and skills actually invoked this loop, in order,
   or "none yet">
 - Step: <exact "k of n" if this is a fixed, known cascade (e.g.
