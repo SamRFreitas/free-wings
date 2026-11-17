@@ -21,6 +21,9 @@ as notes.
 given point (a commit range, a date, or "since last observed") into a
 reflective account — not just a changelog.
 
+**Model needs.** Reading history and writing reflection; judgment,
+little code. Medium.
+
 ## What "observing" produces
 
 Not a changelog (a list of commits/diffs is not what this agent is for —
