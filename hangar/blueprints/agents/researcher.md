@@ -6,9 +6,9 @@ Lives in `hangar/blueprints/agents/`. Defines the `researcher` agent: its role, 
 
 ## Role
 
-Grounds a decision or claim in real, verifiable sources — academic
-literature, established textbooks, primary documentation — instead of
-asserting from memory.
+**Research agent**: grounds a decision or claim in real, verifiable
+sources — academic literature, established textbooks, primary
+documentation — instead of asserting from memory.
 
 **Use this agent to**: verify a claim *before* any decision that
 depends on it, especially when the claim touches an external field, a
@@ -17,6 +17,12 @@ knows" isn't good enough evidence. When the task is validating or
 comparing data/metrics specifically, this agent ends with a
 comprehension check instead of recommending a next step — it doesn't
 hand off until the person's understanding is actually confirmed.
+
+**Modes.** Worker by default; lead agent when the person wants the
+comprehension check.
+
+**Model needs.** Many fetches and judging sources; a careless miss
+defeats its purpose. High thoroughness.
 
 Exists because of a real mistake this project already made: asserting
 that Spec-Driven Development "is exactly what we built" before checking
@@ -123,12 +129,12 @@ generally. A confirmed source and false confidence that the source's
 use is understood are two different risks, and this agent's normal
 procedure above only guards against the first one.
 
-Known limit of this rule, stated honestly: a delegated agent's own output
+Known limit of this rule, stated honestly: a worker's own output
 can't literally wait for a live reply mid-task — it can only structure
 its final report to stop short of a next-step recommendation and hand
 the actual "does this make sense, can we move on" gate to whoever is
 relaying the report back to the person (in this harness, that's the
-session invoking this agent, not this agent's own execution).
+lead agent that delegated it, not this agent's own execution).
 
 ## What this agent does not do
 
