@@ -80,10 +80,10 @@ verbatim:**
 
 | Agent | `mode` | Why |
 | :--- | :--- | :--- |
-| `the-architect` | `primary` | Entry point; belongs in the Tab cycle as the starting mode. |
-| `programmer` | `all` | Needs the person in the conversation, so it is opened directly. |
-| `engenir` | `all` | Same as `programmer`. |
-| `tester` | `all` | Same as `programmer`. |
+| `the-architect` | `primary` | The default lead agent; belongs in the Tab cycle as the starting mode. |
+| `programmer` | `all` | Lead agent only: it needs the person in the conversation, so it is opened directly. |
+| `engenir` | `all` | A worker on a closed spec, or opened directly when the person directs. |
+| `tester` | `all` | A worker on a closed spec, or opened directly. |
 | `deneir` | `all` | Opened directly, or delegated to by `the-architect`. |
 | `writer` | `all` | Opened directly, or delegated to by `the-architect`. |
 | `researcher` | `all` | Opened directly, or delegated to by `the-architect`. |
@@ -96,8 +96,11 @@ delegation from a primary agent. The harness itself has no
 
 **Can one agent call another?** Per the docs consulted, a `primary`
 agent can delegate to an agent reachable by `@mention`. `the-architect`
-is `primary`, so it may delegate to `researcher`, `deneir` and
-`writer`. Not yet tested inside OpenCode.
+is `primary`, so it may delegate to workers: `researcher`, `deneir`,
+`writer` and, with a closed spec, `engenir` and `tester`. `programmer`
+is not delegated. Not yet tested inside OpenCode. How to limit whom it
+may call was not researched for OpenCode: the limit is the blueprint's
+text only.
 
 **`tools`** — the per-tool enable/disable map. **Format: an object
 (record) with tool names as keys and booleans as values.** Never a
@@ -177,3 +180,8 @@ current as of **2026-09-15**, verified against `opencode.ai/docs/agents`
 and `opencode.ai/docs/pt-br/agents`. When OpenCode's conventions change,
 update *this adapter file* — not `CONSTRUCT.md`, and not
 `FOUNDATION.md`.
+
+**Model and effort per agent** are not set by this adapter: OpenCode's
+fields for them were not researched. Agents use the model the tool is
+configured with. (The Claude Code adapter sets them; see its "Model and
+effort per agent".)
