@@ -7,10 +7,14 @@ posts; Pressman's textbook is commercial, not open access.
 
 ## Loop engineering (freely accessible — all blog posts)
 
+- **Addy Osmani** — ["Loop Engineering"](https://addyosmani.com/blog/loop-engineering/)
+  (2026-06-07). The essay the term traces back to (checked 2026-11-16).
+  It names the verifier, the stop condition and the maker/checker
+  split; the four-part "trigger, topology, verifier, stop rule" naming
+  is **not** in it. Osmani is a director on Google's Cloud AI team.
 - **Addy Osmani** — ["Practical Loop Engineering"](https://addyo.substack.com/p/practical-loop-engineering)
-  (Elevate, his own Substack). The original essay, published 2026-06-07
-  — the canonical source the term traces back to. Osmani is a director
-  on Google's Cloud AI team.
+  (Substack, 2026-08-14). A later post, not the June essay. *Correction:
+  this link used to be listed here as the June essay; it is not.*
 - **O'Reilly Radar** — ["Loop Engineering"](https://www.oreilly.com/radar/loop-engineering/),
   syndicated from Osmani's essay with his permission (2026-06-22).
 - **IBM** — ["What Is Loop Engineering?"](https://www.ibm.com/think/topics/loop-engineering)
@@ -32,7 +36,8 @@ posts; Pressman's textbook is commercial, not open access.
 
 ## What this grounded, concretely
 
-The Architect agent's design (loop trigger → topology → verifier → stop
-rule) is built directly from the structural elements these loop
-engineering sources agree on — see `FOUNDATION.md` and
-`hangar/blueprints/agents/the-architect.md` for where that actually landed.
+The Architect's exit and checks borrow the loop-engineering vocabulary
+where the sources use it (verifier, stop condition). "Trigger" and
+"topology" are the harness's own words — see
+`hangar/blueprints/agents/the-architect.md`, "Loop anatomy", and
+`docs/research/2026-11-16-harness-vocabulary.md`, section 6.
