@@ -90,8 +90,9 @@ whatever comes after it. Every project under this harness:
    blueprint in [`hangar/blueprints/agents/`](hangar/blueprints/agents/)
    is the full description:
    - [**The Architect**](hangar/blueprints/agents/the-architect.md)
-     (`the-architect`) — the entry point: decides which agent a task
-     belongs to.
+     (`the-architect`) — the orchestrator and default lead agent:
+     decides which agent a task belongs to and delegates self-contained
+     work to the others (ADR 0006).
    - [`programmer`](hangar/blueprints/agents/programmer.md) — explains
      first, then implements in small pieces.
    - [`engenir`](hangar/blueprints/agents/engenir.md) — implements
@@ -106,11 +107,14 @@ whatever comes after it. Every project under this harness:
    - [`writer`](hangar/blueprints/agents/writer.md) — shapes material
      into diary entries or articles.
 
-   Its three skills (blueprints in
+   Its four skills (blueprints in
    [`hangar/blueprints/skills/`](hangar/blueprints/skills/)):
    [`write-diary`](hangar/blueprints/skills/write-diary.md),
-   [`write-article`](hangar/blueprints/skills/write-article.md) and
-   [`loop-status`](hangar/blueprints/skills/loop-status.md).
+   [`write-article`](hangar/blueprints/skills/write-article.md),
+   [`write-spec`](hangar/blueprints/skills/write-spec.md) and
+   [`loop-status`](hangar/blueprints/skills/loop-status.md). A spec
+   follows the anatomy in
+   [`hangar/blueprints/shared/spec-template.md`](hangar/blueprints/shared/spec-template.md).
    `construct` is not a skill — it is the bootstrapper at the root.
 
    None of them is wired to any single project: each learns the target
@@ -133,7 +137,8 @@ spirit more closely — use this however you want, no strings attached.
 ## Status
 
 Founded 2026-09-05, named Free Wings on 2026-09-06. Seven agents, one
-shared rules file, three skills, and two adapters (`claudecode.md`, `opencode.md`) are
+shared rules file, one spec template, four skills, and two adapters
+(`claudecode.md`, `opencode.md`) are
 built and tested live (see "Using this harness for a new project"
 above). Shadow Glass is the first project sitting under
 this harness; Chacal, an automated job search and application tool, is
