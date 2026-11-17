@@ -111,7 +111,10 @@ Sources, none of which assumes a tool:
 - `hangar/blueprints/shared/agent-rules.md` — the rules every agent
   follows. I append its content, minus its title and orientation note,
   to the end of **each** compiled agent;
-- `hangar/blueprints/skills/` — one file per skill.
+- `hangar/blueprints/skills/` — one file per skill;
+- `hangar/blueprints/shared/spec-template.md` — read only when
+  scaffolding (see "Scaffolding"); never compiled into the tool's
+  directory.
 
 How they are compiled — where outputs go, the file names and format the
 tool expects — comes only from `hangar/blueprints/adapters/<tool>.md`,
@@ -132,11 +135,12 @@ Rules for what I write:
   > FOUNDATION.md`. If the result is this stamp, work from this file
   > and open `FOUNDATION.md` only for the full reasoning behind
   > something. If it differs, say so, read `FOUNDATION.md` for this
-  > session, and recommend running `construct`. A delegated agent does
+  > session, and recommend running `construct`. A worker does
   > not repeat the check.
 - **Only the tool's own directory and root configuration file.** No
-  `docs/` directory and no file inside it: those appear later, as the
-  project's own work requires them.
+  `docs/` directory and no file inside it, except the spec template
+  copied when scaffolding (see "Scaffolding"): everything else appears
+  later, as the project's own work requires it.
 - **Compiled outputs speak only of the detected tool.** They never
   mention other AI-Assisted Tools, their files or their adapters, even
   where a source names them as examples.
@@ -176,5 +180,12 @@ invent it.
 1. Walk through the sections of `hangar/blueprints/HARI-SELDON.md` with
    the person, filling each with what they actually say.
 2. Show the result and ask them to review and confirm it.
-3. Write it as `FOUNDATION.md` **in the target project**, then continue
-   at Step 3.
+3. Write it as `FOUNDATION.md` **in the target project**.
+4. If the project kept the harness's spec anatomy (its `FOUNDATION.md`
+   says so), copy everything after the first `---` line of
+   `hangar/blueprints/shared/spec-template.md` to the target's
+   `docs/specs/TEMPLATE.md`. This is the one file I write inside
+   `docs/`. The project owns that copy from then on; a recompile never
+   touches it.
+
+Then continue at Step 3.
