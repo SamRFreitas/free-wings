@@ -42,12 +42,13 @@ It must be enough for a session to work from without opening
 
 ## Format — subagent files
 
-In Claude Code, a file in `.claude/agents/` defines a **subagent**: a
-specialized assistant Claude can delegate a task to, which runs in its
-own separate context and returns a summary to the conversation that
-called it. Each harness agent blueprint compiles into one subagent
-file. The same file can also run as the **main thread** of a session
-(see "Invocation" below).
+In Claude Code, a file in `.claude/agents/` defines a **subagent**
+(Claude Code's word for what the harness calls a worker): a specialized
+assistant Claude can delegate a task to, which runs in its own separate
+context and returns a summary to the conversation that called it. Each
+harness agent blueprint compiles into one subagent file. The same file
+can also run as the **main thread** of a session (the lead agent; see
+"Invocation" below).
 
 `.claude/agents/<name>.md` uses YAML frontmatter. Only `name` and
 `description` are required; all other fields are optional. **All field
@@ -98,28 +99,69 @@ path or command.
 | `deneir` | `Read, Grep, Glob, Bash, Write` | `Bash` to read git history, `Write` for new files. |
 | `researcher` | `Read, Grep, Glob, WebSearch, WebFetch, Write` | Web search and fetch, `Write` for new files. |
 | `writer` | `Read, Grep, Glob, Write, Edit` | `Edit` to revise drafts. |
-| `the-architect` | *(omit — inherits all)* | Works as a normal session. Inheriting includes `Agent`, so it can delegate. |
+| `the-architect` | *(omit — inherits all)* | Inherits `Agent`, so it can delegate; whom it may call can be limited in settings (see "Limiting whom `the-architect` delegates to"). |
 
 **If the mapping is unclear for a specific agent, ask the user rather
-than guessing.** **Safety rule:** an entry in `tools` that does not
-resolve to a real Claude Code tool **causes the subagent to fail at
-launch**. When in doubt about whether a tool name is valid, omit the
-field — inheritance is always valid.
+than guessing.** **Safety rule:** if no entry in `tools` resolves to a
+real tool, Claude Code usually refuses to launch the subagent and names
+the unresolved entries (documented). What happens when only some
+entries are invalid is **not documented**, so keep every entry valid.
+When in doubt about a tool name, omit the field — inheritance is always
+valid.
+
+### Model and effort per agent
+
+The harness sets `model` and `effort` in each agent's file. Each
+blueprint says what its work needs ("Model needs"); this table is the
+choice. Aliases, not version numbers. These are starting points for the
+best quality at the lowest cost, grounded in
+`docs/research/2026-11-17-model-choice-per-agent.md`; they change one
+agent at a time, by measuring.
+
+| Agent | `model` | `effort` | Goes up when |
+| :-- | :-- | :-- | :-- |
+| `the-architect` | `opus` | `medium` | — (under test) |
+| `programmer` | `opus` | `medium` | — (under test) |
+| `engenir` | `sonnet` | `medium` | `high` for bug fixes and edge cases |
+| `tester` | `sonnet` | `high` | — |
+| `researcher` | `sonnet` | `high` | — |
+| `deneir` | `sonnet` | `medium` | — |
+| `writer` | `sonnet` | `medium` | — |
+
+When to go up (Anthropic's guidance): if the agent had all the context
+and still got it wrong, a larger model; if it got it wrong by skipping a
+step or a file, a higher effort.
+
+**Delegation overrides the file.** The order Claude Code uses to pick a
+worker's model (verified 2026-11-17): the `model` parameter Claude
+passes when it starts the worker, then the agent file's `model`, then
+`CLAUDE_CODE_SUBAGENT_MODEL`, then the conversation's model. So
+`the-architect` does not pass `model` (see its blueprint) except in a
+deliberate escalation. With `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1` Claude
+cannot pass a model at all.
+
+**`effort` — open.** Documented for a worker ("overrides the session
+effort level"). Not documented: whether it applies when the agent runs
+as the lead agent, and there is no per-call effort parameter. Until
+tested, set effort for a lead-agent session with `--effort` or
+`/effort`; a worker's effort changes by editing its file.
 
 ### Optional advanced fields
 
-The following fields exist in Claude Code but are **not required by the
-harness by default**. Document them here so that a future need — a
-specific model for a specific agent, a tool explicitly denied, a
-restricted subagent-spawning list — can be expressed without leaving
-this adapter.
+Documented in Claude Code; the harness uses only `model` and `effort`
+by default. They are listed here so a future need can be expressed
+without leaving this adapter.
 
-**`model`** (optional) — the model the subagent uses. Accepted values:
-`sonnet`, `opus`, `haiku`, `fable`, `inherit`, or a full model ID
-(e.g. `claude-opus-5-5`). `inherit` means "use
-the same model as the parent conversation". The harness does **not**
-specify a model — omit this field and let Claude Code decide, unless
-the person asks for a specific one.
+**`model`** (optional) — `sonnet`, `opus`, `haiku`, `fable`, `inherit`,
+or a full model ID. `inherit` means "use the same model as the parent
+conversation".
+
+**`effort`** (optional) — `low`, `medium`, `high`, `xhigh`, `max`
+(available levels depend on the model).
+
+**Not used by the harness:** `omitClaudeMd`, `autoCompactWindow`,
+`maxTurns`, `memory`, `background`, `isolation`, `color`, `hooks`,
+`mcpServers`, `initialPrompt` (lead agent only), `experimental.cacheTtl`.
 
 **`disallowedTools`** (optional) — the inverse of `tools`: a list of
 tools to **remove** from the inherited set. Same format as `tools`
@@ -152,12 +194,32 @@ By default, nesting goes up to three layers below the main
 conversation; `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` in `settings.json`
 lowers it (`1` disables nesting).
 
-**Note on `the-architect` and delegation.** The blueprint lets
-`the-architect` delegate to `researcher`, `deneir`, and `writer`. In
-Claude Code that takes the `Agent` tool, which it has because its
-`tools` field is omitted. `programmer`, `engenir` and `tester` are not delegated
-to: they are opened as their own sessions (see "Which way to open each
-agent").
+**Note on `the-architect` and delegation.** It delegates to workers:
+`researcher`, `deneir`, `writer` and, with a closed spec, the project's
+implementer (`engenir`) and `tester`. `programmer` is opened as its own
+session (see "Which way to open each agent"). In Claude Code,
+delegating takes the `Agent` tool, which it has because its `tools` is
+omitted.
+
+### Limiting whom `the-architect` delegates to
+
+Optional; the project chooses, `construct` generates neither. Without
+it, `programmer` stays delegable and the limit is only the
+blueprint's text.
+
+- **Deny rule in the project's `.claude/settings.json`**:
+  `"permissions": {"deny": ["Agent(programmer)"]}` blocks spawning that
+  agent and keeps every other tool. In a project whose implementer is
+  `programmer`, deny `Agent(engenir)` too.
+- **An allowlist in `the-architect`'s `tools`**, with `Agent(researcher,
+  deneir, writer, tester, engenir)`: applies only as the lead agent.
+  Listing `tools` drops the inherited ones, and whether MCP tools,
+  `Skill`, `AskUserQuestion` and `ToolSearch` remain is **not
+  documented**: test before adopting.
+
+**Description size.** Claude Code warns at startup when all agents'
+descriptions together pass 15,000 tokens, and still loads them all.
+Descriptions are sent on every request, so keep them short.
 
 ## Format — skill files
 
@@ -194,7 +256,7 @@ it does not restrict the skill to only those tools. Other tools remain
 available, they just may require user approval. The grant lasts only
 for the turn that invokes the skill; it clears with the next message.
 
-The harness's skills (`write-diary`, `write-article`, `loop-status`)
+The harness's skills (`write-diary`, `write-article`, `write-spec`, `loop-status`)
 are not gated by permissions in a way that requires this field. Omit it
 unless the blueprint explicitly needs a specific tool allowlist.
 
@@ -228,10 +290,10 @@ as a subagent:
 
 | Agent | Open it with | Why |
 | :--- | :--- | :--- |
-| `the-architect` | `claude --agent the-architect` | The entry point, and the one the person plans with. |
-| `programmer` | `claude --agent programmer` | Teaches and asks while it implements. |
-| `engenir` | `claude --agent engenir` | The person directs it turn by turn and approves each summary. |
-| `tester` | `claude --agent tester` by default; `@agent-tester` only to judge an output that already exists | Its first pass explains and asks, which needs the main thread. A pass that only judges a finished output needs no dialogue. |
+| `the-architect` | `claude --agent the-architect`, or `"agent": "the-architect"` in settings | The default lead agent: the orchestrator the person talks to. |
+| `programmer` | `claude --agent programmer` | Lead agent only: it teaches and asks while it implements. |
+| `engenir` | Worker on a closed spec, delegated by `the-architect`; `claude --agent engenir` when the person directs | Builds from the spec; in conversation the person approves each summary. |
+| `tester` | Worker on a closed spec, delegated by `the-architect`; `claude --agent tester` in conversation | Checks each requirement by its "How to verify". |
 | `researcher` | `@agent-researcher`, or delegated by `the-architect` | Takes a request, writes a file in `docs/research/`, finishes. |
 | `deneir` | `@agent-deneir`, or delegated by `the-architect` | Takes a request, writes an observation note in `docs/notes/deneir/`, finishes. |
 | `writer` | `@agent-writer`, or delegated by `the-architect` | Takes a request, writes a draft, finishes. |
@@ -249,7 +311,9 @@ Two documented ways, both chosen by the project, neither generated by
 - **Per session**: `claude --agent <name>`.
 - **Project default**: `"agent": "<name>"` in `.claude/settings.json`.
   Every session in that project then starts as that agent; `--agent`
-  overrides it for one session.
+  overrides it for one session. The harness recommends
+  `"agent": "the-architect"` as the project default (Free Wings has
+  it); `construct` does not generate it.
 
 How to open a plain, default session in a project that has `"agent"`
 set is **not documented** as of 2026-10-05: the docs say only that the
@@ -282,7 +346,7 @@ following were verified:
 
 - `name`, `description` — required fields, formats as documented.
 - `tools` — accepts comma-separated string and YAML array; omitting
-  inherits all; unresolvable entries cause launch failure.
+  inherits all; if no entry resolves, launch fails.
 - `model`, `permissionMode` — accepted values as listed above.
 - `disallowedTools`, `skills`, `Agent(<agent_type>)` — exist as
   optional fields; spawn depth defaults to three layers.
@@ -295,6 +359,16 @@ following were verified:
   `tools`.
 - Read-only forms of `git` — run without a permission prompt in every
   mode; permission rules are per session, not per subagent.
+
+Verified 2026-11-17 against `code.claude.com/docs/en/sub-agents` (full
+page): the model order of precedence; the fields `effort`,
+`omitClaudeMd`, `autoCompactWindow`, `hooks`, `mcpServers`, `memory`,
+`background`, `isolation`, `maxTurns`, `color`, `initialPrompt`;
+`omitClaudeMd` and `autoCompactWindow` ignored in a lead-agent session;
+`Agent(...)` allowlist valid only as the lead agent; the 15,000-token
+warning. **Not documented:** `effort` under `--agent`; partly-invalid
+`tools`; which session tools remain under a `tools` allowlist as lead
+agent; `Agent(name)` inside `disallowedTools`.
 
 **Plan mode.** A Claude Code permission mode (`plan`): Claude reads and
 explores but does not edit files, then presents one plan for one
