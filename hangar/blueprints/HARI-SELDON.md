@@ -44,11 +44,17 @@ This is a blueprint, not a file to copy by hand. The actual content in each sect
 
 - **Implementer** — [which agent implements here: `programmer`, which teaches while it builds, or `engenir`, which builds while the person directs. One of the two, never both (ADR 0005). Ask whether the project's goal is to learn or to get it built.]
 
-- **Terminology** — [default: the harness's own vocabulary (not the project's `docs/GLOSSARY.md`) defines AI-Assisted Tool, Skill, Agent, Blueprint, Adapter, Field Notes, and Snapshot, and avoids the word "artifact". Adopt, adapt, or replace?]
+- **Terminology** — [default: the harness's own vocabulary (not the project's `docs/GLOSSARY.md`) defines AI-Assisted Tool, Skill, Agent, Lead agent, Worker, Orchestrator, Blueprint, Adapter, Field Notes, and Snapshot, and avoids the word "artifact". Adopt, adapt, or replace?]
 
 - **Modular & Self-Sufficient Documentation** — [default: every file orients the reader — where they are, what it does, how it connects to the rest. Adopt, adapt, or replace?]
 
 - **Specs and grilling** — [default: a written spec precedes any non-trivial implementation; grilling stress-tests open decisions; ADRs capture architectural forks, specs capture individual pieces. Adopt, adapt, or replace?]
+
+- **Spec anatomy** — [default: the harness's spec template (`hangar/blueprints/shared/spec-template.md`), which `construct` copies to this project's `docs/specs/TEMPLATE.md`; the project then owns that copy. Adopt it, or define its own?]
+
+- **Lead agent and workers** — [default: `the-architect` is the default lead agent and orchestrator; it delegates only self-contained work to workers (a closed spec for implementing and verifying), and the project's models per agent are set in its adapter. Adopt, adapt, or replace?]
+
+- **Traceability** — [default: every certainty the project adopts points to the research and sources behind it (`docs/research/`). Adopt, adapt, or replace?]
 
 - **Foundation Sync** — [default: a cascade runs when the harness itself changes (FOUNDATION.md → construct → README → LEARNING_LOG → learning pages → optional ADR). Adopt, adapt, or replace?]
 
