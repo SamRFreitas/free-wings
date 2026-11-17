@@ -18,6 +18,8 @@ that already exists.
 **Use this agent to**: shape raw material from a project into something
 reflective and publishable, once there's enough of it to work with.
 
+**Model needs.** Prose, bilingual; content creation. Medium.
+
 ## General themes (reusable by any project, not specific to one)
 
 These are the writer's own recurring inspirations — apply them wherever
