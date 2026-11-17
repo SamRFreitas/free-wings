@@ -939,3 +939,54 @@ act. Nothing committed there.
 Open: Shadow Glass's `FOUNDATION.md` does not name its implementer
 explicitly, and its compiled agents predate `engenir`; to be handled
 in a Shadow Glass session.
+
+## 2026-11-17 — A rule in prose is not a rule: `the-architect` becomes the orchestrator
+
+On Chacal, usage reached 90% of the 5-hour limit and 65% of the weekly
+one on a Pro plan; `/usage` put 66% on `engenir` and 24% on `tester`.
+The cause was small and structural: `the-architect`'s blueprint said
+"recommend, don't delegate", but that was only text. The main session
+delegated both anyway, and with no `model` set each worker inherited
+the session's model. A rule written in prose was not a rule the tool
+enforced.
+
+The person did not answer with "cut tokens" but with "understand first,
+then change". Six research reports came before any blueprint moved
+(`docs/research/`, 2026-11-11 → 2026-11-17). The first one was wrong:
+it assumed `engenir` and `tester` ran through `--agent`; the anatomy
+report found they ran as delegated workers and corrected it. The
+Osmani link in `docs/reading-list.md` pointed to a different post, and
+his own text never used the four-part naming the blueprint credited
+him with; fixed, and it became the traceability rule: every certainty
+points to the research behind it.
+
+Decided, recorded as ADR 0006: `the-architect` is the orchestrator and
+the default lead agent, delegating only self-contained work, and
+implementation or verification only with a closed spec; it does not
+pick a worker's model, since the model passed on a call overrides the
+agent file's. "Orchestrator" was chosen against the research, which
+said router/coordinator; the ADR says so. Vocabulary: lead agent,
+worker, orchestrator; "subagent" stays in the Claude Code adapter.
+Specs got a template and a fourth skill, `/write-spec`; models and
+effort per agent live in the adapter. Weighed and dropped:
+`omitClaudeMd` (every worker would then read `FOUNDATION.md`), spec-kit's
+constitution and skills (9 skills, 136 KB), user stories.
+
+Foundation Sync, run the way the person asked: every file first, then
+one full consistency audit and one pass of fixes, only then `construct`
+(new stamp `f6b61199…`, model and effort in all seven agents,
+`write-spec` compiled; deviation: descriptions condensed by hand rather
+than copied from Role), then the README. `deneir` observed the range
+and this entry comes from its note. A Field Notes page,
+`docs/learning-worker-model.html`, explains how a worker's model is
+chosen and why that made the cost invisible. Nothing committed yet.
+
+Two slips in the `construct` session: it answered in English to a
+Portuguese-speaking person, and it said this entry was not `deneir`'s
+job before reading the handoff note that had already decided it was.
+Read the note first.
+
+Open: whether `effort` applies under `--agent`; a reliable per-agent
+cost measure, needed before changing any model; the S/M/L cut-offs in
+the spec's run record; copying the spec template by hand into Shadow
+Glass and Chacal.
