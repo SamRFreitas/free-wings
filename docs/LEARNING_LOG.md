@@ -990,3 +990,53 @@ Open: whether `effort` applies under `--agent`; a reliable per-agent
 cost measure, needed before changing any model; the S/M/L cut-offs in
 the spec's run record; copying the spec template by hand into Shadow
 Glass and Chacal.
+
+## 2026-11-23 — Method before measurement: two reports, one correction, a pause
+
+Chacal was recompiled after the ADR 0006 sync and got its
+`docs/specs/TEMPLATE.md`, copied by hand; its live cost test waits for
+the person's next spec there. Then the open item of 2026-11-17, a
+reliable per-agent cost measure, went to `researcher`
+(`docs/research/2026-11-23-cost-tracking-per-agent.md`).
+
+The report corrected our own baseline. The token figure a worker
+returns is the size of its last request, not what it consumed: a
+`deneir` run reported ~28k while its transcript sums ~96k, mostly cache
+reads. The table in the cost-tracking note had been read as spend; it
+measures context size, and its rows must not be added up. Tool counts
+and times stand. The cheapest reliable source it proposes is summing
+the transcripts out of band (a `SubagentStop` hook or a script),
+undocumented format and all. Not decided; the measurement is Free
+Wings work for later. One oddity it left open, a subagent's `meta.json`
+saying Opus while its transcript says Sonnet, the person explained: the
+main session runs Opus and the agent then runs on its own file's model.
+Not verified.
+
+Before any experiment with an agent's model, the person asked what the
+academic literature says about testing an agent's quality,
+quantitatively and qualitatively, and where our context sits against
+the others (`docs/research/2026-11-23-agent-quality-evaluation.md`).
+Run-to-run variance can exceed the difference between configurations;
+there is no standard number of runs; intervals, not point estimates;
+LLM judges and a single human grader both drift; a before/after
+comparison is not evidence. Ours sits near industry practice, the METR
+practitioner trial and single-case designs, and the question we really
+have, whether a cheaper model is not worse, has no ready method in the
+sources.
+
+The slip of the session: right after reading that before/after is not
+evidence, the lead agent counted 84 past worker runs on this machine,
+found 17 Opus and 22 Sonnet `engenir` runs on Chacal, and proposed
+building on them, because the data was at hand. The person stopped it:
+it was more focused on doing than on following the method. Choosing a
+method is on hold, by his decision. Data chosen for convenience is not
+a design.
+
+Also this session: the quality research ran 2 h 39 min across a change
+of internet connection, and was told to redo any fetch that had failed
+rather than skip it.
+
+Open: the cost mechanism and where its record lives; whether the spec's
+run record should say "tokens" at all; an evaluation method, when the
+person takes it up; whether `effort` applies under `--agent`; Shadow
+Glass's recompile. Nothing committed yet.
