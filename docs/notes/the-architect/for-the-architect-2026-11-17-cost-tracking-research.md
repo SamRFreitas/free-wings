@@ -1,7 +1,9 @@
 # For the-architect — research still to do: tracking the cost of each task (2026-11-17)
 
-Left open by the 2026-11-17 Foundation Sync. Nothing here is decided;
-it is what the next session picks up, as a request to `researcher`.
+Left open by the 2026-11-17 Foundation Sync. Questions 1, 2 and 4 were
+researched on 2026-11-23
+(`docs/research/2026-11-23-cost-tracking-per-agent.md`); nothing is
+decided yet. The measurement itself is Free Wings work, for later.
 
 ## What exists now
 
@@ -10,42 +12,60 @@ part, model and effort, tokens, time, size S/M/L), filled by the lead
 agent when the work is done (ADR 0006). It says *what* to write down,
 not *how to get a reliable number*.
 
-## What is known (from `docs/research/`)
+## Corrected on 2026-11-23
 
-- A worker's report gives tokens, tools used and time: reliable, per
-  worker. Baseline from those reports, all on the session's model (no
-  `model` field yet); moved here from the Foundation Sync handoff note
-  when that note was deleted:
+This note said a worker's report gives tokens, tools used and time,
+"reliable, per worker". That was wrong for tokens. The token figure in
+a worker's report is the size of its **last request**, not what it
+consumed in total: a `deneir` run reported ~28k while its transcript
+sums ~96k (2026-11-23 research, section on the subagent report). Tool
+count and time are whole-run figures and stay reliable.
 
-  | Run | Tokens | Tools | Time |
-  | :- | -: | -: | -: |
-  | researcher, token efficiency (11-11) | ~100k | 16 | 3 min |
-  | deneir, history draft (11-16) | ~28k | 4 | 2.4 min |
-  | researcher, anatomy (11-16) | ~190k | 34 | 4.8 min |
-  | researcher, vocabulary (11-16) | ~102k | 49 | 10.5 min |
-  | researcher, spec anatomy (11-17) | ~70k | 45 | 37 min |
-  | researcher, model choice (11-17) | ~127k | 24 | 12 min |
-  | researcher, spec-kit (11-17) | ~68k | 39 | 20 min |
-  | deneir, orchestrator sync (11-17, Sonnet, medium) | ~28k | 4 | 0.5 min |
-- `/usage` attributes by agent only "approximately", from local
-  history; its cache line covers the main conversation only
-  (`2026-11-17-model-choice-per-agent.md`, section 5).
-- Per-agent figures need OpenTelemetry with `OTEL_LOG_TOOL_DETAILS=1`,
-  otherwise custom agents show as `"custom"`
-  (`2026-11-16-anatomy-of-claude-code.md`, section 5).
-- The lead agent's own cost: the session's "Usage by model".
-- Task size (S/M/L) is the harness's own convention, an inference, with
-  no cut-offs defined.
+So the table below compares how large each worker's context was at the
+end, not what it cost. Its rows must not be summed as spend.
 
-## To research
+| Run | Last-request tokens | Tools | Time |
+| :- | -: | -: | -: |
+| researcher, token efficiency (11-11) | ~100k | 16 | 3 min |
+| deneir, history draft (11-16) | ~28k | 4 | 2.4 min |
+| researcher, anatomy (11-16) | ~190k | 34 | 4.8 min |
+| researcher, vocabulary (11-16) | ~102k | 49 | 10.5 min |
+| researcher, spec anatomy (11-17) | ~70k | 45 | 37 min |
+| researcher, model choice (11-17) | ~127k | 24 | 12 min |
+| researcher, spec-kit (11-17) | ~68k | 39 | 20 min |
+| deneir, orchestrator sync (11-17, Sonnet, medium) | ~28k | 4 | 0.5 min |
+| researcher, cost tracking (11-23, Sonnet, high) | ~180k | 50 | 54 min |
+| researcher, agent quality (11-23, Sonnet, high) | ~122k | 93 | 2 h 39 min |
 
-1. How to get tokens per agent per task **reliably** in Claude Code
-   (hooks, OpenTelemetry, transcripts), and what each really measures.
-2. Where the record **lives**: only in the spec's run record, or also
-   in a file that can be summed across tasks. Not decided.
+The agent-quality run's time includes a change of internet connection
+midway, after which it retried the fetches that had failed; it is not a
+clean figure.
+
+## What the 2026-11-23 research proposes (not decided)
+
+Sum token usage out of band from the session transcripts (input, cache
+write, cache read, output and model per request), via an async
+`SubagentStop` hook or a script run when a spec closes. It adds no
+tokens to the session. Caveats: the transcript format is undocumented
+and may change; deduplicate by message id; output tokens are a lower
+bound until checked. OpenTelemetry is the documented alternative, with
+a heavy setup. Details and every source are in the research.
+
+The research left open why a subagent's `meta.json` says Opus while its
+transcript lines say Sonnet. The person's explanation: `meta.json`
+records the main session's model (Opus), and the agent then runs on its
+own file's model. Not verified.
+
+## Still open
+
+1. Choose the mechanism and where the record lives: the person's
+   decision, as a spec, when the measurement is taken up.
+2. Whether the spec template's run record should say "tokens" at all,
+   or name which figure (a harness change, so a Foundation Sync).
 3. Cut-offs for S / M / L, from real specs.
-4. Whether the measurement is cheap enough not to cost more than it
-   saves.
+4. After the mechanism: the experiment of each agent's model and
+   effort, one agent at a time (method in
+   `docs/research/2026-11-17-model-choice-per-agent.md`, section 5).
 
 ## Why it matters
 
